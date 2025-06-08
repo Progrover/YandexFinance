@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">YandexFinance</string>
+    <string name="incomes">Доходы</string>
+    <string name="expenditures">Расходы</string>
+    <string name="articles">Счет</string>
+    <string name="settings">Настройки</string>
+    <string name="account">Статьи</string>
+</resources>
