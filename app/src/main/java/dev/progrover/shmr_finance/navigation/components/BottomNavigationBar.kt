@@ -32,7 +32,7 @@ fun BottomNavigationBar(
                     Unit
 
                 BottomNavigationItem.IncomesScreen ->
-                    Unit
+                    IncomesFeature.openIncomesScreen(navController)
 
                 BottomNavigationItem.SettingsScreen ->
                     Unit
@@ -46,7 +46,7 @@ fun BottomNavigationBar(
  */
 private fun NavBackStackEntry?.isBottomBarVisible(isBottomBarVisible: Boolean): Boolean {
     val screensWhereBottomBarVisible = listOf(
-        IncomesFeature.ROUTE_NAME,
+        IncomesFeature.INCOMES_SCREEN,
     )
     return when (isBottomBarVisible) {
         true -> this?.destination?.route in screensWhereBottomBarVisible
