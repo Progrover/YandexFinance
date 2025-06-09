@@ -3,9 +3,7 @@ package dev.progrover.shmr_finance.navigation.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -36,61 +34,52 @@ fun RowScope.BottomBarItem(
 ) {
 
     NavigationBarItem(
-        modifier = modifier
-            .padding(
-                start = AppTheme.paddings.padding4,
-                top = AppTheme.paddings.padding12,
-                end = AppTheme.paddings.padding4,
-                bottom = AppTheme.paddings.padding16,
-            ),
+        modifier = modifier,
         icon = {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(AppTheme.paddings.padding4),
+            Box(
+                modifier = Modifier
+                    .clip(
+                        RoundedCornerShape(AppTheme.corners.corners16)
+                    )
+                    .background(
+                        when (isSelected) {
+                            true -> AppTheme.colors.paleGreen
+                            false -> Color.Transparent
+                        }
+                    ),
             ) {
 
-                Box(
+                Image(
                     modifier = Modifier
-                        .clip(
-                            RoundedCornerShape(AppTheme.corners.corners16)
+                        .padding(
+                            horizontal = AppTheme.paddings.padding20,
+                            vertical = AppTheme.paddings.padding4,
                         )
-                        .background(
-                            when (isSelected) {
-                                true -> AppTheme.colors.paleGreen
-                                false -> Color.Transparent
-                            }
-                        ),
-                ) {
-
-                    Image(
-                        modifier = Modifier
-                            .size(AppTheme.sizes.size24)
-                            .padding(
-                                horizontal = AppTheme.paddings.padding20,
-                                vertical = AppTheme.paddings.padding4,
-                            )
-                            .align(Alignment.Center),
-                        painter = painterResource(item.iconResId),
-                        contentDescription = null,
-                        colorFilter = when (isSelected) {
-                            true -> ColorFilter.tint(selectedColor)
-                            false -> ColorFilter.tint(unselectedColor)
-                        }
-                    )
-                }
-
-                Text(
-                    modifier = Modifier,
-                    text = stringResource(id = item.caption),
-                    style = when (isSelected) {
-                        true -> AppTheme.typography.labelMediumBold
-                        false -> AppTheme.typography.labelMedium
-                    },
-                    color = when (isSelected) {
-                        true -> selectedColor
-                        false -> unselectedColor
-                    },
+                        .size(AppTheme.sizes.size24)
+                        .align(Alignment.Center),
+                    painter = painterResource(item.iconResId),
+                    contentDescription = null,
+                    colorFilter = when (isSelected) {
+                        true -> ColorFilter.tint(selectedColor)
+                        false -> ColorFilter.tint(unselectedColor)
+                    }
                 )
             }
+        },
+        label = {
+
+            Text(
+                modifier = Modifier,
+                text = stringResource(id = item.caption),
+                style = when (isSelected) {
+                    true -> AppTheme.typography.labelMediumBold
+                    false -> AppTheme.typography.labelMedium
+                },
+                color = when (isSelected) {
+                    true -> AppTheme.colors.textMain
+                    false -> AppTheme.colors.textSecondary
+                },
+            )
         },
         interactionSource = remember { MutableInteractionSource() },
         colors = NavigationBarItemDefaults.colors(
