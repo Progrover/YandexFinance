@@ -93,8 +93,16 @@ dependencies {
     coroutinesPlayServices()
 
     incomesApi()
+    expendituresApi()
+    accountApi()
+    articlesApi()
+    settingsApi()
 
     implementation(project(Feature.Incomes.impl))
+    implementation(project(Feature.Expenditures.impl))
+    implementation(project(Feature.Account.impl))
+    implementation(project(Feature.Articles.impl))
+    implementation(project(Feature.Settings.impl))
 }
 
 kapt {

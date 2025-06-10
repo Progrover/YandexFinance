@@ -13,7 +13,7 @@ import com.google.accompanist.navigation.material.ExperimentalMaterialNavigation
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import dev.progrover.core.base.navigation.NavigationFactory
 import dev.progrover.core.theme.AppTheme
-import dev.progrover.incomes.api.IncomesFeature
+import dev.progrover.expenditures.api.ExpendituresFeature
 import dev.progrover.shmr_finance.navigation.components.BottomNavigationBar
 import dev.progrover.shmr_finance.viewmodel.MainActivityViewModel
 
@@ -45,7 +45,7 @@ internal fun FinanceNavigation(
 
             NavHost(
                 navController = navController,
-                startDestination = IncomesFeature.ROUTE_NAME
+                startDestination = ExpendituresFeature.ROUTE_NAME
             ) {
                 navigationFactories.forEach { factory ->
                     factory.create(this, navController = navController)

@@ -177,3 +177,19 @@ fun DependencyHandler.coreUiCommon() {
 fun DependencyHandler.incomesApi() {
     implementation(project(Feature.Incomes.api))
 }
+
+fun DependencyHandler.accountApi() {
+    implementation(project(Feature.Account.api))
+}
+
+fun DependencyHandler.expendituresApi() {
+    implementation(project(Feature.Expenditures.api))
+}
+
+fun DependencyHandler.settingsApi() {
+    implementation(project(Feature.Settings.api))
+}
+
+fun DependencyHandler.articlesApi() {
+    implementation(project(Feature.Articles.api))
+}

@@ -5,7 +5,11 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import dev.progrover.account.api.AccountFeature
+import dev.progrover.articles.api.ArticlesFeature
+import dev.progrover.expenditures.api.ExpendituresFeature
 import dev.progrover.incomes.api.IncomesFeature
+import dev.progrover.settings.api.SettingsFeature
 import dev.progrover.shmr_finance.contract.MainUIState
 import dev.progrover.shmr_finance.navigation.model.BottomNavigationItem
 
@@ -23,19 +27,19 @@ fun BottomNavigationBar(
         onClick = { item ->
             when (item) {
                 BottomNavigationItem.AccountScreen ->
-                    Unit
+                    AccountFeature.openAccountScreen(navController)
 
                 BottomNavigationItem.ArticlesScreen ->
-                    Unit
+                    ArticlesFeature.openArticlesScreen(navController)
 
                 BottomNavigationItem.ExpendituresScreen ->
-                    Unit
+                    ExpendituresFeature.openExpendituresScreen(navController)
 
                 BottomNavigationItem.IncomesScreen ->
                     IncomesFeature.openIncomesScreen(navController)
 
                 BottomNavigationItem.SettingsScreen ->
-                    Unit
+                    SettingsFeature.openSettingsScreen(navController)
             }
         }
     )
@@ -46,6 +50,10 @@ fun BottomNavigationBar(
  */
 private fun NavBackStackEntry?.isBottomBarVisible(isBottomBarVisible: Boolean): Boolean {
     val screensWhereBottomBarVisible = listOf(
+        AccountFeature.ACCOUNT_SCREEN,
+        ArticlesFeature.ARTICLES_SCREEN,
+        ExpendituresFeature.EXPENDITURES_SCREEN,
+        SettingsFeature.SETTINGS_SCREEN,
         IncomesFeature.INCOMES_SCREEN,
     )
     return when (isBottomBarVisible) {

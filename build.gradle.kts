@@ -10,7 +10,7 @@ buildscript {
     dependencies {
         classpath(Dependencies.hiltAgp)
         classpath(Dependencies.kotlinSerialization)
-        classpath(Dependencies.kotlinGP)
+        classpath(libs.kotlin.gradle.plugin)
     }
 }
 

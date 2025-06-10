@@ -54,6 +54,6 @@ dependencies {
     implementation("org.mindrot:jbcrypt:0.4")
 }
 
-//kapt {
-//    correctErrorTypes = true
-//}
+kapt {
+    correctErrorTypes = true
+}
