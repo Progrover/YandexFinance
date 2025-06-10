@@ -32,6 +32,7 @@ fun DefaultListItem(
     modifier: Modifier,
     title: String,
     backgroundColor: Color = AppTheme.colors.surface,
+    iconBackgroundColor: Color = AppTheme.colors.paleGreen,
     captionTitle: String? = null,
     captionAdditional: String? = null,
     additionalText: String? = null,
@@ -64,7 +65,7 @@ fun DefaultListItem(
                     modifier = Modifier
                         .size(AppTheme.sizes.size24)
                         .clip(CircleShape)
-                        .background(AppTheme.colors.paleGreen)
+                        .background(iconBackgroundColor)
                         .align(Alignment.CenterVertically),
                     contentAlignment = Alignment.Center,
                 ) {
