@@ -59,7 +59,7 @@ internal fun IncomesScreenContent(
                 onClick = { onEvent(IncomesUIEvent.OnAllIncomesClick) },
             )
 
-            uiState.incomes.forEachIndexed { index, income ->
+            uiState.incomes.forEach { income ->
                 DefaultListItem(
                     modifier = Modifier,
                     title = income.name,
@@ -67,7 +67,7 @@ internal fun IncomesScreenContent(
                     captionTitle = income.comment,
                     additionalText = income.amount,
                     endIconResId = dev.progrover.shmr_finance.core.uicommon.R.drawable.right_arrow,
-                    onClick = { onEvent(IncomesUIEvent.OnIncomeItemClick(index)) }
+                    onClick = { onEvent(IncomesUIEvent.OnIncomeItemClick(income.id)) }
                 )
             }
 

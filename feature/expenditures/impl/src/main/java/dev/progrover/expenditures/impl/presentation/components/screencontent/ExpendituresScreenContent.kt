@@ -59,15 +59,15 @@ internal fun ExpendituresScreenContent(
                 onClick = { onEvent(ExpendituresUIEvent.OnAllExpendituresClick) },
             )
 
-            uiState.expenditures.forEachIndexed { index, income ->
+            uiState.expenditures.forEach { expenditure ->
                 DefaultListItem(
                     modifier = Modifier,
-                    title = income.name,
-                    startIcon = income.emoji,
-                    captionTitle = income.comment,
-                    additionalText = income.amount,
+                    title = expenditure.name,
+                    startIcon = expenditure.emoji,
+                    captionTitle = expenditure.comment,
+                    additionalText = expenditure.amount,
                     endIconResId = dev.progrover.shmr_finance.core.uicommon.R.drawable.right_arrow,
-                    onClick = { onEvent(ExpendituresUIEvent.OnExpenditureItemClick(index)) }
+                    onClick = { onEvent(ExpendituresUIEvent.OnExpenditureItemClick(expenditure.id)) }
                 )
             }
 
