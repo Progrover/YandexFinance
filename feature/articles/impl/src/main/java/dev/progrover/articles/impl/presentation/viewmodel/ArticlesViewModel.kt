@@ -18,7 +18,10 @@ class ArticlesViewModel @Inject constructor(
 
     override fun handleUIEvent(event: ArticlesUIEvent) =
         when (event) {
+            is ArticlesUIEvent.OnArticleClick ->
+                setEffect(ArticlesUIEffect.ShowError(R.string.in_develop))
 
-            else -> {}
+            ArticlesUIEvent.OnFindArticleClick ->
+                setEffect(ArticlesUIEffect.ShowError(R.string.in_develop))
         }
 }
