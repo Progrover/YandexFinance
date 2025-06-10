@@ -24,6 +24,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import dev.progrover.core.base.utils.isUnicode
 import dev.progrover.core.theme.AppTheme
 import dev.progrover.core.uicommon.utils.noRippleClickable
 
@@ -73,7 +75,10 @@ fun DefaultListItem(
                     Text(
                         modifier = Modifier,
                         text = startIcon,
-                        style = AppTheme.typography.emoji,
+                        style = when (startIcon.isUnicode()) {
+                            true -> AppTheme.typography.emoji
+                            false -> AppTheme.typography.emoji.copy(fontSize = 10.sp)
+                        },
                     )
                 }
             }
