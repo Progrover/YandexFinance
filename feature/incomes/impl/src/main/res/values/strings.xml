@@ -2,4 +2,5 @@
 <resources>
     <string name="greeting_title">Живи на полную с ЯФинансы</string>
     <string name="incomes_title">Доходы сегодня</string>
+    <string name="total">Всего</string>
 </resources>

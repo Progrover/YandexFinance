@@ -28,6 +28,7 @@ data class AppTypography(
     val labelLarge: TextStyle,
     val labelMedium: TextStyle,
     val labelMediumBold: TextStyle,
+    val emoji: TextStyle,
 )
 
 internal fun appTypography(style: TextStyles): AppTypography =
@@ -41,6 +42,7 @@ internal fun appTypography(style: TextStyles): AppTypography =
             labelLarge = labelLarge,
             labelMedium = labelMedium,
             labelMediumBold = labelMediumBold,
+            emoji = emoji,
         )
     }
 
@@ -92,6 +94,12 @@ class TextStyles {
         fontSize = 12.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp,
+    )
+
+    val emoji = TextStyle(
+        fontWeight = W500,
+        fontSize = 10.sp,
+        lineHeight = 22.sp,
     )
 }
 
