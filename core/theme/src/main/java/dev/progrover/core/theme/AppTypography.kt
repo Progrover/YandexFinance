@@ -98,8 +98,8 @@ class TextStyles {
 
     val emoji = TextStyle(
         fontWeight = W500,
-        fontSize = 10.sp,
-        lineHeight = 22.sp,
+        fontSize = 12.sp,
+        lineHeight = 24.sp,
     )
 }
 

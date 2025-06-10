@@ -24,10 +24,10 @@ class ExpendituresViewModel @Inject constructor(
             ExpendituresUIEvent.OnAllExpendituresClick ->
                 setEffect(ExpendituresUIEffect.ShowError(R.string.in_develop))
 
-            is ExpendituresUIEvent.OnIncomeItemClick ->
+            is ExpendituresUIEvent.OnExpenditureItemClick ->
                 setEffect(ExpendituresUIEffect.ShowError(R.string.in_develop))
 
-            ExpendituresUIEvent.OnAddIncomeClick ->
+            ExpendituresUIEvent.OnAddExpenditureClick ->
                 setEffect(ExpendituresUIEffect.ShowError(R.string.in_develop))
         }
 }
