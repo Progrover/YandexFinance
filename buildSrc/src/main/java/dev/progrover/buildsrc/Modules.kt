@@ -13,4 +13,28 @@ object Feature {
         const val api = "$incomes:api"
         const val impl = "$incomes:impl"
     }
+
+    object Expenditures {
+        private const val expenditures = "$feature:expenditures"
+        const val api = "$expenditures:api"
+        const val impl = "$expenditures:impl"
+    }
+
+    object Articles {
+        private const val articles = "$feature:articles"
+        const val api = "$articles:api"
+        const val impl = "$articles:impl"
+    }
+
+    object Account {
+        private const val account = "$feature:account"
+        const val api = "$account:api"
+        const val impl = "$account:impl"
+    }
+
+    object Settings {
+        private const val settings = "$feature:settings"
+        const val api = "$settings:api"
+        const val impl = "$settings:impl"
+    }
 }

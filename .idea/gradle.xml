@@ -28,9 +28,21 @@
             <option value="$PROJECT_DIR$/core/theme" />
             <option value="$PROJECT_DIR$/core/uicommon" />
             <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/account" />
+            <option value="$PROJECT_DIR$/feature/account/api" />
+            <option value="$PROJECT_DIR$/feature/account/impl" />
+            <option value="$PROJECT_DIR$/feature/articles" />
+            <option value="$PROJECT_DIR$/feature/articles/api" />
+            <option value="$PROJECT_DIR$/feature/articles/impl" />
+            <option value="$PROJECT_DIR$/feature/expenditures" />
+            <option value="$PROJECT_DIR$/feature/expenditures/api" />
+            <option value="$PROJECT_DIR$/feature/expenditures/impl" />
             <option value="$PROJECT_DIR$/feature/incomes" />
             <option value="$PROJECT_DIR$/feature/incomes/api" />
             <option value="$PROJECT_DIR$/feature/incomes/impl" />
+            <option value="$PROJECT_DIR$/feature/settings" />
+            <option value="$PROJECT_DIR$/feature/settings/api" />
+            <option value="$PROJECT_DIR$/feature/settings/impl" />
           </set>
         </option>
       </GradleProjectSettings>

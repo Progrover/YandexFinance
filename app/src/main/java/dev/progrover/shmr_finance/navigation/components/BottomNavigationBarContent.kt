@@ -59,7 +59,7 @@ fun BottomNavigationBarContent(
                     item = BottomNavigationItem.ExpendituresScreen,
                     isSelected =
                         currentDestination?.hierarchy
-                            ?.any { it.route == BottomNavigationItem.IncomesScreen.route } == true,
+                            ?.any { it.route == BottomNavigationItem.ExpendituresScreen.route } == true,
                     onClick = onClick,
                 )
 
@@ -70,7 +70,8 @@ fun BottomNavigationBarContent(
                             bottom = AppTheme.paddings.padding16,
                         ),
                     item = BottomNavigationItem.IncomesScreen,
-                    isSelected = false,
+                    isSelected = currentDestination?.hierarchy
+                        ?.any { it.route == BottomNavigationItem.IncomesScreen.route } == true,
                     onClick = onClick,
                 )
 
@@ -81,7 +82,8 @@ fun BottomNavigationBarContent(
                             bottom = AppTheme.paddings.padding16,
                         ),
                     item = BottomNavigationItem.AccountScreen,
-                    isSelected = false,
+                    isSelected = currentDestination?.hierarchy
+                        ?.any { it.route == BottomNavigationItem.AccountScreen.route } == true,
                     onClick = onClick,
                 )
 
@@ -92,7 +94,8 @@ fun BottomNavigationBarContent(
                             bottom = AppTheme.paddings.padding16,
                         ),
                     item = BottomNavigationItem.ArticlesScreen,
-                    isSelected = false,
+                    isSelected = currentDestination?.hierarchy
+                        ?.any { it.route == BottomNavigationItem.ArticlesScreen.route } == true,
                     onClick = onClick,
                 )
 
@@ -103,7 +106,8 @@ fun BottomNavigationBarContent(
                             bottom = AppTheme.paddings.padding16,
                         ),
                     item = BottomNavigationItem.SettingsScreen,
-                    isSelected = false,
+                    isSelected = currentDestination?.hierarchy
+                        ?.any { it.route == BottomNavigationItem.SettingsScreen.route } == true,
                     onClick = onClick,
                 )
             }
