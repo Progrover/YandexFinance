@@ -33,6 +33,7 @@ import dev.progrover.core.uicommon.utils.noRippleClickable
 fun DefaultListItem(
     modifier: Modifier,
     title: String,
+    titleColor: Color = AppTheme.colors.textMain,
     backgroundColor: Color = AppTheme.colors.surface,
     iconBackgroundColor: Color = AppTheme.colors.paleGreen,
     captionTitle: String? = null,
@@ -91,7 +92,7 @@ fun DefaultListItem(
                 Text(
                     modifier = Modifier,
                     text = title,
-                    color = AppTheme.colors.textMain,
+                    color = titleColor,
                     style = AppTheme.typography.bodyLarge,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
