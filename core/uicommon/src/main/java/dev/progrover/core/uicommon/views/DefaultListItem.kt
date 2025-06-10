@@ -1,16 +1,26 @@
 package dev.progrover.core.uicommon.views
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dev.progrover.core.theme.AppTheme
@@ -19,21 +29,23 @@ import dev.progrover.core.uicommon.utils.noRippleClickable
 @Composable
 fun DefaultListItem(
     modifier: Modifier,
-    horizontalPadding: Dp = AppTheme.paddings.padding16,
-    verticalPadding: Dp = AppTheme.paddings.padding24,
     title: String,
-    captionTitle: String?,
-    captionAdditional: String?,
-    additionalText: String?,
-    startIconResId: Int?,
-    endIconResId: Int?,
+    backgroundColor: Color = AppTheme.colors.surface,
+    captionTitle: String? = null,
+    captionAdditional: String? = null,
+    additionalText: String? = null,
+    startIcon: String? = null,
+    endIconResId: Int? = null,
+    horizontalPadding: Dp = AppTheme.paddings.padding16,
+    verticalPadding: Dp = AppTheme.paddings.padding8,
     onClick: () -> Unit,
 ) {
 
     Column(
         modifier = modifier
             .noRippleClickable { onClick() }
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .background(backgroundColor),
     ) {
 
         Row(
@@ -44,81 +56,84 @@ fun DefaultListItem(
                 )
         ) {
 
-            if (startIconResId != null) {
+            if (startIcon != null) {
 
-                Image(
+                Box(
                     modifier = Modifier
-                        .padding(end = AppTheme.paddings.padding16)
-                        .size(AppTheme.sizes.size24),
-                    painter = painterResource(startIconResId),
-                    contentDescription = null,
-                )
-            }
-
-            if (captionTitle != null) {
-
-                Column(
-                    modifier = Modifier
-                        .weight(1f),
+                        .size(AppTheme.sizes.size24)
+                        .clip(CircleShape)
+                        .background(AppTheme.colors.paleGreen)
+                        .align(Alignment.CenterVertically),
+                    contentAlignment = Alignment.Center,
                 ) {
 
                     Text(
                         modifier = Modifier,
-                        text = title,
-                        color = AppTheme.colors.textMain,
-                        style = AppTheme.typography.bodyLarge,
+                        text = startIcon,
+                        style = AppTheme.typography.emoji,
                     )
+                }
+            }
+
+            Column(
+                modifier = Modifier
+                    .padding(end = AppTheme.paddings.padding16)
+                    .align(Alignment.CenterVertically),
+            ) {
+
+                Text(
+                    modifier = Modifier,
+                    text = title,
+                    color = AppTheme.colors.textMain,
+                    style = AppTheme.typography.bodyLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+
+                if (captionTitle != null) {
 
                     Text(
                         modifier = Modifier,
                         text = captionTitle,
                         color = AppTheme.colors.textSecondary,
                         style = AppTheme.typography.labelMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
-            } else {
-
-                Text(
-                    modifier = Modifier
-                        .weight(1f),
-                    text = title,
-                    color = AppTheme.colors.textMain,
-                    style = AppTheme.typography.bodyLarge,
-                )
             }
+
+            Spacer(Modifier.weight(1f))
 
             if (additionalText != null) {
 
-                if (captionAdditional != null) {
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically),
+                ) {
 
-                    Column(
-                        modifier = Modifier
-                            .weight(1f),
-                    ) {
+                    Text(
+                        modifier = Modifier,
+                        text = additionalText,
+                        color = AppTheme.colors.textMain,
+                        style = AppTheme.typography.bodyLarge,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.End,
+                    )
 
-                        Text(
-                            modifier = Modifier,
-                            text = additionalText,
-                            color = AppTheme.colors.textMain,
-                            style = AppTheme.typography.bodyLarge,
-                        )
+                    if (captionAdditional != null) {
 
                         Text(
                             modifier = Modifier,
                             text = captionAdditional,
-                            color = AppTheme.colors.textSecondary,
-                            style = AppTheme.typography.labelMedium,
+                            color = AppTheme.colors.textMain,
+                            style = AppTheme.typography.bodyLarge,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.End,
                         )
                     }
-                } else {
-
-                    Text(
-                        modifier = Modifier
-                            .weight(1f),
-                        text = additionalText,
-                        color = AppTheme.colors.textMain,
-                        style = AppTheme.typography.bodyLarge,
-                    )
                 }
             }
 
@@ -127,8 +142,9 @@ fun DefaultListItem(
                 Image(
                     modifier = Modifier
                         .padding(start = AppTheme.paddings.padding16)
-                        .size(AppTheme.sizes.size24),
-                    painter = painterResource(endIconResId),
+                        .size(AppTheme.sizes.size24)
+                        .align(Alignment.CenterVertically),
+                    imageVector = ImageVector.vectorResource(endIconResId),
                     contentDescription = null,
                 )
             }
@@ -139,5 +155,4 @@ fun DefaultListItem(
             color = AppTheme.colors.border,
         )
     }
-
 }
