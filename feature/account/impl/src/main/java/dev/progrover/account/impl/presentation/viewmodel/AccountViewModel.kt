@@ -18,6 +18,16 @@ class AccountViewModel @Inject constructor(
     override fun handleUIEvent(event: AccountUIEvent) =
         when (event) {
 
-            else -> {}
+            AccountUIEvent.OnAddClick ->
+                setEffect(AccountUIEffect.ShowError(dev.progrover.shmr_finance.core.uicommon.R.string.in_develop))
+
+            AccountUIEvent.OnCurrencyClick ->
+                setEffect(AccountUIEffect.ShowError(dev.progrover.shmr_finance.core.uicommon.R.string.in_develop))
+
+            AccountUIEvent.OnEditClick ->
+                setEffect(AccountUIEffect.ShowError(dev.progrover.shmr_finance.core.uicommon.R.string.in_develop))
+
+            AccountUIEvent.OnTotalAmountClick ->
+                setEffect(AccountUIEffect.ShowError(dev.progrover.shmr_finance.core.uicommon.R.string.in_develop))
         }
 }
