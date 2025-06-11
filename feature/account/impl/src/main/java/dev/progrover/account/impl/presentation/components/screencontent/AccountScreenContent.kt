@@ -67,6 +67,7 @@ internal fun AccountScreenContent(
                 backgroundColor = AppTheme.colors.paleGreen,
                 title = stringResource(R.string.currency),
                 additionalText = uiState.currency,
+                dividerVisible = false,
                 endIconResId = dev.progrover.shmr_finance.core.uicommon.R.drawable.right_arrow,
                 onClick = { onEvent(AccountUIEvent.OnCurrencyClick) },
             )
