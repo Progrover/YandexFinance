@@ -44,6 +44,7 @@ fun DefaultListItem(
     endIconResId: Int? = null,
     horizontalPadding: Dp = AppTheme.paddings.padding16,
     verticalPadding: Dp = AppTheme.paddings.padding8,
+    dividerVisible: Boolean = true,
     onClick: () -> Unit,
 ) {
     val density = LocalDensity.current
@@ -164,9 +165,11 @@ fun DefaultListItem(
             }
         }
 
-        HorizontalDivider(
-            thickness = 1.dp,
-            color = AppTheme.colors.border,
-        )
+        if (dividerVisible) {
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = AppTheme.colors.border,
+            )
+        }
     }
 }
