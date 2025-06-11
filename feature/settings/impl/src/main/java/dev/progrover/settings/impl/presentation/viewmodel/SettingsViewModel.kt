@@ -17,6 +17,12 @@ class SettingsViewModel @Inject constructor(
 
     override fun handleUIEvent(event: SettingsUIEvent) =
         when (event) {
-            else -> {}
+            is SettingsUIEvent.OnSettingsItemClick ->
+                setEffect(SettingsUIEffect.ShowError(dev.progrover.shmr_finance.core.uicommon.R.string.in_develop))
+
+            is SettingsUIEvent.OnThemeClick -> {
+                setState(currentState.copy(themeModeOn = event.newStatus))
+                setEffect(SettingsUIEffect.ShowError(dev.progrover.shmr_finance.core.uicommon.R.string.in_develop))
+            }
         }
 }

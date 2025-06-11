@@ -13,6 +13,8 @@ data class AppColors(
     val border: Color,
     val surfaceContainer: Color,
     val containerHigh: Color,
+    val outline: Color,
+    val surfaceContainerHigh: Color,
 ) {
     companion object {
         val LightColors = AppColors(
@@ -24,7 +26,9 @@ data class AppColors(
             surface = Color(0xFFFEF7FF),
             border = Color(0xFFCAC4D0),
             surfaceContainer = Color(0xFFF3EDF7),
-            containerHigh = Color(0xFFECE6F0)
+            containerHigh = Color(0xFFECE6F0),
+            outline = Color(0xFF79747E),
+            surfaceContainerHigh = Color(0xFFE6E0E9),
         )
 
         // Создал с заделом на будущее подключение темной темы
@@ -38,7 +42,9 @@ data class AppColors(
             border = Color(0xFFCAC4D0),
             surfaceContainer = Color(0xFFF3EDF7),
             containerHigh = Color(0xFFECE6F0),
-        )
+            outline = Color(0xFF79747E),
+            surfaceContainerHigh = Color(0xFFE6E0E9),
+            )
     }
 }
 
