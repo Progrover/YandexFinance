@@ -9,12 +9,10 @@ import androidx.compose.ui.Modifier
 import dev.progrover.core.theme.AppTheme
 import dev.progrover.expenditures.impl.presentation.components.AppLogo
 import dev.progrover.expenditures.impl.presentation.contract.greeting.GreetingUIEvent
-import dev.progrover.expenditures.impl.presentation.contract.greeting.GreetingUIState
 
 @Composable
 internal fun GreetingScreenContent(
     modifier: Modifier,
-    uiState: GreetingUIState,
     onEvent: (GreetingUIEvent) -> Unit,
 ) {
 
@@ -27,8 +25,7 @@ internal fun GreetingScreenContent(
         AppLogo(
             modifier = Modifier
                 .align(Alignment.Center),
-            isLogoVisible = uiState.isLogoVisible,
-            isTextVisible = uiState.isTextVisible,
+            afterAnimation = { onEvent(GreetingUIEvent.OnAnimationEnd) }
         )
     }
 }
