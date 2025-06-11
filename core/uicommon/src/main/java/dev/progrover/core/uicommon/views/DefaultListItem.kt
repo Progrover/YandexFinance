@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -45,6 +46,7 @@ fun DefaultListItem(
     verticalPadding: Dp = AppTheme.paddings.padding8,
     onClick: () -> Unit,
 ) {
+    val density = LocalDensity.current
 
     Column(
         modifier = modifier
@@ -77,8 +79,13 @@ fun DefaultListItem(
                         modifier = Modifier,
                         text = startIcon,
                         style = when (startIcon.isUnicode()) {
-                            true -> AppTheme.typography.emoji
-                            false -> AppTheme.typography.emoji.copy(fontSize = 10.sp)
+                            true -> AppTheme.typography.emoji.copy(fontSize = with(density) {
+                                (AppTheme.typography.emoji.fontSize.value / fontScale).sp
+                            })
+
+                            false -> AppTheme.typography.emoji.copy(fontSize = with(density) {
+                                (10 / fontScale).sp
+                            })
                         },
                     )
                 }

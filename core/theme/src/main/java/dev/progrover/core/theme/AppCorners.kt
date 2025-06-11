@@ -17,6 +17,7 @@ data class AppCorners(
     val cornersX30: Dp = 30.dp,
     val cornersX60: Dp = 60.dp,
     val corners16: Dp = 16.dp,
+    val corners100: Dp = 100.dp,
 )
 
 internal val LocalAppCorners = staticCompositionLocalOf { AppCorners() }
