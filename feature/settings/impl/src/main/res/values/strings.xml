@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="settings_title">Настройки</string>
-    <string name="theme">Светлая темная авто</string>
+    <string name="theme">Тёмная тема</string>
     <string name="color">Основной цвет</string>
     <string name="sounds">Звуки</string>
     <string name="haptics">Хаптики</string>
