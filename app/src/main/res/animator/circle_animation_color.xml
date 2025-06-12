@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="600"
+    android:startOffset="1500">
+    <propertyValuesHolder
+        android:propertyName="strokeColor"
+        android:valueType="colorType"
+        android:valueFrom="@color/surface"
+        android:valueTo="#9FEFCA"/>
+</objectAnimator>

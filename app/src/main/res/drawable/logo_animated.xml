@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/logo">
+    <target
+        android:name="iconBorder"
+        android:animation="@animator/circle_animation_rotation" />
+    <target
+        android:name="iconDollar"
+        android:animation="@animator/dollar_animation" />
+    <target
+        android:name="circle"
+        android:animation="@animator/circle_animation_color" />
+    <target
+        android:name="arrow1"
+        android:animation="@animator/arrow1_animation_color" />
+    <target
+        android:name="arrow2"
+        android:animation="@animator/arrow2_animation_color" />
+</animated-vector>
