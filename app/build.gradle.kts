@@ -91,6 +91,7 @@ dependencies {
     coil()
     work()
     coroutinesPlayServices()
+    implementation(libs.androidx.core.splashscreen)
 
     incomesApi()
     expendituresApi()

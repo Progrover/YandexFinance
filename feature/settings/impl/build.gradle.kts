@@ -47,9 +47,6 @@ dependencies {
     navigation()
     coil()
     settingsApi()
-    //splash screen
-    implementation("androidx.core:core-splashscreen:1.0.1")
-
     //encrypt
     implementation("org.mindrot:jbcrypt:0.4")
 }

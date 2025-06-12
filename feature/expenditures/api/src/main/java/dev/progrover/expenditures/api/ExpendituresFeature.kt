@@ -6,15 +6,7 @@ object ExpendituresFeature {
 
     const val ROUTE_NAME = "expendituresFeature"
     const val EXPENDITURES_SCREEN = "expendituresScreenRoute"
-    const val GREETING_SCREEN = "greetingScreenRoute"
 
-
-    fun openExpendituresScreen(navController: NavController, afterGreeting: Boolean = false) =
-        navController.navigate(EXPENDITURES_SCREEN) {
-            if (afterGreeting) {
-                popUpTo(0) {
-                    inclusive = true
-                }
-            }
-        }
+    fun openExpendituresScreen(navController: NavController) =
+        navController.navigate(EXPENDITURES_SCREEN)
 }

@@ -47,11 +47,8 @@ dependencies {
     navigation()
     coil()
     accountApi()
-    //splash screen
-    implementation("androidx.core:core-splashscreen:1.0.1")
-
     //encrypt
-    implementation("org.mindrot:jbcrypt:0.4")
+    implementation(libs.jbcrypt)
 }
 
 kapt {
