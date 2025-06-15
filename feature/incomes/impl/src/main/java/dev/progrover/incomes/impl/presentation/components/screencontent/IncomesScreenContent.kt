@@ -56,6 +56,7 @@ internal fun IncomesScreenContent(
                 backgroundColor = AppTheme.colors.paleGreen,
                 title = stringResource(R.string.total),
                 additionalText = uiState.totalIncomes,
+                verticalTextPadding = AppTheme.paddings.padding8,
                 onClick = { onEvent(IncomesUIEvent.OnAllIncomesClick) },
             )
 
@@ -66,6 +67,10 @@ internal fun IncomesScreenContent(
                     startIcon = income.emoji,
                     captionTitle = income.comment,
                     additionalText = income.amount,
+                    verticalTextPadding = when (income.comment.isNullOrBlank()) {
+                        true -> AppTheme.paddings.padding16
+                        false -> AppTheme.paddings.padding4
+                    },
                     endIconResId = dev.progrover.shmr_finance.core.uicommon.R.drawable.right_arrow,
                     onClick = { onEvent(IncomesUIEvent.OnIncomeItemClick(income.id)) }
                 )

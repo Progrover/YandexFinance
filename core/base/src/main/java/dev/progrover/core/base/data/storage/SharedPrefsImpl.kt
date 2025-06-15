@@ -8,7 +8,7 @@ import com.squareup.moshi.Moshi
 import timber.log.Timber
 import java.lang.reflect.ParameterizedType
 
-open class SharedPrefs(
+open class SharedPrefsImpl(
     application: Application,
     prefsName: String,
     private val moshi: Moshi,
@@ -114,12 +114,12 @@ open class SharedPrefs(
 
     override fun <T> putJson(key: String, value: T, clazz: Class<T>) {
         val json = moshi.adapter(clazz).toJson(value)
-        prefs.edit().putString(key, json).apply()
+        prefs.edit { putString(key, json) }
     }
 
     override fun <T> putJson(key: String, value: T, type: ParameterizedType) {
         val json = moshi.adapter<T>(type).toJson(value)
-        prefs.edit().putString(key, json).apply()
+        prefs.edit { putString(key, json) }
     }
 
     override fun registerOnSharedPreferenceChangeListener(
@@ -139,27 +139,9 @@ open class SharedPrefs(
         }
 
     override fun clearAllParams() {
-        prefs.edit()
-            .clear()
-            .apply()
-    }
-
-    override fun putLocation(name: String, value: Pair<Double, Double>) {
-        val string = "${value.first}~${value.second}"
-        prefs.edit()
-            .putString(name, string)
-            .apply()
-    }
-
-    override fun getLocation(
-        name: String,
-        defaultValue: Pair<Double, Double>?
-    ): Pair<Double, Double>? {
-        val value = prefs.getString(name, null)?.let {
-            val array = it.split("~")
-            Pair(array[0].toDouble(), array[1].toDouble())
+        prefs.edit {
+            clear()
         }
-        return value
     }
 
     private fun clearIncorrectlySavedParam(name: String) =

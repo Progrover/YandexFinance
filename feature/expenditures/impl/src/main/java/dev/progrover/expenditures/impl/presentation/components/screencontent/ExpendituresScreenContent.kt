@@ -55,6 +55,7 @@ internal fun ExpendituresScreenContent(
                 modifier = Modifier,
                 backgroundColor = AppTheme.colors.paleGreen,
                 title = stringResource(R.string.total),
+                verticalTextPadding = AppTheme.paddings.padding8,
                 additionalText = uiState.totalExpenditures,
                 onClick = { onEvent(ExpendituresUIEvent.OnAllExpendituresClick) },
             )
@@ -66,6 +67,10 @@ internal fun ExpendituresScreenContent(
                     startIcon = expenditure.emoji,
                     captionTitle = expenditure.comment,
                     additionalText = expenditure.amount,
+                    verticalTextPadding = when (expenditure.comment.isNullOrBlank()) {
+                        true -> AppTheme.paddings.padding14
+                        false -> AppTheme.paddings.padding4
+                    },
                     endIconResId = dev.progrover.shmr_finance.core.uicommon.R.drawable.right_arrow,
                     onClick = { onEvent(ExpendituresUIEvent.OnExpenditureItemClick(expenditure.id)) }
                 )

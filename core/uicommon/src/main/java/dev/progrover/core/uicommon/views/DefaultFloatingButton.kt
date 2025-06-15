@@ -18,7 +18,7 @@ import dev.progrover.core.uicommon.utils.noRippleClickable
 fun DefaultFloatingButton(
     modifier: Modifier,
     text: String,
-    cornerRadius: Dp = AppTheme.corners.corners100,
+    cornerRadius: Dp = 100.dp,
     textColor: Color = AppTheme.colors.textMain,
     textStyle: TextStyle = AppTheme.typography.titleMedium,
     innerVerticalPadding: Dp = 0.dp,

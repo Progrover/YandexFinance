@@ -1,6 +1,7 @@
 package dev.progrover.expenditures.api
 
 import androidx.navigation.NavController
+import dev.progrover.core.base.utils.customNavigate
 
 object ExpendituresFeature {
 
@@ -8,5 +9,5 @@ object ExpendituresFeature {
     const val EXPENDITURES_SCREEN = "expendituresScreenRoute"
 
     fun openExpendituresScreen(navController: NavController) =
-        navController.navigate(EXPENDITURES_SCREEN)
+        navController.customNavigate(EXPENDITURES_SCREEN)
 }
