@@ -1,6 +1,7 @@
 package dev.progrover.account.api
 
 import androidx.navigation.NavController
+import dev.progrover.core.base.utils.customNavigate
 
 object AccountFeature {
 
@@ -8,5 +9,5 @@ object AccountFeature {
     const val ACCOUNT_SCREEN = "accountScreenRoute"
 
     fun openAccountScreen(navController: NavController) =
-        navController.navigate(ACCOUNT_SCREEN)
+        navController.customNavigate(ACCOUNT_SCREEN)
 }

@@ -62,6 +62,7 @@ internal fun SettingsScreenContent(
 
                     Switch(
                         modifier = Modifier
+                            .padding(vertical = AppTheme.paddings.padding4)
                             .height(32.dp),
                         checked = uiState.themeModeOn,
                         onCheckedChange = { newStatus ->
@@ -83,6 +84,7 @@ internal fun SettingsScreenContent(
                 DefaultListItem(
                     modifier = Modifier,
                     title = stringResource(chapter.titleResId),
+                    verticalTextPadding = AppTheme.paddings.padding8,
                     endIconResId = R.drawable.right_triangle,
                     onClick = { onEvent(SettingsUIEvent.OnSettingsItemClick(chapter.route)) }
                 )

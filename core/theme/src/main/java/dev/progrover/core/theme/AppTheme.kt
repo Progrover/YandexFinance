@@ -27,11 +27,6 @@ object AppTheme {
         @ReadOnlyComposable
         get() = LocalAppPaddings.current
 
-    val corners: AppCorners
-        @Composable
-        @ReadOnlyComposable
-        get() = LocalAppCorners.current
-
     val sizes: AppSizes
         @Composable
         @ReadOnlyComposable
@@ -70,7 +65,6 @@ fun AppThemeComposable(
         LocalAppColors provides colors,
         LocalAppTypography provides typography,
         LocalAppPaddings provides AppTheme.paddings,
-        LocalAppCorners provides AppTheme.corners,
         LocalAppSizes provides AppTheme.sizes,
     ) {
         content()

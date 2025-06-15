@@ -42,8 +42,4 @@ interface Prefs {
     fun clearParam(name: String)
 
     fun clearAllParams()
-
-    fun putLocation(name: String, value: Pair<Double, Double>)
-
-    fun getLocation(name: String, defaultValue: Pair<Double, Double>? = null): Pair<Double, Double>?
 }

@@ -52,6 +52,7 @@ internal fun ArticlesScreenContent(
                 modifier = Modifier,
                 backgroundColor = AppTheme.colors.containerHigh,
                 title = stringResource(R.string.find_article),
+                verticalTextPadding = AppTheme.paddings.padding8,
                 titleColor = AppTheme.colors.textSecondary,
                 endIconResId = R.drawable.find,
                 onClick = { onEvent(ArticlesUIEvent.OnFindArticleClick) },
@@ -61,6 +62,7 @@ internal fun ArticlesScreenContent(
                 DefaultListItem(
                     modifier = Modifier,
                     title = article.name,
+                    verticalTextPadding = AppTheme.paddings.padding16,
                     startIcon = article.emoji,
                     onClick = { onEvent(ArticlesUIEvent.OnArticleClick(article.id)) }
                 )

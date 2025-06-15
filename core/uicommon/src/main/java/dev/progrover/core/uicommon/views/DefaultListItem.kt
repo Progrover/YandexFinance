@@ -42,6 +42,7 @@ fun DefaultListItem(
     additionalText: String? = null,
     startIcon: String? = null,
     endIconResId: Int? = null,
+    verticalTextPadding: Dp = 0.dp,
     horizontalPadding: Dp = AppTheme.paddings.padding16,
     verticalPadding: Dp = AppTheme.paddings.padding8,
     dividerVisible: Boolean = true,
@@ -65,8 +66,7 @@ fun DefaultListItem(
             horizontalArrangement = Arrangement.spacedBy(AppTheme.paddings.padding16)
         ) {
 
-            if (startIcon != null) {
-
+            if (!startIcon.isNullOrBlank()) {
                 Box(
                     modifier = Modifier
                         .size(AppTheme.sizes.size24)
@@ -94,7 +94,8 @@ fun DefaultListItem(
 
             Column(
                 modifier = Modifier
-                    .align(Alignment.CenterVertically),
+                    .align(Alignment.CenterVertically)
+                    .padding(vertical = verticalTextPadding),
             ) {
 
                 Text(
@@ -107,12 +108,11 @@ fun DefaultListItem(
                 )
 
                 if (captionTitle != null) {
-
                     Text(
                         modifier = Modifier,
                         text = captionTitle,
                         color = AppTheme.colors.textSecondary,
-                        style = AppTheme.typography.labelMedium,
+                        style = AppTheme.typography.bodyMedium,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
@@ -122,7 +122,6 @@ fun DefaultListItem(
             Spacer(Modifier.weight(1f))
 
             if (additionalText != null) {
-
                 Column(
                     modifier = Modifier
                         .align(Alignment.CenterVertically),
@@ -139,7 +138,6 @@ fun DefaultListItem(
                     )
 
                     if (captionAdditional != null) {
-
                         Text(
                             modifier = Modifier,
                             text = captionAdditional,
@@ -154,7 +152,6 @@ fun DefaultListItem(
             }
 
             if (endIconResId != null) {
-
                 Image(
                     modifier = Modifier
                         .size(AppTheme.sizes.size24)

@@ -57,6 +57,7 @@ internal fun AccountScreenContent(
                 iconBackgroundColor = AppTheme.colors.white,
                 startIcon = "\uD83D\uDCB0",
                 title = stringResource(R.string.total_amount),
+                verticalTextPadding = AppTheme.paddings.padding8,
                 additionalText = uiState.totalAmount,
                 endIconResId = dev.progrover.shmr_finance.core.uicommon.R.drawable.right_arrow,
                 onClick = { onEvent(AccountUIEvent.OnTotalAmountClick) },
@@ -68,6 +69,7 @@ internal fun AccountScreenContent(
                 title = stringResource(R.string.currency),
                 additionalText = uiState.currency,
                 dividerVisible = false,
+                verticalTextPadding = AppTheme.paddings.padding8,
                 endIconResId = dev.progrover.shmr_finance.core.uicommon.R.drawable.right_arrow,
                 onClick = { onEvent(AccountUIEvent.OnCurrencyClick) },
             )

@@ -1,6 +1,7 @@
 package dev.progrover.settings.api
 
 import androidx.navigation.NavController
+import dev.progrover.core.base.utils.customNavigate
 
 object SettingsFeature {
 
@@ -8,5 +9,5 @@ object SettingsFeature {
     const val SETTINGS_SCREEN = "settingsScreenRoute"
 
     fun openSettingsScreen(navController: NavController) =
-        navController.navigate(SETTINGS_SCREEN)
+        navController.customNavigate(SETTINGS_SCREEN)
 }

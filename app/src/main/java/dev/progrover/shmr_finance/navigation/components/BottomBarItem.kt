@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import dev.progrover.core.theme.AppTheme
 import dev.progrover.shmr_finance.navigation.model.BottomNavigationItem
 
@@ -39,7 +40,7 @@ fun RowScope.BottomBarItem(
             Box(
                 modifier = Modifier
                     .clip(
-                        RoundedCornerShape(AppTheme.corners.corners16)
+                        RoundedCornerShape(16.dp)
                     )
                     .background(
                         when (isSelected) {

@@ -10,7 +10,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.progrover.core.base.data.storage.Prefs
-import dev.progrover.core.base.data.storage.SharedPrefs
+import dev.progrover.core.base.data.storage.SharedPrefsImpl
 import javax.inject.Singleton
 
 @Module
@@ -30,7 +30,7 @@ class DataModule {
         application: Application,
         moshi: Moshi
     ): Prefs =
-        SharedPrefs(
+        SharedPrefsImpl(
             application = application,
             prefsName = "cookiePrefs",
             moshi = moshi

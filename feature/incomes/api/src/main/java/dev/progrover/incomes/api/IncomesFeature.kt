@@ -8,5 +8,7 @@ object IncomesFeature {
     const val INCOMES_SCREEN = "incomesScreenRoute"
 
     fun openIncomesScreen(navController: NavController) =
-        navController.navigate(INCOMES_SCREEN)
+        navController.navigate(INCOMES_SCREEN) {
+            launchSingleTop = true
+        }
 }
