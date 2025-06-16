@@ -4,9 +4,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.progrover.core.base.data.storage.Prefs
+import dev.progrover.core.base.data.api.TransactionsApi
 import dev.progrover.core.base.di.CoroutineQualifiers
-import dev.progrover.expenditures.impl.data.api.ExpendituresApi
 import dev.progrover.expenditures.impl.data.mapper.ExpendituresDTOMapper
 import dev.progrover.expenditures.impl.data.repository.ExpendituresRepositoryImpl
 import dev.progrover.expenditures.impl.domain.interactor.ExpendituresInteractor
@@ -23,19 +22,17 @@ class DomainModule {
     @Provides
     @Singleton
     fun provideExpendituresRepository(
-        prefs: Prefs,
         @CoroutineQualifiers.DefaultCoroutineExceptionHandler
         coroutineExceptionHandler: CoroutineExceptionHandler,
         @CoroutineQualifiers.IoDispatcher
         dispatcher: CoroutineDispatcher,
-        expendituresApi: ExpendituresApi,
+        transactionsApi: TransactionsApi,
         expendituresDTOMapper: ExpendituresDTOMapper,
     ): ExpendituresRepository =
         ExpendituresRepositoryImpl(
-            prefs = prefs,
             coroutineExceptionHandler = coroutineExceptionHandler,
             dispatcher = dispatcher,
-            expendituresApi = expendituresApi,
+            transactionsApi = transactionsApi,
             expendituresDTOMapper = expendituresDTOMapper,
         )
 

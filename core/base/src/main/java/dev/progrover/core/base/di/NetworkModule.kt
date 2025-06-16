@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.progrover.core.base.data.api.TransactionsApi
 import dev.progrover.core.base.data.interceptor.BaseInterceptor
 import dev.progrover.core.base.data.interceptor.BaseInterceptorImpl
 import okhttp3.OkHttpClient
@@ -73,6 +74,13 @@ class NetworkModule {
             .connectTimeout(CONNECTION_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
             .build()
     }
+
+    @Provides
+    @Singleton
+    fun providesTransactionsApi(
+        retrofit: Retrofit
+    ): TransactionsApi =
+        retrofit.create(TransactionsApi::class.java)
 
     companion object {
 

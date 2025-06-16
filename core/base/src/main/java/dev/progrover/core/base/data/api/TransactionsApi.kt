@@ -1,0 +1,43 @@
+package dev.progrover.core.base.data.api
+
+import dev.progrover.core.base.model.Transaction
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
+import retrofit2.http.Query
+
+interface TransactionsApi {
+
+    @GET("transactions/account/{accountId}/period")
+    suspend fun getTransactions(
+        @Path("accountId") accountId: Int,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String,
+    ): List<Transaction>
+
+    @POST("transactions")
+    suspend fun createTransaction(
+        @Body accountId: Int,
+        @Body categoryId: Int,
+        @Body amount: String,
+        @Body transactionDate: String,
+        @Body comment: String
+    )
+
+    @GET("transactions/{id}")
+    suspend fun getTransactionById(
+        @Path("id") transactionId: Int
+    ): Transaction
+
+    @PUT("transactions/{id}")
+    suspend fun updateTransactionById(
+        @Path("id") transactionId: Int
+    ): Transaction
+
+    @PUT("transactions/{id}")
+    suspend fun deleteTransactionById(
+        @Path("id") transactionId: Int
+    ): Transaction
+}

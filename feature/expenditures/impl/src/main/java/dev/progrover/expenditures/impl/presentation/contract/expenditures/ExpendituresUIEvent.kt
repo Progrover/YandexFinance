@@ -8,4 +8,5 @@ sealed class ExpendituresUIEvent : UIEvent {
     data object OnRefreshClick : ExpendituresUIEvent()
     data object OnAllExpendituresClick: ExpendituresUIEvent()
     data object OnAddExpenditureClick: ExpendituresUIEvent()
+    data object OnErrorDialogDone: ExpendituresUIEvent()
 }
