@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id(Plugins.application)
     id(Plugins.android)
@@ -5,6 +7,11 @@ plugins {
     id(Plugins.hilt)
     alias(libs.plugins.compose.compiler)
 }
+
+val properties = Properties()
+properties.load(project.rootProject.file("local.properties").inputStream())
+val token = properties.getProperty("TOKEN") ?: ""
+
 
 android {
     namespace = ProjectConfig.appBundle
@@ -24,6 +31,12 @@ android {
         buildFeatures {
             buildConfig = true
         }
+
+        buildConfigField(
+            "String",
+            "TOKEN",
+            token,
+        )
     }
 
     buildTypes {

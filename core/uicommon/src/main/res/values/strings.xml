@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="in_develop">Пока в разработке</string>
+    <string name="internet_error">Нет Интернета!</string>
+    <string name="internet_error_subtitle">Проверьте качество соединения и перезагрузите страницу</string>
+    <string name="unknown_error">Что-то пошло не так!</string>
+    <string name="token_error">Нет токена!</string>
+    <string name="unknown_error_subtitle">Попробуйте перезагрузить страницу...</string>
+    <string name="token_error_subtitle">Добавьте токен в поле "TOKEN" в local.properties, находящийся в корне проекта</string>
 </resources>

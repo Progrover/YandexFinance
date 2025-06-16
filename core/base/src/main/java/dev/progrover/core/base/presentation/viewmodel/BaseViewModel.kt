@@ -6,6 +6,7 @@ import dev.progrover.core.base.presentation.mvi.UIEffect
 import dev.progrover.core.base.presentation.mvi.UIEvent
 import dev.progrover.core.base.presentation.mvi.UIState
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -61,5 +62,27 @@ abstract class BaseViewModel<Event : UIEvent, State : UIState, Effect : UIEffect
 
     init {
         subscribeEvents()
+    }
+
+    /**
+     * Функция, перезапускающая запрос трижды с интервалом в 2 секунды
+     */
+    protected fun <T> tryMultipleLoad(
+        triesCount: Int = 3,
+        function: suspend () -> Result<T>,
+        onSuccess: (T) -> Unit,
+        onFailure: (String?) -> Unit,
+    ) {
+        viewModelScope.launch {
+            for (tryNumber in 1..triesCount) {
+                function().onSuccess { result ->
+                    onSuccess(result)
+                    return@launch
+                }.onFailure { exception: Throwable ->
+                    if (tryNumber == 1) {onFailure(exception.message)}
+                }
+                delay(2000)
+            }
+        }
     }
 }
