@@ -60,16 +60,17 @@ internal fun ExpendituresScreenContent(
                 )
             },
         ) {
-            if (!uiState.isLoading) {
-                DefaultListItem(
-                    modifier = Modifier,
-                    backgroundColor = AppTheme.colors.paleGreen,
-                    title = stringResource(R.string.total),
-                    verticalTextPadding = AppTheme.paddings.padding8,
-                    additionalText = uiState.totalExpenditures,
-                    onClick = { onEvent(ExpendituresUIEvent.OnAllExpendituresClick) },
-                )
 
+            DefaultListItem(
+                modifier = Modifier,
+                backgroundColor = AppTheme.colors.paleGreen,
+                title = stringResource(R.string.total),
+                verticalTextPadding = AppTheme.paddings.padding8,
+                additionalText = uiState.totalExpenditures,
+                onClick = { onEvent(ExpendituresUIEvent.OnAllExpendituresClick) },
+            )
+
+            if (!uiState.isLoading) {
                 uiState.expenditures.forEach { expenditure ->
                     DefaultListItem(
                         modifier = Modifier,

@@ -19,6 +19,9 @@ fun NavController.customNavigate(route: String) {
 fun Double.formatToAmount() =
     NumberFormat.getInstance(Locale.US).format(this).replace(",", " ")
 
+fun String.formatToAmount() =
+    NumberFormat.getInstance(Locale.US).format(this.toDouble()).replace(",", " ")
+
 fun String.addCurrency(currency: String) = this.plus(
     when (currency) {
         "RUB" -> " ₽"

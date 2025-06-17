@@ -51,10 +51,16 @@ class ExpendituresViewModel @Inject constructor(
             },
             onSuccess = { result ->
 
+                val expenditures = result.second.map { expenditure ->
+                    expenditure.copy(
+                        amount = expenditure.amount.formatToAmount().addCurrency(result.first)
+                    )
+                }
+
                 setState(
                     currentState.copy(
                         isLoading = false,
-                        expenditures = result.second,
+                        expenditures = expenditures,
                         totalExpenditures = countTotalAmount(result.second, result.first),
                     )
                 )
@@ -69,7 +75,7 @@ class ExpendituresViewModel @Inject constructor(
         )
     }
 
-    private fun countTotalAmount(expenditures: List<Expenditure>, currency: String) : String {
+    private fun countTotalAmount(expenditures: List<Expenditure>, currency: String): String {
         try {
             var total = 0.0
             expenditures.forEach { item ->
