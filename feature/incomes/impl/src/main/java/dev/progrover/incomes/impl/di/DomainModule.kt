@@ -4,7 +4,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.progrover.core.base.data.api.TransactionsApi
 import dev.progrover.core.base.di.CoroutineQualifiers
+import dev.progrover.incomes.impl.data.mapper.IncomesDTOMapper
 import dev.progrover.incomes.impl.data.repository.IncomesRepositoryImpl
 import dev.progrover.incomes.impl.domain.interactor.IncomesInteractor
 import dev.progrover.incomes.impl.domain.interactor.IncomesInteractorImpl
@@ -24,8 +26,12 @@ class DomainModule {
         coroutineExceptionHandler: CoroutineExceptionHandler,
         @CoroutineQualifiers.IoDispatcher
         dispatcher: CoroutineDispatcher,
+        transactionsApi: TransactionsApi,
+        incomesDTOMapper: IncomesDTOMapper,
     ): IncomesRepository =
         IncomesRepositoryImpl(
+            transactionsApi = transactionsApi,
+            incomesDTOMapper = incomesDTOMapper,
             coroutineExceptionHandler = coroutineExceptionHandler,
             dispatcher = dispatcher,
         )

@@ -12,12 +12,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import dev.progrover.core.base.utils.Variables
 import dev.progrover.core.theme.AppTheme
 import dev.progrover.core.uicommon.utils.bottomNavigationPadding
+import dev.progrover.core.uicommon.utils.conditionally
 import dev.progrover.core.uicommon.views.BasicColumn
+import dev.progrover.core.uicommon.views.CustomAlertDialog
 import dev.progrover.core.uicommon.views.DefaultListItem
 import dev.progrover.core.uicommon.views.DefaultRoundButton
 import dev.progrover.core.uicommon.views.DefaultToolbar
+import dev.progrover.core.uicommon.views.DismissTime
+import dev.progrover.core.uicommon.views.ProgressIndicator
 import dev.progrover.incomes.impl.presentation.contract.incomes.IncomesUIEvent
 import dev.progrover.incomes.impl.presentation.contract.incomes.IncomesUIState
 import dev.progrover.shmr_finance.feature.incomes.impl.R
@@ -29,6 +34,8 @@ internal fun IncomesScreenContent(
     onEvent: (IncomesUIEvent) -> Unit,
     snackbarHostState: SnackbarHostState,
 ) {
+
+    val scrollState = rememberScrollState()
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -39,7 +46,11 @@ internal fun IncomesScreenContent(
         BasicColumn(
             modifier = modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
+                .conditionally(
+                    condition = !uiState.isLoading,
+                    trueExtension = {
+                        verticalScroll(scrollState)
+                    }),
             toolbar = {
 
                 DefaultToolbar(
@@ -60,22 +71,23 @@ internal fun IncomesScreenContent(
                 onClick = { onEvent(IncomesUIEvent.OnAllIncomesClick) },
             )
 
-            uiState.incomes.forEach { income ->
-                DefaultListItem(
-                    modifier = Modifier,
-                    title = income.name,
-                    startIcon = income.emoji,
-                    captionTitle = income.comment,
-                    additionalText = income.amount,
-                    verticalTextPadding = when (income.comment.isNullOrBlank()) {
-                        true -> AppTheme.paddings.padding16
-                        false -> AppTheme.paddings.padding4
-                    },
-                    endIconResId = dev.progrover.shmr_finance.core.uicommon.R.drawable.right_arrow,
-                    onClick = { onEvent(IncomesUIEvent.OnIncomeItemClick(income.id)) }
-                )
-            }
-
+            if (!uiState.isLoading) {
+                uiState.incomes.forEach { income ->
+                    DefaultListItem(
+                        modifier = Modifier,
+                        title = income.name,
+                        startIcon = income.emoji,
+                        captionTitle = income.comment,
+                        additionalText = income.amount,
+                        verticalTextPadding = when (income.comment.isNullOrBlank()) {
+                            true -> AppTheme.paddings.padding16
+                            false -> AppTheme.paddings.padding4
+                        },
+                        endIconResId = dev.progrover.shmr_finance.core.uicommon.R.drawable.right_arrow,
+                        onClick = { onEvent(IncomesUIEvent.OnIncomeItemClick(income.id)) }
+                    )
+                }
+            } else ProgressIndicator()
         }
 
         DefaultRoundButton(
@@ -95,5 +107,25 @@ internal fun IncomesScreenContent(
                 .padding(AppTheme.paddings.padding16),
             hostState = snackbarHostState,
         )
+
+        if (!uiState.error.isNullOrEmpty())
+            CustomAlertDialog(
+                modifier = Modifier,
+                text = when (uiState.error) {
+                    Variables.INTERNET_ERROR -> stringResource(dev.progrover.shmr_finance.core.uicommon.R.string.internet_error)
+                    Variables.TOKEN_ERROR -> stringResource(dev.progrover.shmr_finance.core.uicommon.R.string.token_error)
+                    else -> stringResource(dev.progrover.shmr_finance.core.uicommon.R.string.unknown_error)
+                },
+                additionalText = when (uiState.error) {
+                    Variables.INTERNET_ERROR -> stringResource(dev.progrover.shmr_finance.core.uicommon.R.string.internet_error_subtitle)
+                    Variables.TOKEN_ERROR -> stringResource(dev.progrover.shmr_finance.core.uicommon.R.string.token_error_subtitle)
+                    else -> stringResource(dev.progrover.shmr_finance.core.uicommon.R.string.unknown_error_subtitle)
+                },
+                dismissTime = when (uiState.error) {
+                    Variables.TOKEN_ERROR -> DismissTime.NoDismiss
+                    else -> DismissTime.Short
+                },
+                onDismiss = { onEvent(IncomesUIEvent.OnErrorDialogDone) }
+            )
     }
 }

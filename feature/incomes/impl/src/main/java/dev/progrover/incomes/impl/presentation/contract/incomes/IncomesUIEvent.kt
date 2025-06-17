@@ -8,4 +8,5 @@ sealed class IncomesUIEvent : UIEvent {
     data object OnRefreshClick : IncomesUIEvent()
     data object OnAllIncomesClick: IncomesUIEvent()
     data object OnAddIncomeClick: IncomesUIEvent()
+    data object OnErrorDialogDone: IncomesUIEvent()
 }
