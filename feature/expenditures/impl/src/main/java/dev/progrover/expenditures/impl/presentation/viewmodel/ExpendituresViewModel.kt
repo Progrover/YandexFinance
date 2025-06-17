@@ -1,7 +1,9 @@
 package dev.progrover.expenditures.impl.presentation.viewmodel
 
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.progrover.core.base.data.storage.Prefs
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
+import dev.progrover.core.base.utils.Variables
 import dev.progrover.core.base.utils.addCurrency
 import dev.progrover.core.base.utils.formatToAmount
 import dev.progrover.expenditures.impl.domain.interactor.ExpendituresInteractor
@@ -16,11 +18,12 @@ import javax.inject.Inject
 @HiltViewModel
 class ExpendituresViewModel @Inject constructor(
     private val expendituresInteractor: ExpendituresInteractor,
+    private val prefs: Prefs,
 ) :
     BaseViewModel<ExpendituresUIEvent, ExpendituresUIState, ExpendituresUIEffect>(
         ExpendituresUIState()
     ) {
-
+    //todo: добавить проверку наличия id аккаунта в кеше, иначе получить accountId
     init {
         loadInfo()
     }
@@ -47,7 +50,9 @@ class ExpendituresViewModel @Inject constructor(
         setState(currentState.copy(isLoading = true))
         tryMultipleLoad(
             function = {
-                expendituresInteractor.getExpenditures(1)
+                expendituresInteractor.getExpenditures(
+                    prefs.getInt(Variables.CURRENT_ACCOUNT_ID)
+                )
             },
             onSuccess = { result ->
 

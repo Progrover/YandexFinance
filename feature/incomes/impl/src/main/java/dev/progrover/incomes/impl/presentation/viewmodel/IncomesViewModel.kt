@@ -1,7 +1,9 @@
 package dev.progrover.incomes.impl.presentation.viewmodel
 
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.progrover.core.base.data.storage.Prefs
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
+import dev.progrover.core.base.utils.Variables
 import dev.progrover.core.base.utils.addCurrency
 import dev.progrover.core.base.utils.formatToAmount
 import dev.progrover.incomes.impl.domain.interactor.IncomesInteractor
@@ -16,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class IncomesViewModel @Inject constructor(
     private val incomesInteractor: IncomesInteractor,
+    private val prefs: Prefs,
 ) :
     BaseViewModel<IncomesUIEvent, IncomesUIState, IncomesUIEffect>(IncomesUIState()) {
 
@@ -45,7 +48,7 @@ class IncomesViewModel @Inject constructor(
         setState(currentState.copy(isLoading = true))
         tryMultipleLoad(
             function = {
-                incomesInteractor.getIncomes(1)
+                incomesInteractor.getIncomes(prefs.getInt(Variables.CURRENT_ACCOUNT_ID))
             },
             onSuccess = { result ->
 

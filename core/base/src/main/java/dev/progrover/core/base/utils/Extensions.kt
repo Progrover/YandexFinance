@@ -30,3 +30,11 @@ fun String.addCurrency(currency: String) = this.plus(
         else -> " ???"
     }
 )
+
+fun String.getCurrency() =
+    when (this) {
+        "RUB" -> " ₽"
+        "USD" -> " $"
+        "EUR" -> " €"
+        else -> " ???"
+    }

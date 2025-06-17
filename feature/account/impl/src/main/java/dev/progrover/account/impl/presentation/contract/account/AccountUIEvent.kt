@@ -7,4 +7,5 @@ sealed class AccountUIEvent : UIEvent {
     data object OnTotalAmountClick: AccountUIEvent()
     data object OnAddClick: AccountUIEvent()
     data object OnCurrencyClick: AccountUIEvent()
+    data object OnErrorDialogDone: AccountUIEvent()
 }

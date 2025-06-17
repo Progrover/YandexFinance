@@ -54,14 +54,8 @@ class IncomesRepositoryImpl @Inject constructor(
                     Result.failure(Exception(Variables.TOKEN_ERROR))
                 }
             } catch (e: Exception) {
-                val throwable = when (e) {
-                    is java.net.UnknownHostException -> Exception(Variables.INTERNET_ERROR)
-                    is java.net.ConnectException -> Exception(Variables.INTERNET_ERROR)
-                    else -> Exception(Variables.UNKNOWN_ERROR)
-                }
-
                 Timber.e("GetExpenditures error", e)
-                Result.failure(throwable)
+                Result.failure(getErrorMessage(e))
             }
         }
 }
