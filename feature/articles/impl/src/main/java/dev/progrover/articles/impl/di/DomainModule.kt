@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.progrover.articles.impl.data.api.ArticlesApi
 import dev.progrover.articles.impl.data.repository.ArticlesRepositoryImpl
 import dev.progrover.articles.impl.domain.interactor.ArticlesInteractor
 import dev.progrover.articles.impl.domain.interactor.ArticlesInteractorImpl
@@ -24,10 +25,12 @@ class DomainModule {
         coroutineExceptionHandler: CoroutineExceptionHandler,
         @CoroutineQualifiers.IoDispatcher
         dispatcher: CoroutineDispatcher,
+        articlesApi: ArticlesApi,
     ): ArticlesRepository =
         ArticlesRepositoryImpl(
             coroutineExceptionHandler = coroutineExceptionHandler,
             dispatcher = dispatcher,
+            articlesApi = articlesApi,
         )
 
     @Provides

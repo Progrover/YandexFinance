@@ -6,4 +6,5 @@ sealed class ArticlesUIEvent : UIEvent {
     class OnArticleClick(val id: Int): ArticlesUIEvent()
 
     data object OnFindArticleClick: ArticlesUIEvent()
+    data object OnErrorDialogDone : ArticlesUIEvent()
 }
