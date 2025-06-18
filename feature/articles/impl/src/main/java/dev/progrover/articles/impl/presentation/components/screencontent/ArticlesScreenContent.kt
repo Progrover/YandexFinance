@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import dev.progrover.articles.impl.presentation.contract.articles.ArticlesUIEvent
 import dev.progrover.articles.impl.presentation.contract.articles.ArticlesUIState
-import dev.progrover.core.base.utils.Variables
 import dev.progrover.core.theme.AppTheme
 import dev.progrover.core.uicommon.utils.bottomNavigationPadding
 import dev.progrover.core.uicommon.utils.conditionally
@@ -22,7 +21,6 @@ import dev.progrover.core.uicommon.views.BasicColumn
 import dev.progrover.core.uicommon.views.CustomAlertDialog
 import dev.progrover.core.uicommon.views.DefaultListItem
 import dev.progrover.core.uicommon.views.DefaultToolbar
-import dev.progrover.core.uicommon.views.DismissTime
 import dev.progrover.core.uicommon.views.ProgressIndicator
 import dev.progrover.shmr_finance.feature.articles.impl.R
 
@@ -87,23 +85,10 @@ internal fun ArticlesScreenContent(
             hostState = snackbarHostState,
         )
 
-        if (!uiState.error.isNullOrEmpty())
+        if (uiState.error != null)
             CustomAlertDialog(
                 modifier = Modifier,
-                text = when (uiState.error) {
-                    Variables.INTERNET_ERROR -> stringResource(dev.progrover.shmr_finance.core.uicommon.R.string.internet_error)
-                    Variables.TOKEN_ERROR -> stringResource(dev.progrover.shmr_finance.core.uicommon.R.string.token_error)
-                    else -> stringResource(dev.progrover.shmr_finance.core.uicommon.R.string.unknown_error)
-                },
-                additionalText = when (uiState.error) {
-                    Variables.INTERNET_ERROR -> stringResource(dev.progrover.shmr_finance.core.uicommon.R.string.internet_error_subtitle)
-                    Variables.TOKEN_ERROR -> stringResource(dev.progrover.shmr_finance.core.uicommon.R.string.token_error_subtitle)
-                    else -> stringResource(dev.progrover.shmr_finance.core.uicommon.R.string.unknown_error_subtitle)
-                },
-                dismissTime = when (uiState.error) {
-                    Variables.TOKEN_ERROR -> DismissTime.NoDismiss
-                    else -> DismissTime.Short
-                },
+                error = uiState.error,
                 onDismiss = { onEvent(ArticlesUIEvent.OnErrorDialogDone) }
             )
     }

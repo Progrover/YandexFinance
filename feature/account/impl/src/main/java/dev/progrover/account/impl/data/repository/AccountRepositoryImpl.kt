@@ -5,7 +5,7 @@ import dev.progrover.account.impl.domain.repository.AccountRepository
 import dev.progrover.core.base.data.repository.BaseRepository
 import dev.progrover.core.base.di.CoroutineQualifiers
 import dev.progrover.core.base.model.AccountDetailed
-import dev.progrover.core.base.utils.Variables
+import dev.progrover.core.base.model.ApiResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import timber.log.Timber
@@ -21,35 +21,41 @@ class AccountRepositoryImpl @Inject constructor(
     dispatcher = dispatcher,
     coroutineExceptionHandler = coroutineExceptionHandler,
 ) {
-    override suspend fun getAccounts(): Result<List<AccountDetailed>> =
+    override suspend fun getAccounts(): ApiResponse<List<AccountDetailed>> =
         executeOnIO {
             try {
                 if (tokenAvaliable) {
                     val response = accountApi.getAccounts()
 
-                    Result.success(response)
+                    when (response.isSuccessful) {
+                        true -> ApiResponse(value = response.body())
+                        false -> ApiResponse(code = response.code())
+                    }
                 } else {
-                    Result.failure(Exception(Variables.TOKEN_ERROR))
+                    ApiResponse()
                 }
             } catch (e: Exception) {
                 Timber.e("GetAccounts error", e)
-                Result.failure(getErrorMessage(e))
+                ApiResponse(error = getErrorMessage(e))
             }
         }
 
-    override suspend fun getAccountById(accountId: Int): Result<AccountDetailed> =
+    override suspend fun getAccountById(accountId: Int): ApiResponse<AccountDetailed> =
         executeOnIO {
             try {
                 if (tokenAvaliable) {
                     val response = accountApi.getAccountById(accountId)
 
-                    Result.success(response)
+                    when (response.isSuccessful) {
+                        true -> ApiResponse(value = response.body())
+                        false -> ApiResponse(code = response.code())
+                    }
                 } else {
-                    Result.failure(Exception(Variables.TOKEN_ERROR))
+                    ApiResponse()
                 }
             } catch (e: Exception) {
                 Timber.e("GetAccountById error", e)
-                Result.failure(getErrorMessage(e))
+                ApiResponse(error = getErrorMessage(e))
             }
         }
 
@@ -57,7 +63,7 @@ class AccountRepositoryImpl @Inject constructor(
         name: String,
         balance: String,
         currency: String
-    ): Result<AccountDetailed> =
+    ): ApiResponse<AccountDetailed> =
         executeOnIO {
             try {
                 if (tokenAvaliable) {
@@ -67,17 +73,20 @@ class AccountRepositoryImpl @Inject constructor(
                         currency,
                     )
 
-                    Result.success(response)
+                    when (response.isSuccessful) {
+                        true -> ApiResponse(value = response.body())
+                        false -> ApiResponse(code = response.code())
+                    }
                 } else {
-                    Result.failure(Exception(Variables.TOKEN_ERROR))
+                    ApiResponse()
                 }
             } catch (e: Exception) {
                 Timber.e("CreateAccount error", e)
-                Result.failure(getErrorMessage(e))
+                ApiResponse(error = getErrorMessage(e))
             }
         }
 
-    override suspend fun updateAccountById(account: AccountDetailed): Result<AccountDetailed> =
+    override suspend fun updateAccountById(account: AccountDetailed): ApiResponse<AccountDetailed> =
         executeOnIO {
             try {
                 if (tokenAvaliable) {
@@ -88,35 +97,35 @@ class AccountRepositoryImpl @Inject constructor(
                         currency = account.currency,
                     )
 
-                    Result.success(response)
+                    when (response.isSuccessful) {
+                        true -> ApiResponse(value = response.body())
+                        false -> ApiResponse(code = response.code())
+                    }
                 } else {
-                    Result.failure(Exception(Variables.TOKEN_ERROR))
+                    ApiResponse()
                 }
             } catch (e: Exception) {
                 Timber.e("UpdateAccountById error", e)
-                Result.failure(getErrorMessage(e))
+                ApiResponse(error = getErrorMessage(e))
             }
         }
 
-    override suspend fun deleteAccountById(accountId: Int): String? =
+    override suspend fun deleteAccountById(accountId: Int): ApiResponse<Boolean> =
         executeOnIO {
             try {
                 if (tokenAvaliable) {
-                    accountApi.deleteAccountById(accountId)
+                    val response = accountApi.deleteAccountById(accountId)
 
-                    null
+                    when (response.isSuccessful) {
+                        true -> ApiResponse(value = true)
+                        false -> ApiResponse(code = response.code())
+                    }
                 } else {
-                    Variables.TOKEN_ERROR
+                    ApiResponse()
                 }
             } catch (e: Exception) {
-                val throwable = when (e) {
-                    is java.net.UnknownHostException -> Variables.INTERNET_ERROR
-                    is java.net.ConnectException -> Variables.INTERNET_ERROR
-                    else -> Variables.UNKNOWN_ERROR
-                }
-
                 Timber.e("DeleteAccountById error", e)
-                throwable
+                ApiResponse(error = getErrorMessage(e))
             }
         }
 }

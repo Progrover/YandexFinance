@@ -1,21 +1,22 @@
 package dev.progrover.account.impl.domain.repository
 
 import dev.progrover.core.base.model.AccountDetailed
+import dev.progrover.core.base.model.ApiResponse
 
 interface AccountRepository {
-    suspend fun getAccounts(): Result<List<AccountDetailed>>
+    suspend fun getAccounts(): ApiResponse<List<AccountDetailed>>
 
-    suspend fun getAccountById(accountId: Int): Result<AccountDetailed>
+    suspend fun getAccountById(accountId: Int): ApiResponse<AccountDetailed>
 
     suspend fun createAccount(
         name: String,
         balance: String,
         currency: String,
-    ): Result<AccountDetailed>
+    ): ApiResponse<AccountDetailed>
 
     suspend fun updateAccountById(
         account: AccountDetailed,
-    ): Result<AccountDetailed>
+    ): ApiResponse<AccountDetailed>
 
-    suspend fun deleteAccountById(accountId: Int): String?
+    suspend fun deleteAccountById(accountId: Int): ApiResponse<Boolean>
 }

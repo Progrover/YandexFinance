@@ -1,6 +1,7 @@
 package dev.progrover.core.base.data.api
 
 import dev.progrover.core.base.model.Transaction
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -15,7 +16,7 @@ interface TransactionsApi {
         @Path("accountId") accountId: Int,
         @Query("startDate") startDate: String,
         @Query("endDate") endDate: String,
-    ): List<Transaction>
+    ): Response<List<Transaction>>
 
     @POST("transactions")
     suspend fun createTransaction(
@@ -24,20 +25,20 @@ interface TransactionsApi {
         @Body amount: String,
         @Body transactionDate: String,
         @Body comment: String
-    )
+    ) : Response<Unit>
 
     @GET("transactions/{id}")
     suspend fun getTransactionById(
         @Path("id") transactionId: Int
-    ): Transaction
+    ): Response<Transaction>
 
     @PUT("transactions/{id}")
     suspend fun updateTransactionById(
         @Path("id") transactionId: Int
-    ): Transaction
+    ): Response<Transaction>
 
     @PUT("transactions/{id}")
     suspend fun deleteTransactionById(
         @Path("id") transactionId: Int
-    ): Transaction
+    ): Response<Transaction>
 }

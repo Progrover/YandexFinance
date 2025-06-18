@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import dev.progrover.account.impl.presentation.contract.account.AccountUIEvent
 import dev.progrover.account.impl.presentation.contract.account.AccountUIState
-import dev.progrover.core.base.utils.Variables
 import dev.progrover.core.base.utils.addCurrency
 import dev.progrover.core.base.utils.formatToAmount
 import dev.progrover.core.base.utils.getCurrency
@@ -23,7 +22,6 @@ import dev.progrover.core.uicommon.views.CustomAlertDialog
 import dev.progrover.core.uicommon.views.DefaultListItem
 import dev.progrover.core.uicommon.views.DefaultRoundButton
 import dev.progrover.core.uicommon.views.DefaultToolbar
-import dev.progrover.core.uicommon.views.DismissTime
 import dev.progrover.core.uicommon.views.ProgressIndicator
 import dev.progrover.shmr_finance.feature.account.impl.R
 
@@ -61,7 +59,8 @@ internal fun AccountScreenContent(
                 backgroundColor = AppTheme.colors.paleGreen,
                 iconBackgroundColor = AppTheme.colors.white,
                 startIcon = "\uD83D\uDCB0",
-                title = uiState.account?.name ?: "???",
+                title = uiState.account?.name?.let { it.ifEmpty { stringResource(R.string.total_amount) } }
+                    ?: "???",
                 verticalTextPadding = AppTheme.paddings.padding8,
                 additionalText = uiState.account?.let { account ->
                     account.balance.formatToAmount().addCurrency(account.currency)
@@ -101,23 +100,10 @@ internal fun AccountScreenContent(
             hostState = snackbarHostState,
         )
 
-        if (!uiState.error.isNullOrEmpty())
+        if (uiState.error != null)
             CustomAlertDialog(
                 modifier = Modifier,
-                text = when (uiState.error) {
-                    Variables.INTERNET_ERROR -> stringResource(dev.progrover.shmr_finance.core.uicommon.R.string.internet_error)
-                    Variables.TOKEN_ERROR -> stringResource(dev.progrover.shmr_finance.core.uicommon.R.string.token_error)
-                    else -> stringResource(dev.progrover.shmr_finance.core.uicommon.R.string.unknown_error)
-                },
-                additionalText = when (uiState.error) {
-                    Variables.INTERNET_ERROR -> stringResource(dev.progrover.shmr_finance.core.uicommon.R.string.internet_error_subtitle)
-                    Variables.TOKEN_ERROR -> stringResource(dev.progrover.shmr_finance.core.uicommon.R.string.token_error_subtitle)
-                    else -> stringResource(dev.progrover.shmr_finance.core.uicommon.R.string.unknown_error_subtitle)
-                },
-                dismissTime = when (uiState.error) {
-                    Variables.TOKEN_ERROR -> DismissTime.NoDismiss
-                    else -> DismissTime.Short
-                },
+                error = uiState.error,
                 onDismiss = { onEvent(AccountUIEvent.OnErrorDialogDone) }
             )
     }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import dev.progrover.core.base.data.api.TransactionsApi
 import dev.progrover.core.base.data.repository.BaseRepository
 import dev.progrover.core.base.di.CoroutineQualifiers
+import dev.progrover.core.base.model.ApiResponse
 import dev.progrover.core.base.utils.Variables
 import dev.progrover.incomes.impl.data.mapper.IncomesDTOMapper
 import dev.progrover.incomes.impl.domain.model.Income
@@ -27,7 +28,7 @@ class IncomesRepositoryImpl @Inject constructor(
     coroutineExceptionHandler = coroutineExceptionHandler,
 ) {
     @SuppressLint("SimpleDateFormat")
-    override suspend fun getIncomes(accountId: Int): Result<Pair<String, List<Income>>> =
+    override suspend fun getIncomes(accountId: Int): ApiResponse<Pair<String, List<Income>>> =
         executeOnIO {
             try {
                 val date = SimpleDateFormat("yyyy-MM-dd").format(Date())
@@ -37,25 +38,26 @@ class IncomesRepositoryImpl @Inject constructor(
                         accountId = accountId,
                         startDate = date,
                         endDate = date,
-                    ).filter { transaction ->
-                        transaction.category.isIncome
-                    }
-
-                    val currency =
-                        if (response.isNotEmpty()) response.first().account.currency else "RUB"
-
-                    Result.success(
-                        Pair(
-                            currency,
-                            incomesDTOMapper.mapTransactionsToIncomes(response)
-                        )
                     )
+                    if (response.isSuccessful) {
+                            val result = response.body()!!.filter { transaction ->
+                                transaction.category.isIncome
+                            }
+                            val currency =
+                                if (result.isNotEmpty()) result.first().account.currency else "RUB"
+                            ApiResponse(
+                                value = Pair(
+                                    currency,
+                                    incomesDTOMapper.mapTransactionsToIncomes(result)
+                                )
+                            )
+                        } else ApiResponse(code = response.code())
                 } else {
-                    Result.failure(Exception(Variables.TOKEN_ERROR))
+                    ApiResponse()
                 }
             } catch (e: Exception) {
-                Timber.e("GetExpenditures error", e)
-                Result.failure(getErrorMessage(e))
+                Timber.e("GetIncomes error", e)
+                ApiResponse(error = getErrorMessage(e))
             }
         }
 }

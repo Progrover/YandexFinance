@@ -4,8 +4,8 @@ import dev.progrover.articles.impl.data.api.ArticlesApi
 import dev.progrover.articles.impl.domain.repository.ArticlesRepository
 import dev.progrover.core.base.data.repository.BaseRepository
 import dev.progrover.core.base.di.CoroutineQualifiers
+import dev.progrover.core.base.model.ApiResponse
 import dev.progrover.core.base.model.Category
-import dev.progrover.core.base.utils.Variables
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import timber.log.Timber
@@ -21,17 +21,21 @@ class ArticlesRepositoryImpl @Inject constructor(
     dispatcher = dispatcher,
     coroutineExceptionHandler = coroutineExceptionHandler,
 ) {
-    override suspend fun getArticles(): Result<List<Category>> =
+    override suspend fun getArticles(): ApiResponse<List<Category>> =
         try {
             if (tokenAvaliable) {
                 val response = articlesApi.getArticles()
 
-                Result.success(response)
+                if (response.isSuccessful) {
+                    ApiResponse(value = response.body())
+                } else {
+                    ApiResponse(code = response.code())
+                }
             } else {
-                Result.failure(Exception(Variables.TOKEN_ERROR))
+                ApiResponse()
             }
         } catch (e: Exception) {
             Timber.e("GetArticles error", e)
-            Result.failure(getErrorMessage(e))
+            ApiResponse(error = getErrorMessage(e))
         }
 }

@@ -23,9 +23,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import dev.progrover.core.base.model.Error
 import dev.progrover.core.theme.AppTheme
 import dev.progrover.core.uicommon.utils.noRippleClickable
 import kotlinx.coroutines.delay
@@ -34,9 +36,13 @@ import kotlinx.coroutines.delay
 fun CustomAlertDialog(
     modifier: Modifier,
     backgroundColor: Color = AppTheme.colors.error,
-    text: String,
+    error: Error,
     additionalText: String? = null,
-    dismissTime: DismissTime = DismissTime.NoDismiss,
+    dismissTime: DismissTime = when (error) {
+        Error.InternetError -> DismissTime.Long
+        Error.TokenError -> DismissTime.NoDismiss
+        else -> DismissTime.Short
+    },
     onDismiss: (() -> Unit)? = null,
     onClick: () -> Unit = { },
 ) {
@@ -96,7 +102,7 @@ fun CustomAlertDialog(
 
                 Text(
                     modifier = Modifier,
-                    text = text,
+                    text = stringResource(error.message),
                     style = AppTheme.typography.bodyLarge.copy(fontWeight = W500),
                     color = AppTheme.colors.white,
                     textAlign = TextAlign.Center,

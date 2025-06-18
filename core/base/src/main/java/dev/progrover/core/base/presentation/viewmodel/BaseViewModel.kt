@@ -2,6 +2,8 @@ package dev.progrover.core.base.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.progrover.core.base.model.ApiResponse
+import dev.progrover.core.base.model.Error
 import dev.progrover.core.base.presentation.mvi.UIEffect
 import dev.progrover.core.base.presentation.mvi.UIEvent
 import dev.progrover.core.base.presentation.mvi.UIState
@@ -65,21 +67,62 @@ abstract class BaseViewModel<Event : UIEvent, State : UIState, Effect : UIEffect
     }
 
     /**
-     * Функция, перезапускающая запрос трижды с интервалом в 2 секунды
+     * Функция, перезапускающая запрос трижды с интервалом в 2 секунды при code 500
      */
     protected fun <T> tryMultipleLoad(
-        triesCount: Int = 3,
-        function: suspend () -> Result<T>,
+        triesCount: Int = 4,
+        function: suspend () -> ApiResponse<T>,
         onSuccess: (T) -> Unit,
-        onFailure: (String?) -> Unit,
+        onFailure: (Error) -> Unit,
     ) {
         viewModelScope.launch {
             for (tryNumber in 1..triesCount) {
-                function().onSuccess { result ->
-                    onSuccess(result)
+                val result = function()
+                if (result.value != null) {
+                    onSuccess(result.value)
                     return@launch
-                }.onFailure { exception: Throwable ->
-                    if (tryNumber == 1) {onFailure(exception.message)}
+                } else {
+                    when (result.code) {
+                        0 -> {
+                            onFailure(result.error)
+                            return@launch
+                        }
+
+                        400 -> {
+                            onFailure(Error.Error_400)
+                            return@launch
+                        }
+
+                        401 -> {
+                            onFailure(Error.Error_401)
+                            return@launch
+                        }
+
+                        404 -> {
+                            onFailure(Error.Error_404)
+                            return@launch
+                        }
+
+                        409 -> {
+                            onFailure(Error.Error_409)
+                            return@launch
+                        }
+
+                        429 -> {
+                            if (tryNumber == 1) onFailure(Error.Error_429)
+                            if (tryNumber == 4) onFailure(Error.MultipleLoadsError)
+                        }
+
+                        500 -> {
+                            if (tryNumber == 1) onFailure(Error.Error_500)
+                            if (tryNumber == 4) onFailure(Error.MultipleLoadsError)
+                        }
+
+                        else -> {
+                            onFailure(Error.UnknownError)
+                            return@launch
+                        }
+                    }
                 }
                 delay(2000)
             }
