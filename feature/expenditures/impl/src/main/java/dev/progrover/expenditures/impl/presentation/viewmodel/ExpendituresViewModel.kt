@@ -1,7 +1,9 @@
 package dev.progrover.expenditures.impl.presentation.viewmodel
 
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.progrover.account.api.domain.AccountInteractor
 import dev.progrover.core.base.data.storage.Prefs
+import dev.progrover.core.base.model.Error
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.Variables
 import dev.progrover.core.base.utils.addCurrency
@@ -18,12 +20,13 @@ import javax.inject.Inject
 @HiltViewModel
 class ExpendituresViewModel @Inject constructor(
     private val expendituresInteractor: ExpendituresInteractor,
+    private val accountInteractor: AccountInteractor,
     private val prefs: Prefs,
 ) :
     BaseViewModel<ExpendituresUIEvent, ExpendituresUIState, ExpendituresUIEffect>(
         ExpendituresUIState()
     ) {
-    //todo: добавить проверку наличия id аккаунта в кеше, иначе получить accountId
+
     init {
         loadInfo()
     }
@@ -48,10 +51,49 @@ class ExpendituresViewModel @Inject constructor(
 
     private fun loadInfo() {
         setState(currentState.copy(isLoading = true))
+        /**
+         * Если нет id аккаунта, сначала пытаемся достать его, а затем запросить расходы
+         */
+        val accountId = prefs.getInt(Variables.CURRENT_ACCOUNT_ID, -1)
+        if (accountId == -1) {
+            tryMultipleLoad(
+                function = { accountInteractor.getAccounts() },
+                onSuccess = { result ->
+                    result.firstOrNull()?.id?.let {
+                        prefs.putInt(Variables.CURRENT_ACCOUNT_ID, it)
+                        getExpends(it)
+                    } ?: setState(currentState.copy(error = Error.UnknownError))
+                },
+                onFailure = { error ->
+                    setState(
+                        currentState.copy(
+                            error = error,
+                        )
+                    )
+                }
+            )
+        } else getExpends(accountId)
+    }
+
+    private fun countTotalAmount(expenditures: List<Expenditure>, currency: String): String {
+        try {
+            var total = 0.0
+            expenditures.forEach { item ->
+                total += item.amount.toDouble()
+            }
+
+            return total.formatToAmount().addCurrency(currency)
+        } catch (e: NumberFormatException) {
+            Timber.e("Expenditures error in countTotalAmount")
+            return "???"
+        }
+    }
+
+    private fun getExpends(accountId: Int) {
         tryMultipleLoad(
             function = {
                 expendituresInteractor.getExpenditures(
-                    prefs.getInt(Variables.CURRENT_ACCOUNT_ID)
+                    accountId
                 )
             },
             onSuccess = { result ->
@@ -78,19 +120,5 @@ class ExpendituresViewModel @Inject constructor(
                 )
             }
         )
-    }
-
-    private fun countTotalAmount(expenditures: List<Expenditure>, currency: String): String {
-        try {
-            var total = 0.0
-            expenditures.forEach { item ->
-                total += item.amount.toDouble()
-            }
-
-            return total.formatToAmount().addCurrency(currency)
-        } catch (e: NumberFormatException) {
-            Timber.e("Expenditures error in countTotalAmount")
-            return "???"
-        }
     }
 }

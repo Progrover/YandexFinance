@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 abstract class BaseViewModel<Event : UIEvent, State : UIState, Effect : UIEffect>
     (initialState: State) : ViewModel() {
 
-
     val currentState: State
         get() = uiState.value
 

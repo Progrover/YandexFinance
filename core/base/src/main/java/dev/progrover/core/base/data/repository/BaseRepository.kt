@@ -4,9 +4,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dev.progrover.core.base.di.CoroutineQualifiers
 import dev.progrover.core.base.model.Error
-import dev.progrover.core.base.utils.Variables
 import dev.progrover.shmr_finance.core.base.BuildConfig
-import dev.progrover.shmr_finance.core.base.R
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.withContext

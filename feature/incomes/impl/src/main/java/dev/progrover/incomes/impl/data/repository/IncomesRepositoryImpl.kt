@@ -5,7 +5,6 @@ import dev.progrover.core.base.data.api.TransactionsApi
 import dev.progrover.core.base.data.repository.BaseRepository
 import dev.progrover.core.base.di.CoroutineQualifiers
 import dev.progrover.core.base.model.ApiResponse
-import dev.progrover.core.base.utils.Variables
 import dev.progrover.incomes.impl.data.mapper.IncomesDTOMapper
 import dev.progrover.incomes.impl.domain.model.Income
 import dev.progrover.incomes.impl.domain.repository.IncomesRepository
@@ -40,18 +39,18 @@ class IncomesRepositoryImpl @Inject constructor(
                         endDate = date,
                     )
                     if (response.isSuccessful) {
-                            val result = response.body()!!.filter { transaction ->
-                                transaction.category.isIncome
-                            }
-                            val currency =
-                                if (result.isNotEmpty()) result.first().account.currency else "RUB"
-                            ApiResponse(
-                                value = Pair(
-                                    currency,
-                                    incomesDTOMapper.mapTransactionsToIncomes(result)
-                                )
+                        val result = response.body()!!.filter { transaction ->
+                            transaction.category.isIncome
+                        }
+                        val currency =
+                            if (result.isNotEmpty()) result.first().account.currency else "RUB"
+                        ApiResponse(
+                            value = Pair(
+                                currency,
+                                incomesDTOMapper.mapTransactionsToIncomes(result)
                             )
-                        } else ApiResponse(code = response.code())
+                        )
+                    } else ApiResponse(code = response.code())
                 } else {
                     ApiResponse()
                 }
