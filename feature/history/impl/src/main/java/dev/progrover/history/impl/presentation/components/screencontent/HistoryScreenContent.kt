@@ -59,36 +59,36 @@ internal fun HistoryScreenContent(
                     onRightIconClick = { onEvent(HistoryUIEvent.OnAnalyseClick) },
                     onLeftIconClick = { onEvent(HistoryUIEvent.OnBackClick) }
                 )
+
+                DefaultListItem(
+                    modifier = Modifier,
+                    backgroundColor = AppTheme.colors.paleGreen,
+                    title = stringResource(R.string.start),
+                    verticalTextPadding = AppTheme.paddings.padding8,
+                    additionalText = "",
+                    onClick = { onEvent(HistoryUIEvent.OnStartClick) },
+                )
+
+                DefaultListItem(
+                    modifier = Modifier,
+                    backgroundColor = AppTheme.colors.paleGreen,
+                    title = stringResource(R.string.end),
+                    verticalTextPadding = AppTheme.paddings.padding8,
+                    additionalText = "",
+                    onClick = { onEvent(HistoryUIEvent.OnStartClick) },
+                )
+
+                DefaultListItem(
+                    modifier = Modifier,
+                    backgroundColor = AppTheme.colors.paleGreen,
+                    title = stringResource(R.string.sum),
+                    verticalTextPadding = AppTheme.paddings.padding8,
+                    additionalText = uiState.total,
+                    dividerVisible = false,
+                    onClick = { onEvent(HistoryUIEvent.OnStartClick) },
+                )
             },
         ) {
-
-            DefaultListItem(
-                modifier = Modifier,
-                backgroundColor = AppTheme.colors.paleGreen,
-                title = stringResource(R.string.start),
-                verticalTextPadding = AppTheme.paddings.padding8,
-                additionalText = "",
-                onClick = { onEvent(HistoryUIEvent.OnStartClick) },
-            )
-
-            DefaultListItem(
-                modifier = Modifier,
-                backgroundColor = AppTheme.colors.paleGreen,
-                title = stringResource(R.string.end),
-                verticalTextPadding = AppTheme.paddings.padding8,
-                additionalText = "",
-                onClick = { onEvent(HistoryUIEvent.OnStartClick) },
-            )
-
-            DefaultListItem(
-                modifier = Modifier,
-                backgroundColor = AppTheme.colors.paleGreen,
-                title = stringResource(R.string.sum),
-                verticalTextPadding = AppTheme.paddings.padding8,
-                additionalText = uiState.total,
-                dividerVisible = false,
-                onClick = { onEvent(HistoryUIEvent.OnStartClick) },
-            )
 
             if (!uiState.isLoading) {
                 uiState.history.forEach { expenditure ->

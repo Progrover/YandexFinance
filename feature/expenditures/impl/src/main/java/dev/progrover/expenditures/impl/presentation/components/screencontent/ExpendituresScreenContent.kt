@@ -58,18 +58,17 @@ internal fun ExpendituresScreenContent(
                     rightIconId = dev.progrover.shmr_finance.core.uicommon.R.drawable.refresh,
                     onRightIconClick = { onEvent(ExpendituresUIEvent.OnHistoryClick) }
                 )
+
+                DefaultListItem(
+                    modifier = Modifier,
+                    backgroundColor = AppTheme.colors.paleGreen,
+                    title = stringResource(R.string.total),
+                    verticalTextPadding = AppTheme.paddings.padding8,
+                    additionalText = uiState.totalExpenditures,
+                    onClick = { onEvent(ExpendituresUIEvent.OnAllExpendituresClick) },
+                )
             },
         ) {
-
-            DefaultListItem(
-                modifier = Modifier,
-                backgroundColor = AppTheme.colors.paleGreen,
-                title = stringResource(R.string.total),
-                verticalTextPadding = AppTheme.paddings.padding8,
-                additionalText = uiState.totalExpenditures,
-                onClick = { onEvent(ExpendituresUIEvent.OnAllExpendituresClick) },
-            )
-
             if (!uiState.isLoading) {
                 uiState.expenditures.forEach { expenditure ->
                     DefaultListItem(

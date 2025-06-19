@@ -51,35 +51,34 @@ internal fun AccountScreenContent(
                     rightIconId = dev.progrover.shmr_finance.core.uicommon.R.drawable.edit,
                     onRightIconClick = { onEvent(AccountUIEvent.OnEditClick) }
                 )
+
+                DefaultListItem(
+                    modifier = Modifier,
+                    backgroundColor = AppTheme.colors.paleGreen,
+                    iconBackgroundColor = AppTheme.colors.white,
+                    startIcon = "\uD83D\uDCB0",
+                    title = uiState.account?.name?.let { it.ifEmpty { stringResource(R.string.total_amount) } }
+                        ?: "???",
+                    verticalTextPadding = AppTheme.paddings.padding8,
+                    additionalText = uiState.account?.let { account ->
+                        account.balance.formatToAmount().addCurrency(account.currency)
+                    } ?: "???",
+                    endIconResId = dev.progrover.shmr_finance.core.uicommon.R.drawable.right_arrow,
+                    onClick = { onEvent(AccountUIEvent.OnTotalAmountClick) },
+                )
+
+                DefaultListItem(
+                    modifier = Modifier,
+                    backgroundColor = AppTheme.colors.paleGreen,
+                    title = stringResource(R.string.currency),
+                    additionalText = uiState.account?.currency?.getCurrency() ?: "???",
+                    dividerVisible = false,
+                    verticalTextPadding = AppTheme.paddings.padding8,
+                    endIconResId = dev.progrover.shmr_finance.core.uicommon.R.drawable.right_arrow,
+                    onClick = { onEvent(AccountUIEvent.OnCurrencyClick) },
+                )
             },
         ) {
-
-            DefaultListItem(
-                modifier = Modifier,
-                backgroundColor = AppTheme.colors.paleGreen,
-                iconBackgroundColor = AppTheme.colors.white,
-                startIcon = "\uD83D\uDCB0",
-                title = uiState.account?.name?.let { it.ifEmpty { stringResource(R.string.total_amount) } }
-                    ?: "???",
-                verticalTextPadding = AppTheme.paddings.padding8,
-                additionalText = uiState.account?.let { account ->
-                    account.balance.formatToAmount().addCurrency(account.currency)
-                } ?: "???",
-                endIconResId = dev.progrover.shmr_finance.core.uicommon.R.drawable.right_arrow,
-                onClick = { onEvent(AccountUIEvent.OnTotalAmountClick) },
-            )
-
-            DefaultListItem(
-                modifier = Modifier,
-                backgroundColor = AppTheme.colors.paleGreen,
-                title = stringResource(R.string.currency),
-                additionalText = uiState.account?.currency?.getCurrency() ?: "???",
-                dividerVisible = false,
-                verticalTextPadding = AppTheme.paddings.padding8,
-                endIconResId = dev.progrover.shmr_finance.core.uicommon.R.drawable.right_arrow,
-                onClick = { onEvent(AccountUIEvent.OnCurrencyClick) },
-            )
-
             if (uiState.isLoading) ProgressIndicator()
         }
 

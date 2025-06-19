@@ -59,18 +59,17 @@ internal fun IncomesScreenContent(
                     rightIconId = dev.progrover.shmr_finance.core.uicommon.R.drawable.refresh,
                     onRightIconClick = { onEvent(IncomesUIEvent.OnHistoryClick) }
                 )
+
+                DefaultListItem(
+                    modifier = Modifier,
+                    backgroundColor = AppTheme.colors.paleGreen,
+                    title = stringResource(R.string.total),
+                    additionalText = uiState.totalIncomes,
+                    verticalTextPadding = AppTheme.paddings.padding8,
+                    onClick = { onEvent(IncomesUIEvent.OnAllIncomesClick) },
+                )
             },
         ) {
-
-            DefaultListItem(
-                modifier = Modifier,
-                backgroundColor = AppTheme.colors.paleGreen,
-                title = stringResource(R.string.total),
-                additionalText = uiState.totalIncomes,
-                verticalTextPadding = AppTheme.paddings.padding8,
-                onClick = { onEvent(IncomesUIEvent.OnAllIncomesClick) },
-            )
-
             if (!uiState.isLoading) {
                 uiState.incomes.forEach { income ->
                     DefaultListItem(

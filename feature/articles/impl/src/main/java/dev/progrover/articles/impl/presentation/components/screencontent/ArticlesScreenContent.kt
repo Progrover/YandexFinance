@@ -53,18 +53,18 @@ internal fun ArticlesScreenContent(
                     modifier = Modifier,
                     title = stringResource(R.string.articles_title),
                 )
+
+                DefaultListItem(
+                    modifier = Modifier,
+                    backgroundColor = AppTheme.colors.containerHigh,
+                    title = stringResource(R.string.find_article),
+                    verticalTextPadding = AppTheme.paddings.padding8,
+                    titleColor = AppTheme.colors.textSecondary,
+                    endIconResId = R.drawable.find,
+                    onClick = { onEvent(ArticlesUIEvent.OnFindArticleClick) },
+                )
             },
         ) {
-
-            DefaultListItem(
-                modifier = Modifier,
-                backgroundColor = AppTheme.colors.containerHigh,
-                title = stringResource(R.string.find_article),
-                verticalTextPadding = AppTheme.paddings.padding8,
-                titleColor = AppTheme.colors.textSecondary,
-                endIconResId = R.drawable.find,
-                onClick = { onEvent(ArticlesUIEvent.OnFindArticleClick) },
-            )
             if (!uiState.isLoading) {
                 uiState.articles.forEach { article ->
                     DefaultListItem(
