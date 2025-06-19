@@ -1,5 +1,6 @@
 package dev.progrover.shmr_finance.navigation.components
 
+import android.os.Bundle
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -17,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import dev.progrover.core.base.navigation.RouteDesc
 import dev.progrover.core.theme.AppTheme
 import dev.progrover.shmr_finance.navigation.model.BottomNavigationItem
 
@@ -24,6 +26,7 @@ import dev.progrover.shmr_finance.navigation.model.BottomNavigationItem
 fun BottomNavigationBarContent(
     isBottomBarVisible: Boolean,
     currentDestination: NavDestination?,
+    navArguments: Bundle?,
     onClick: (BottomNavigationItem) -> Unit,
 ) {
 
@@ -59,7 +62,10 @@ fun BottomNavigationBarContent(
                     item = BottomNavigationItem.ExpendituresScreen,
                     isSelected =
                         currentDestination?.hierarchy
-                            ?.any { it.route == BottomNavigationItem.ExpendituresScreen.route } == true,
+                            ?.any { it.route == BottomNavigationItem.ExpendituresScreen.route } == true
+                                || (navArguments?.keySet()?.any { key ->
+                            navArguments.get(key) == RouteDesc.Expenditures
+                        } ?: false),
                     onClick = onClick,
                 )
 
@@ -71,7 +77,11 @@ fun BottomNavigationBarContent(
                         ),
                     item = BottomNavigationItem.IncomesScreen,
                     isSelected = currentDestination?.hierarchy
-                        ?.any { it.route == BottomNavigationItem.IncomesScreen.route } == true,
+                        ?.any { it.route == BottomNavigationItem.IncomesScreen.route } == true ||
+                            (navArguments?.keySet()
+                                ?.any { key ->
+                                    navArguments.get(key) == RouteDesc.Incomes
+                                } ?: false),
                     onClick = onClick,
                 )
 

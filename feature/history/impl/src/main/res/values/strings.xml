@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history">Моя история</string>
+    <string name="start">Начало</string>
+    <string name="end">Конец</string>
+    <string name="sum">Сумма</string>
+</resources>

@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import dev.progrover.core.base.utils.addCurrency
+import dev.progrover.core.base.utils.formatToAmount
 import dev.progrover.core.theme.AppTheme
 import dev.progrover.core.uicommon.utils.bottomNavigationPadding
 import dev.progrover.core.uicommon.utils.conditionally
@@ -54,7 +56,7 @@ internal fun ExpendituresScreenContent(
                     modifier = Modifier,
                     title = stringResource(R.string.expenditures_title),
                     rightIconId = dev.progrover.shmr_finance.core.uicommon.R.drawable.refresh,
-                    onRightIconClick = { onEvent(ExpendituresUIEvent.OnRefreshClick) }
+                    onRightIconClick = { onEvent(ExpendituresUIEvent.OnHistoryClick) }
                 )
             },
         ) {
@@ -75,7 +77,7 @@ internal fun ExpendituresScreenContent(
                         title = expenditure.name,
                         startIcon = expenditure.emoji,
                         captionTitle = expenditure.comment,
-                        additionalText = expenditure.amount,
+                        additionalText = expenditure.amount.formatToAmount().addCurrency(uiState.currency),
                         verticalTextPadding = when (expenditure.comment.isNullOrBlank()) {
                             true -> AppTheme.paddings.padding14
                             false -> AppTheme.paddings.padding4

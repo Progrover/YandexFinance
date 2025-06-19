@@ -8,8 +8,8 @@ import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.Variables
 import dev.progrover.core.base.utils.addCurrency
 import dev.progrover.core.base.utils.formatToAmount
-import dev.progrover.expenditures.impl.domain.interactor.ExpendituresInteractor
-import dev.progrover.expenditures.impl.domain.model.Expenditure
+import dev.progrover.expenditures.api.domain.interactor.ExpendituresInteractor
+import dev.progrover.expenditures.api.domain.model.Expenditure
 import dev.progrover.expenditures.impl.presentation.contract.expenditures.ExpendituresUIEffect
 import dev.progrover.expenditures.impl.presentation.contract.expenditures.ExpendituresUIEvent
 import dev.progrover.expenditures.impl.presentation.contract.expenditures.ExpendituresUIState
@@ -33,8 +33,8 @@ class ExpendituresViewModel @Inject constructor(
 
     override fun handleUIEvent(event: ExpendituresUIEvent) =
         when (event) {
-            ExpendituresUIEvent.OnRefreshClick ->
-                setEffect(ExpendituresUIEffect.ShowError(R.string.in_develop))
+            ExpendituresUIEvent.OnHistoryClick ->
+                setEffect(ExpendituresUIEffect.NavigateToHistoryScreen)
 
             ExpendituresUIEvent.OnAllExpendituresClick ->
                 setEffect(ExpendituresUIEffect.ShowError(R.string.in_develop))
@@ -98,16 +98,11 @@ class ExpendituresViewModel @Inject constructor(
             },
             onSuccess = { result ->
 
-                val expenditures = result.second.map { expenditure ->
-                    expenditure.copy(
-                        amount = expenditure.amount.formatToAmount().addCurrency(result.first)
-                    )
-                }
-
                 setState(
                     currentState.copy(
                         isLoading = false,
-                        expenditures = expenditures,
+                        currency = result.first,
+                        expenditures = result.second,
                         totalExpenditures = countTotalAmount(result.second, result.first),
                     )
                 )

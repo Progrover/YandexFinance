@@ -1,4 +1,4 @@
-package dev.progrover.expenditures.impl.domain.model
+package dev.progrover.expenditures.api.domain.model
 
 data class Expenditure(
     val id: Int,

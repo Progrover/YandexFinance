@@ -10,6 +10,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import dev.progrover.core.base.navigation.RouteDesc
+import dev.progrover.history.api.HistoryFeature
 import dev.progrover.incomes.impl.presentation.components.screencontent.IncomesScreenContent
 import dev.progrover.incomes.impl.presentation.contract.incomes.IncomesUIEffect
 import dev.progrover.incomes.impl.presentation.viewmodel.IncomesViewModel
@@ -35,6 +37,9 @@ internal fun IncomesScreen(
                         withDismissAction = true,
                         duration = SnackbarDuration.Short,
                     )
+
+                IncomesUIEffect.NavigateToHistoryScreen ->
+                    HistoryFeature.openHistoryScreen(navController, RouteDesc.Incomes)
             }
         }
     }

@@ -1,5 +1,6 @@
 package dev.progrover.core.uicommon.views
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -25,8 +26,8 @@ fun DefaultToolbar(
     modifier: Modifier,
     title: String,
     backgroundColor: Color = AppTheme.colors.brightGreen,
-    leftIconId: Int? = null,
-    rightIconId: Int? = null,
+    @DrawableRes leftIconId: Int? = null,
+    @DrawableRes rightIconId: Int? = null,
     onLeftIconClick: (() -> Unit)? = null,
     onRightIconClick: (() -> Unit)? = null,
 ) {

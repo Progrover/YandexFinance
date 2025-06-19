@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import dev.progrover.core.base.utils.addCurrency
+import dev.progrover.core.base.utils.formatToAmount
 import dev.progrover.core.theme.AppTheme
 import dev.progrover.core.uicommon.utils.bottomNavigationPadding
 import dev.progrover.core.uicommon.utils.conditionally
@@ -55,7 +57,7 @@ internal fun IncomesScreenContent(
                     modifier = Modifier,
                     title = stringResource(R.string.incomes_title),
                     rightIconId = dev.progrover.shmr_finance.core.uicommon.R.drawable.refresh,
-                    onRightIconClick = { onEvent(IncomesUIEvent.OnRefreshClick) }
+                    onRightIconClick = { onEvent(IncomesUIEvent.OnHistoryClick) }
                 )
             },
         ) {
@@ -76,7 +78,7 @@ internal fun IncomesScreenContent(
                         title = income.name,
                         startIcon = income.emoji,
                         captionTitle = income.comment,
-                        additionalText = income.amount,
+                        additionalText = income.amount.formatToAmount().addCurrency(uiState.currency),
                         verticalTextPadding = when (income.comment.isNullOrBlank()) {
                             true -> AppTheme.paddings.padding16
                             false -> AppTheme.paddings.padding4

@@ -6,7 +6,7 @@ import dev.progrover.core.base.data.repository.BaseRepository
 import dev.progrover.core.base.di.CoroutineQualifiers
 import dev.progrover.core.base.model.ApiResponse
 import dev.progrover.expenditures.impl.data.mapper.ExpendituresDTOMapper
-import dev.progrover.expenditures.impl.domain.model.Expenditure
+import dev.progrover.expenditures.api.domain.model.Expenditure
 import dev.progrover.expenditures.impl.domain.repository.ExpendituresRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -27,16 +27,16 @@ class ExpendituresRepositoryImpl @Inject constructor(
     coroutineExceptionHandler = coroutineExceptionHandler,
 ) {
     @SuppressLint("SimpleDateFormat")
-    override suspend fun getExpenditures(accountId: Int): ApiResponse<Pair<String, List<Expenditure>>> =
+    override suspend fun getExpenditures(accountId: Int, start: String?, end: String?): ApiResponse<Pair<String, List<Expenditure>>> =
         executeOnIO {
             try {
-                val date = SimpleDateFormat("yyyy-MM-dd").format(Date())
-
+                val startDate = start ?: SimpleDateFormat("yyyy-MM-dd").format(Date())
+                val endDate = end ?: SimpleDateFormat("yyyy-MM-dd").format(Date())
                 if (tokenAvaliable) {
                     val response = transactionsApi.getTransactions(
                         accountId = accountId,
-                        startDate = date,
-                        endDate = date,
+                        startDate = startDate,
+                        endDate = endDate,
                     )
 
                     if (response.isSuccessful) {

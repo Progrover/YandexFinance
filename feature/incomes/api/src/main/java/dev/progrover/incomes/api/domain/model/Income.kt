@@ -1,4 +1,4 @@
-package dev.progrover.incomes.impl.domain.model
+package dev.progrover.incomes.api.domain.model
 
 data class Income(
     val id: Int,

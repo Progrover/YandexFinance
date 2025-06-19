@@ -48,6 +48,7 @@ dependencies {
     coil()
     incomesApi()
     accountApi()
+    historyApi()
     //encrypt
     implementation(libs.jbcrypt)
 }
