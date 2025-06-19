@@ -3,7 +3,7 @@ package dev.progrover.incomes.impl.presentation.viewmodel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.progrover.account.api.domain.AccountInteractor
 import dev.progrover.core.base.data.storage.Prefs
-import dev.progrover.core.base.model.Error
+import dev.progrover.core.base.model.ServerError
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.Variables
 import dev.progrover.core.base.utils.addCurrency
@@ -59,7 +59,7 @@ class IncomesViewModel @Inject constructor(
                     result.firstOrNull()?.id?.let {
                         prefs.putInt(Variables.CURRENT_ACCOUNT_ID, it)
                         getIncomes(it)
-                    } ?: setState(currentState.copy(error = Error.UnknownError))
+                    } ?: setState(currentState.copy(error = ServerError.UnknownError))
                 },
                 onFailure = { error ->
                     setState(

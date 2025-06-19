@@ -4,4 +4,5 @@
     <string name="start">Начало</string>
     <string name="end">Конец</string>
     <string name="sum">Сумма</string>
+    <string name="data_error">Задан неверный диапазон дат, изменения не применены!</string>
 </resources>

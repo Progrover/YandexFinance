@@ -3,7 +3,7 @@ package dev.progrover.core.base.data.repository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dev.progrover.core.base.di.CoroutineQualifiers
-import dev.progrover.core.base.model.Error
+import dev.progrover.core.base.model.ServerError
 import dev.progrover.shmr_finance.core.base.BuildConfig
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -31,9 +31,9 @@ open class BaseRepository @Inject constructor(
     protected val tokenAvaliable = BuildConfig.TOKEN.isNotBlank()
 
     protected fun getErrorMessage(e: Exception) = when (e) {
-        is javax.net.ssl.SSLHandshakeException -> Error.InternetError
-        is java.net.UnknownHostException -> Error.InternetError
-        is java.net.ConnectException -> Error.InternetError
-        else -> Error.UnknownError
+        is javax.net.ssl.SSLHandshakeException -> ServerError.InternetError
+        is java.net.UnknownHostException -> ServerError.InternetError
+        is java.net.ConnectException -> ServerError.InternetError
+        else -> ServerError.UnknownError
     }
 }

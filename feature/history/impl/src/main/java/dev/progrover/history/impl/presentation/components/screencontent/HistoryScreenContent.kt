@@ -1,5 +1,6 @@
 package dev.progrover.history.impl.presentation.components.screencontent
 
+import DateDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import dev.progrover.core.base.utils.addCurrency
 import dev.progrover.core.base.utils.formatToAmount
+import dev.progrover.core.base.utils.toPresentation
 import dev.progrover.core.theme.AppTheme
 import dev.progrover.core.uicommon.utils.bottomNavigationPadding
 import dev.progrover.core.uicommon.utils.conditionally
@@ -22,6 +24,7 @@ import dev.progrover.core.uicommon.views.CustomAlertDialog
 import dev.progrover.core.uicommon.views.DefaultListItem
 import dev.progrover.core.uicommon.views.DefaultToolbar
 import dev.progrover.core.uicommon.views.ProgressIndicator
+import dev.progrover.history.impl.presentation.contract.history.DatePickerState
 import dev.progrover.history.impl.presentation.contract.history.HistoryUIEvent
 import dev.progrover.history.impl.presentation.contract.history.HistoryUIState
 import dev.progrover.shmr_finance.feature.history.impl.R
@@ -35,6 +38,7 @@ internal fun HistoryScreenContent(
 ) {
 
     val scrollState = rememberScrollState()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -65,7 +69,7 @@ internal fun HistoryScreenContent(
                     backgroundColor = AppTheme.colors.paleGreen,
                     title = stringResource(R.string.start),
                     verticalTextPadding = AppTheme.paddings.padding8,
-                    additionalText = "",
+                    additionalText = uiState.start.toPresentation(),
                     onClick = { onEvent(HistoryUIEvent.OnStartClick) },
                 )
 
@@ -74,8 +78,8 @@ internal fun HistoryScreenContent(
                     backgroundColor = AppTheme.colors.paleGreen,
                     title = stringResource(R.string.end),
                     verticalTextPadding = AppTheme.paddings.padding8,
-                    additionalText = "",
-                    onClick = { onEvent(HistoryUIEvent.OnStartClick) },
+                    additionalText = uiState.end.toPresentation(),
+                    onClick = { onEvent(HistoryUIEvent.OnEndClick) },
                 )
 
                 DefaultListItem(
@@ -85,7 +89,7 @@ internal fun HistoryScreenContent(
                     verticalTextPadding = AppTheme.paddings.padding8,
                     additionalText = uiState.total,
                     dividerVisible = false,
-                    onClick = { onEvent(HistoryUIEvent.OnStartClick) },
+                    onClick = { },
                 )
             },
         ) {
@@ -115,6 +119,32 @@ internal fun HistoryScreenContent(
                 .padding(AppTheme.paddings.padding16),
             hostState = snackbarHostState,
         )
+
+        if (uiState.showDatePicker == DatePickerState.StartPick)
+            DateDialog(
+                selectedDate = uiState.startForPresentation,
+                onOkClick = { millis ->
+                    onEvent(HistoryUIEvent.OnNewDateSelected(millis, uiState.showDatePicker))
+                },
+                onCancelClick = {
+                    onEvent(
+                        HistoryUIEvent.OnDatePickerClose
+                    )
+                },
+            )
+
+        if (uiState.showDatePicker == DatePickerState.EndPick)
+            DateDialog(
+                selectedDate = uiState.end,
+                onOkClick = { millis ->
+                    onEvent(HistoryUIEvent.OnNewDateSelected(millis, uiState.showDatePicker))
+                },
+                onCancelClick = {
+                    onEvent(
+                        HistoryUIEvent.OnDatePickerClose
+                    )
+                },
+            )
 
         if (uiState.error != null)
             CustomAlertDialog(

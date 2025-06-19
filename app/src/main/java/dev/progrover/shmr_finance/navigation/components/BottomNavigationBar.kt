@@ -9,7 +9,6 @@ import dev.progrover.account.api.AccountFeature
 import dev.progrover.articles.api.ArticlesFeature
 import dev.progrover.core.base.navigation.RouteDesc
 import dev.progrover.expenditures.api.ExpendituresFeature
-import dev.progrover.history.api.HistoryFeature
 import dev.progrover.incomes.api.IncomesFeature
 import dev.progrover.settings.api.SettingsFeature
 import dev.progrover.shmr_finance.contract.MainUIState
