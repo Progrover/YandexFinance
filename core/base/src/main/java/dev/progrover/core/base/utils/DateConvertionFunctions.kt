@@ -10,7 +10,7 @@ fun Long.toServerRequest(): String = Instant.ofEpochMilli(this)
     .toLocalDate()
     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
-fun Long.toPresentation(): String = Instant.ofEpochMilli(this)
+fun Long.toDatePresentation(): String = Instant.ofEpochMilli(this)
     .atZone(ZoneId.systemDefault())
     .toLocalDate()
     .format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
@@ -27,3 +27,11 @@ fun getRealFirstDayOfCurrentMonth(): Long = LocalDate.now()
     .atStartOfDay(ZoneId.systemDefault())
     .toInstant()
     .toEpochMilli()
+
+fun Long.toDateTimePresentation(): String =
+    Instant.ofEpochMilli(this)
+        .atZone(ZoneId.systemDefault())
+        .format(DateTimeFormatter.ofPattern("dd.MM.yy HH:mm"))
+
+fun String.toMillis() = Instant.parse(this).toEpochMilli()
+

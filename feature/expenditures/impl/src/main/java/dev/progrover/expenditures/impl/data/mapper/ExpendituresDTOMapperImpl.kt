@@ -1,6 +1,7 @@
 package dev.progrover.expenditures.impl.data.mapper
 
 import dev.progrover.core.base.model.Transaction
+import dev.progrover.core.base.utils.toMillis
 import dev.progrover.expenditures.api.domain.model.Expenditure
 import timber.log.Timber
 
@@ -16,6 +17,7 @@ class ExpendituresDTOMapperImpl : ExpendituresDTOMapper {
                 name = transaction.category.name,
                 comment = transaction.comment,
                 emoji = transaction.category.emoji,
+                dateTime = transaction.transactionDate.toMillis(),
             )
         } catch (e: Exception) {
             Timber.e("Transaction to expenditure error", e)

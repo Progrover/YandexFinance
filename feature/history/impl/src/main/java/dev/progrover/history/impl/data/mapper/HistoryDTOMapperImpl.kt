@@ -21,6 +21,7 @@ class HistoryDTOMapperImpl : HistoryDTOMapper {
                 emoji = element.emoji,
                 comment = element.comment,
                 amount = element.amount,
+                dateTime = element.dateTime
             )
         } catch (e: Exception) {
             Timber.e("Expenditure to history error", e)
@@ -35,6 +36,7 @@ class HistoryDTOMapperImpl : HistoryDTOMapper {
                 emoji = element.emoji,
                 comment = element.comment,
                 amount = element.amount,
+                dateTime = element.dateTime
             )
         } catch (e: Exception) {
             Timber.e("Income to history error", e)

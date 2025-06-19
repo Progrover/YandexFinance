@@ -6,4 +6,5 @@ data class Income(
     val name: String,
     val comment: String? = null, // возможно, коммента у доходов нет
     val amount: String,
+    val dateTime: Long,
     )

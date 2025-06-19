@@ -1,6 +1,7 @@
 package dev.progrover.incomes.impl.data.mapper
 
 import dev.progrover.core.base.model.Transaction
+import dev.progrover.core.base.utils.toMillis
 import dev.progrover.incomes.api.domain.model.Income
 import timber.log.Timber
 
@@ -16,6 +17,7 @@ class IncomesDTOMapperImpl : IncomesDTOMapper {
                 amount = transaction.amount,
                 comment = transaction.comment,
                 emoji = transaction.category.emoji,
+                dateTime = transaction.transactionDate.toMillis(),
             )
         } catch (e: Exception) {
             Timber.e("Transaction to income error", e)

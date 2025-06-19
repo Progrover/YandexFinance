@@ -6,4 +6,5 @@ data class Expenditure(
     val name: String,
     val comment: String? = null,
     val amount: String,
+    val dateTime: Long,
 )

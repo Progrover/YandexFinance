@@ -11,4 +11,5 @@ data class HistoryElement(
     val name: String,
     val comment: String?,
     val amount: String,
+    val dateTime: Long,
 )

@@ -15,7 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import dev.progrover.core.base.utils.addCurrency
 import dev.progrover.core.base.utils.formatToAmount
-import dev.progrover.core.base.utils.toPresentation
+import dev.progrover.core.base.utils.toDatePresentation
+import dev.progrover.core.base.utils.toDateTimePresentation
 import dev.progrover.core.theme.AppTheme
 import dev.progrover.core.uicommon.utils.bottomNavigationPadding
 import dev.progrover.core.uicommon.utils.conditionally
@@ -69,7 +70,7 @@ internal fun HistoryScreenContent(
                     backgroundColor = AppTheme.colors.paleGreen,
                     title = stringResource(R.string.start),
                     verticalTextPadding = AppTheme.paddings.padding8,
-                    additionalText = uiState.start.toPresentation(),
+                    additionalText = uiState.start.toDatePresentation(),
                     onClick = { onEvent(HistoryUIEvent.OnStartClick) },
                 )
 
@@ -78,7 +79,7 @@ internal fun HistoryScreenContent(
                     backgroundColor = AppTheme.colors.paleGreen,
                     title = stringResource(R.string.end),
                     verticalTextPadding = AppTheme.paddings.padding8,
-                    additionalText = uiState.end.toPresentation(),
+                    additionalText = uiState.end.toDatePresentation(),
                     onClick = { onEvent(HistoryUIEvent.OnEndClick) },
                 )
 
@@ -95,15 +96,16 @@ internal fun HistoryScreenContent(
         ) {
 
             if (!uiState.isLoading) {
-                uiState.history.forEach { expenditure ->
+                uiState.history.forEach { history ->
                     DefaultListItem(
                         modifier = Modifier,
-                        title = expenditure.name,
-                        startIcon = expenditure.emoji,
-                        captionTitle = expenditure.comment,
-                        additionalText = expenditure.amount.formatToAmount()
+                        title = history.name,
+                        startIcon = history.emoji,
+                        captionTitle = history.comment,
+                        additionalText = history.amount.formatToAmount()
                             .addCurrency(uiState.currency),
-                        verticalTextPadding = when (expenditure.comment.isNullOrBlank()) {
+                        captionAdditional = history.dateTime.toDateTimePresentation(),
+                        verticalTextPadding = when (history.comment.isNullOrBlank()) {
                             true -> AppTheme.paddings.padding14
                             false -> AppTheme.paddings.padding4
                         },

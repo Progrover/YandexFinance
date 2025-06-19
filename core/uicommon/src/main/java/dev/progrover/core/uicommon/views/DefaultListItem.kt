@@ -2,11 +2,9 @@ package dev.progrover.core.uicommon.views
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -63,12 +61,12 @@ fun DefaultListItem(
                     horizontal = horizontalPadding,
                     vertical = verticalPadding,
                 ),
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.paddings.padding16)
         ) {
 
             if (!startIcon.isNullOrBlank()) {
                 Box(
                     modifier = Modifier
+                        .padding(end = AppTheme.paddings.padding16)
                         .size(AppTheme.sizes.size24)
                         .clip(CircleShape)
                         .background(iconBackgroundColor)
@@ -94,12 +92,14 @@ fun DefaultListItem(
 
             Column(
                 modifier = Modifier
+                    .weight(1f)
                     .align(Alignment.CenterVertically)
                     .padding(vertical = verticalTextPadding),
             ) {
 
                 Text(
-                    modifier = Modifier,
+                    modifier = Modifier
+                        .padding(end = AppTheme.paddings.padding16),
                     text = title,
                     color = titleColor,
                     style = AppTheme.typography.bodyLarge,
@@ -118,8 +118,6 @@ fun DefaultListItem(
                     )
                 }
             }
-
-            Spacer(Modifier.weight(1f))
 
             if (additionalText != null) {
                 Column(
@@ -154,6 +152,7 @@ fun DefaultListItem(
             if (endIconResId != null) {
                 Image(
                     modifier = Modifier
+                        .padding(start = AppTheme.paddings.padding16)
                         .size(AppTheme.sizes.size24)
                         .align(Alignment.CenterVertically),
                     imageVector = ImageVector.vectorResource(endIconResId),
