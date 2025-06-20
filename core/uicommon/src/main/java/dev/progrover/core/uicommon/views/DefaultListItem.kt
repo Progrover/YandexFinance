@@ -107,7 +107,7 @@ fun DefaultListItem(
                     overflow = TextOverflow.Ellipsis,
                 )
 
-                if (captionTitle != null) {
+                if (!captionTitle.isNullOrEmpty()) {
                     Text(
                         modifier = Modifier,
                         text = captionTitle,
@@ -119,7 +119,7 @@ fun DefaultListItem(
                 }
             }
 
-            if (additionalText != null) {
+            if (!additionalText.isNullOrEmpty()) {
                 Column(
                     modifier = Modifier
                         .align(Alignment.CenterVertically),
@@ -135,7 +135,7 @@ fun DefaultListItem(
                         textAlign = TextAlign.End,
                     )
 
-                    if (captionAdditional != null) {
+                    if (!captionAdditional.isNullOrEmpty()) {
                         Text(
                             modifier = Modifier,
                             text = captionAdditional,
