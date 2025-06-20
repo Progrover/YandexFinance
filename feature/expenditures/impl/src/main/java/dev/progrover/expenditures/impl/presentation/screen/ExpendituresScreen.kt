@@ -10,9 +10,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import dev.progrover.core.base.navigation.RouteDesc
 import dev.progrover.expenditures.impl.presentation.components.screencontent.ExpendituresScreenContent
 import dev.progrover.expenditures.impl.presentation.contract.expenditures.ExpendituresUIEffect
 import dev.progrover.expenditures.impl.presentation.viewmodel.ExpendituresViewModel
+import dev.progrover.history.api.HistoryFeature
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -35,6 +37,9 @@ internal fun ExpendituresScreen(
                         withDismissAction = true,
                         duration = SnackbarDuration.Short,
                     )
+
+                ExpendituresUIEffect.NavigateToHistoryScreen ->
+                    HistoryFeature.openHistoryScreen(navController, RouteDesc.Expenditures)
             }
         }
     }

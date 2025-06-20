@@ -37,4 +37,10 @@ object Feature {
         const val api = "$settings:api"
         const val impl = "$settings:impl"
     }
+
+    object History {
+        private const val history = "$feature:history"
+        const val api = "$history:api"
+        const val impl = "$history:impl"
+    }
 }

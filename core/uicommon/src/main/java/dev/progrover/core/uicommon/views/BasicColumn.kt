@@ -23,23 +23,26 @@ fun BasicColumn(
 ) {
 
     Column(
-        modifier = modifier,
-        verticalArrangement = verticalArrangement,
-        horizontalAlignment = horizontalAlignment
+        modifier = Modifier,
     ) {
         if (toolbar != null) {
             toolbar()
         }
+        Column(
+            modifier = modifier,
+            verticalArrangement = verticalArrangement,
+            horizontalAlignment = horizontalAlignment,
+        ) {
+            content()
 
-        content()
-
-        Spacer(
-            Modifier.height(
-                when (toolbar) {
-                    null -> AppTheme.paddings.padding5
-                    else -> AppTheme.paddings.padding10
-                }
+            Spacer(
+                Modifier.height(
+                    when (toolbar) {
+                        null -> AppTheme.paddings.padding5
+                        else -> AppTheme.paddings.padding10
+                    }
+                )
             )
-        )
+        }
     }
 }

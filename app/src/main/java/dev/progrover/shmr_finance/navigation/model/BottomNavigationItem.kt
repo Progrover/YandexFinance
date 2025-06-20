@@ -7,7 +7,6 @@ import dev.progrover.incomes.api.IncomesFeature
 import dev.progrover.settings.api.SettingsFeature
 import dev.progrover.shmr_finance.R
 
-//todo: добавить маршруты после реализации основных фич
 sealed class BottomNavigationItem(
     val route: String,
     val iconResId: Int,

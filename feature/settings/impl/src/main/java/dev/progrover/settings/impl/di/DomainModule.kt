@@ -4,10 +4,13 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.progrover.core.base.di.CoroutineQualifiers
 import dev.progrover.settings.impl.data.repository.SettingsRepositoryImpl
 import dev.progrover.settings.impl.domain.interactor.SettingsInteractor
 import dev.progrover.settings.impl.domain.interactor.SettingsInteractorImpl
 import dev.progrover.settings.impl.domain.repository.SettingsRepository
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineExceptionHandler
 import javax.inject.Singleton
 
 @Module
@@ -17,8 +20,14 @@ class DomainModule {
     @Provides
     @Singleton
     fun provideSettingsRepository(
+        @CoroutineQualifiers.DefaultCoroutineExceptionHandler
+        coroutineExceptionHandler: CoroutineExceptionHandler,
+        @CoroutineQualifiers.IoDispatcher
+        dispatcher: CoroutineDispatcher,
     ): SettingsRepository =
         SettingsRepositoryImpl(
+            coroutineExceptionHandler = coroutineExceptionHandler,
+            dispatcher = dispatcher,
         )
 
     @Provides

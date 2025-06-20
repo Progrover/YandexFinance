@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import dev.progrover.account.api.AccountFeature
 import dev.progrover.articles.api.ArticlesFeature
+import dev.progrover.core.base.navigation.RouteDesc
 import dev.progrover.expenditures.api.ExpendituresFeature
 import dev.progrover.incomes.api.IncomesFeature
 import dev.progrover.settings.api.SettingsFeature
@@ -24,6 +25,7 @@ fun BottomNavigationBar(
     BottomNavigationBarContent(
         isBottomBarVisible = navBackStackEntry.isBottomBarVisible(uiState.isBottomNavigationBarVisible),
         currentDestination = navBackStackEntry?.destination,
+        navArguments = navBackStackEntry?.arguments,
         onClick = { item ->
             when (item) {
                 BottomNavigationItem.AccountScreen ->
@@ -57,7 +59,13 @@ private fun NavBackStackEntry?.isBottomBarVisible(isBottomBarVisible: Boolean): 
         IncomesFeature.INCOMES_SCREEN,
     )
     return when (isBottomBarVisible) {
-        true -> this?.destination?.route in screensWhereBottomBarVisible
+        true -> {
+            val route = this?.destination?.route.orEmpty()
+            val arguments = this?.destination?.arguments ?: emptyMap()
+            route in screensWhereBottomBarVisible ||
+                    arguments.values.any { value -> value.type.name == RouteDesc::class.java.name }
+        }
+
         false -> false
     }
 }

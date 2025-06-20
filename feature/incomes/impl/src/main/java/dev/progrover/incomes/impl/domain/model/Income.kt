@@ -4,6 +4,6 @@ data class Income(
     val id: Int,
     val emoji: String? = null,
     val name: String,
-    val comment: String? = null, // возможно, коммента у доходов нет
+    val comment: String? = null,
     val amount: String,
     )

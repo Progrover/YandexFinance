@@ -1,15 +1,16 @@
 package dev.progrover.core.base.di
 
-import android.content.Context
-import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.progrover.core.base.data.api.TransactionsApi
+import dev.progrover.core.base.data.interceptor.BaseInterceptor
+import dev.progrover.core.base.data.interceptor.BaseInterceptorImpl
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -42,27 +43,44 @@ class NetworkModule {
     ): Retrofit =
         Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl("https://api.vk.com")
+            .baseUrl("https://shmr-finance.ru/api/v1/")
             .addConverterFactory(converterFactory)
             .build()
 
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        @ApplicationContext context: Context,
+        baseInterceptor: BaseInterceptor,
     ): OkHttpClient =
         buildOkHttpClient(
-            context = context,
+            baseInterceptor = baseInterceptor,
         )
 
+    @Provides
+    @Singleton
+    fun provideBaseInterceptor(): BaseInterceptor =
+        BaseInterceptorImpl()
+
     private fun buildOkHttpClient(
-        context: Context,
-    ): OkHttpClient =
-        OkHttpClient.Builder()
-            .addInterceptor(ChuckerInterceptor(context))
+        baseInterceptor: BaseInterceptor,
+    ): OkHttpClient {
+        val logging = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+        return OkHttpClient.Builder()
+            .addInterceptor(baseInterceptor)
+            .addInterceptor(logging)
             .readTimeout(READ_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
             .connectTimeout(CONNECTION_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun providesTransactionsApi(
+        retrofit: Retrofit
+    ): TransactionsApi =
+        retrofit.create(TransactionsApi::class.java)
 
     companion object {
 

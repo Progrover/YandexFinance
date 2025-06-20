@@ -193,3 +193,7 @@ fun DependencyHandler.settingsApi() {
 fun DependencyHandler.articlesApi() {
     implementation(project(Feature.Articles.api))
 }
+
+fun DependencyHandler.historyApi() {
+    implementation(project(Feature.History.api))
+}

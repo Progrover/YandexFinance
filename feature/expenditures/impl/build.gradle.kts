@@ -47,8 +47,10 @@ dependencies {
     navigation()
     coil()
     expendituresApi()
+    accountApi()
+    historyApi()
     //encrypt
-    implementation("org.mindrot:jbcrypt:0.4")
+    implementation(libs.jbcrypt)
 }
 
 kapt {
