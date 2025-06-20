@@ -1,8 +1,11 @@
 package dev.progrover.incomes.impl.data.mapper
 
 import dev.progrover.core.base.model.Transaction
-import dev.progrover.incomes.api.domain.model.Income
+import dev.progrover.incomes.api.domain.model.IncomeDetailed
+import dev.progrover.incomes.impl.domain.model.Income
 
 interface IncomesDTOMapper {
     fun mapTransactionsToIncomes(transactions: List<Transaction>): List<Income>
+
+    fun mapTransactionsToIncomesDetailed(transactions: List<Transaction>): List<IncomeDetailed>
 }

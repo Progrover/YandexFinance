@@ -8,8 +8,8 @@ interface HistoryRepository {
 
     suspend fun getHistory(
         accountId: Int,
-        start: String? = null,
-        end: String? = null,
+        start: String,
+        end: String,
         type: RouteDesc,
     ): ApiResponse<Pair<String, List<HistoryElement>>>
 }

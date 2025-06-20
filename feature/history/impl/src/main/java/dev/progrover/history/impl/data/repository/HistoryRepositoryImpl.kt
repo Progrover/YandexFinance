@@ -26,14 +26,14 @@ class HistoryRepositoryImpl(
 ) {
     override suspend fun getHistory(
         accountId: Int,
-        start: String?,
-        end: String?,
+        start: String,
+        end: String,
         type: RouteDesc,
     ): ApiResponse<Pair<String, List<HistoryElement>>> =
         executeOnIO {
             when (type) {
                 RouteDesc.Incomes -> {
-                    val response = incomesInteractor.getIncomes(
+                    val response = incomesInteractor.getIncomesDetailed(
                         accountId,
                         start,
                         end,
@@ -55,7 +55,7 @@ class HistoryRepositoryImpl(
                 }
 
                 RouteDesc.Expenditures -> {
-                    val response = expendituresInteractor.getExpenditures(
+                    val response = expendituresInteractor.getExpendituresDetailed(
                         accountId,
                         start,
                         end,

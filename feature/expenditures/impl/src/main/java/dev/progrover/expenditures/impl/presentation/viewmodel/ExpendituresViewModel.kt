@@ -8,8 +8,8 @@ import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.Variables
 import dev.progrover.core.base.utils.addCurrency
 import dev.progrover.core.base.utils.formatToAmount
-import dev.progrover.expenditures.api.domain.interactor.ExpendituresInteractor
-import dev.progrover.expenditures.api.domain.model.Expenditure
+import dev.progrover.expenditures.impl.domain.model.Expenditure
+import dev.progrover.expenditures.impl.domain.repository.ExpendituresRepository
 import dev.progrover.expenditures.impl.presentation.contract.expenditures.ExpendituresUIEffect
 import dev.progrover.expenditures.impl.presentation.contract.expenditures.ExpendituresUIEvent
 import dev.progrover.expenditures.impl.presentation.contract.expenditures.ExpendituresUIState
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ExpendituresViewModel @Inject constructor(
-    private val expendituresInteractor: ExpendituresInteractor,
+    private val expendituresRepository: ExpendituresRepository,
     private val accountInteractor: AccountInteractor,
     private val prefs: Prefs,
 ) :
@@ -92,7 +92,7 @@ class ExpendituresViewModel @Inject constructor(
     private fun getExpends(accountId: Int) {
         tryMultipleLoad(
             function = {
-                expendituresInteractor.getExpenditures(
+                expendituresRepository.getExpenditures(
                     accountId
                 )
             },

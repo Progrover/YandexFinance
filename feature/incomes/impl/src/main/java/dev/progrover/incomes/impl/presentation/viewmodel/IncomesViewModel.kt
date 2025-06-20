@@ -8,8 +8,8 @@ import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.Variables
 import dev.progrover.core.base.utils.addCurrency
 import dev.progrover.core.base.utils.formatToAmount
-import dev.progrover.incomes.api.domain.interactor.IncomesInteractor
-import dev.progrover.incomes.api.domain.model.Income
+import dev.progrover.incomes.impl.domain.model.Income
+import dev.progrover.incomes.impl.domain.repository.IncomesRepository
 import dev.progrover.incomes.impl.presentation.contract.incomes.IncomesUIEffect
 import dev.progrover.incomes.impl.presentation.contract.incomes.IncomesUIEvent
 import dev.progrover.incomes.impl.presentation.contract.incomes.IncomesUIState
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class IncomesViewModel @Inject constructor(
-    private val incomesInteractor: IncomesInteractor,
+    private val incomesRepository: IncomesRepository,
     private val accountInteractor: AccountInteractor,
     private val prefs: Prefs,
 ) :
@@ -89,7 +89,7 @@ class IncomesViewModel @Inject constructor(
     private fun getIncomes(accountId: Int) {
         tryMultipleLoad(
             function = {
-                incomesInteractor.getIncomes(accountId)
+                incomesRepository.getIncomes(accountId)
             },
             onSuccess = { result ->
 

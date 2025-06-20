@@ -1,19 +1,19 @@
 package dev.progrover.history.impl.data.mapper
 
-import dev.progrover.expenditures.api.domain.model.Expenditure
+import dev.progrover.expenditures.api.domain.model.ExpenditureDetailed
 import dev.progrover.history.impl.domain.model.HistoryElement
-import dev.progrover.incomes.api.domain.model.Income
+import dev.progrover.incomes.api.domain.model.IncomeDetailed
 import timber.log.Timber
 
 class HistoryDTOMapperImpl : HistoryDTOMapper {
 
-    override fun mapExpendituresToHistory(expenditures: List<Expenditure>): List<HistoryElement> =
+    override fun mapExpendituresToHistory(expenditures: List<ExpenditureDetailed>): List<HistoryElement> =
         expenditures.mapNotNull { mapExpendToHistory(it) }
 
-    override fun mapIncomesToHistory(incomes: List<Income>): List<HistoryElement> =
+    override fun mapIncomesToHistory(incomes: List<IncomeDetailed>): List<HistoryElement> =
         incomes.mapNotNull { mapIncomeToHistory(it) }
 
-    private fun mapExpendToHistory(element: Expenditure): HistoryElement? =
+    private fun mapExpendToHistory(element: ExpenditureDetailed): HistoryElement? =
         try {
             HistoryElement(
                 id = element.id,
@@ -28,7 +28,7 @@ class HistoryDTOMapperImpl : HistoryDTOMapper {
             null
         }
 
-    private fun mapIncomeToHistory(element: Income): HistoryElement? =
+    private fun mapIncomeToHistory(element: IncomeDetailed): HistoryElement? =
         try {
             HistoryElement(
                 id = element.id,
