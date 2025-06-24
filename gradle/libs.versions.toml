@@ -16,7 +16,7 @@ material = "1.12.0"
 monitor = "1.7.2"
 junitKtx = "1.2.1"
 kotlinGradlePlugin = "2.1.21"
-
+detekt = "1.23.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -47,4 +47,5 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
