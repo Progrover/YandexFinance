@@ -4,10 +4,12 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.progrover.account.api.domain.AccountIdProvider
 import dev.progrover.account.impl.data.api.AccountApi
 import dev.progrover.account.impl.data.repository.AccountRepositoryImpl
-import dev.progrover.account.api.domain.AccountInteractor
+import dev.progrover.account.impl.domain.interactor.AccountInteractor
 import dev.progrover.account.impl.domain.interactor.AccountInteractorImpl
+import dev.progrover.account.impl.domain.provider.AccountProviderImpl
 import dev.progrover.account.impl.domain.repository.AccountRepository
 import dev.progrover.core.base.di.CoroutineQualifiers
 import kotlinx.coroutines.CoroutineDispatcher
@@ -40,5 +42,20 @@ class DomainModule {
     ): AccountInteractor =
         AccountInteractorImpl(
             repository = repository,
+        )
+
+    @Provides
+    @Singleton
+    fun provideAccountProvider(
+        accountInteractor: AccountInteractor,
+        @CoroutineQualifiers.IoDispatcher
+        dispatcher: CoroutineDispatcher,
+        @CoroutineQualifiers.DefaultCoroutineExceptionHandler
+        exceptionHandler: CoroutineExceptionHandler
+    ): AccountIdProvider =
+        AccountProviderImpl(
+            accountInteractor = accountInteractor,
+            dispatcher = dispatcher,
+            exceptionHandler = exceptionHandler,
         )
 }

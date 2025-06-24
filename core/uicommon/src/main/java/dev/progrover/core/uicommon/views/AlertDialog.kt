@@ -119,7 +119,7 @@ fun CustomAlertDialog(
                 modifier = Modifier
                     .weight(1f)
                     .align(Alignment.CenterVertically),
-                text = stringResource(error.message),
+                text = stringResource(error.messageId),
                 style = AppTheme.typography.bodyLarge.copy(fontWeight = W500),
                 color = AppTheme.colors.white,
                 textAlign = TextAlign.Center,

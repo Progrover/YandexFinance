@@ -3,13 +3,10 @@ package dev.progrover.history.impl.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.progrover.account.api.domain.AccountInteractor
-import dev.progrover.core.base.data.storage.Prefs
-import dev.progrover.core.base.di.CoroutineQualifiers
-import dev.progrover.core.base.model.ServerError
+import dev.progrover.account.api.domain.AccountIdProvider
+import dev.progrover.core.base.model.Error
 import dev.progrover.core.base.navigation.RouteDesc
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
-import dev.progrover.core.base.utils.Variables
 import dev.progrover.core.base.utils.addCurrency
 import dev.progrover.core.base.utils.formatToAmount
 import dev.progrover.core.base.utils.toServerRequest
@@ -22,8 +19,6 @@ import dev.progrover.history.impl.presentation.contract.history.HistoryUIEvent
 import dev.progrover.history.impl.presentation.contract.history.HistoryUIState
 import dev.progrover.history.impl.presentation.navigation.HistoryNavigationFactory.Companion.ARG_KEY_ROUTE
 import dev.progrover.shmr_finance.core.uicommon.R
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -31,10 +26,7 @@ import javax.inject.Inject
 class HistoryViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val historyRepository: HistoryRepository,
-    private val accountInteractor: AccountInteractor,
-    private val prefs: Prefs,
-    @CoroutineQualifiers.IoDispatcher
-    private val dispatcher: CoroutineDispatcher,
+    private val idProvider: AccountIdProvider,
 ) :
     BaseViewModel<HistoryUIEvent, HistoryUIState, HistoryUIEffect>(
         HistoryUIState()
@@ -110,28 +102,17 @@ class HistoryViewModel @Inject constructor(
 
     private fun loadHistory() {
         setState(currentState.copy(isLoading = true))
-        /**
-         * Если нет id аккаунта, сначала пытаемся достать его, а затем запросить историю
-         */
-        getAccountIdFromPrefs { accountId ->
-            if (accountId == -1) {
-                tryMultipleLoad(
-                    function = { accountInteractor.getAccounts() },
-                    onSuccess = { result ->
-                        result.firstOrNull()?.id?.let {
-                            prefs.putInt(Variables.CURRENT_ACCOUNT_ID, it)
-                            getHistory(it)
-                        } ?: setState(currentState.copy(error = ServerError.UnknownError))
-                    },
-                    onFailure = { error ->
-                        setState(
-                            currentState.copy(
-                                error = error,
-                            )
+        idProvider.getId(viewModelScope) { result ->
+            result.fold(
+                onSuccess = { getHistory(it) },
+                onFailure = {
+                    setState(
+                        currentState.copy(
+                            error = it as Error,
                         )
-                    }
-                )
-            } else getHistory(accountId)
+                    )
+                }
+            )
         }
     }
 
@@ -192,12 +173,4 @@ class HistoryViewModel @Inject constructor(
                 )
             )
         } else ifNot()
-
-    // Костыль сделан, чтобы все соответствовало требованиям задания...
-    private fun getAccountIdFromPrefs(callback: (Int) -> Unit) {
-        viewModelScope.launch(dispatcher) {
-            val id = prefs.getInt(Variables.CURRENT_ACCOUNT_ID, -1)
-            callback(id)
-        }
-    }
 }

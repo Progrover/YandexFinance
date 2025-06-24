@@ -2,12 +2,9 @@ package dev.progrover.expenditures.impl.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.progrover.account.api.domain.AccountInteractor
-import dev.progrover.core.base.data.storage.Prefs
-import dev.progrover.core.base.di.CoroutineQualifiers
-import dev.progrover.core.base.model.ServerError
+import dev.progrover.account.api.domain.AccountIdProvider
+import dev.progrover.core.base.model.Error
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
-import dev.progrover.core.base.utils.Variables
 import dev.progrover.core.base.utils.addCurrency
 import dev.progrover.core.base.utils.formatToAmount
 import dev.progrover.expenditures.impl.domain.model.Expenditure
@@ -16,18 +13,13 @@ import dev.progrover.expenditures.impl.presentation.contract.expenditures.Expend
 import dev.progrover.expenditures.impl.presentation.contract.expenditures.ExpendituresUIEvent
 import dev.progrover.expenditures.impl.presentation.contract.expenditures.ExpendituresUIState
 import dev.progrover.shmr_finance.core.uicommon.R
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class ExpendituresViewModel @Inject constructor(
     private val expendituresRepository: ExpendituresRepository,
-    private val accountInteractor: AccountInteractor,
-    @CoroutineQualifiers.IoDispatcher
-    private val dispatcher: CoroutineDispatcher,
-    private val prefs: Prefs,
+    private val idProvider: AccountIdProvider,
 ) :
     BaseViewModel<ExpendituresUIEvent, ExpendituresUIState, ExpendituresUIEffect>(
         ExpendituresUIState()
@@ -57,28 +49,17 @@ class ExpendituresViewModel @Inject constructor(
 
     private fun loadInfo() {
         setState(currentState.copy(isLoading = true))
-        /**
-         * Если нет id аккаунта, сначала пытаемся достать его, а затем запросить расходы
-         */
-        getAccountIdFromPrefs { accountId ->
-            if (accountId == -1) {
-                tryMultipleLoad(
-                    function = { accountInteractor.getAccounts() },
-                    onSuccess = { result ->
-                        result.firstOrNull()?.id?.let {
-                            prefs.putInt(Variables.CURRENT_ACCOUNT_ID, it)
-                            getExpends(it)
-                        } ?: setState(currentState.copy(error = ServerError.UnknownError))
-                    },
-                    onFailure = { error ->
-                        setState(
-                            currentState.copy(
-                                error = error,
-                            )
+        idProvider.getId(viewModelScope) { result ->
+            result.fold(
+                onSuccess = { getExpends(it) },
+                onFailure = {
+                    setState(
+                        currentState.copy(
+                            error = it as Error,
                         )
-                    }
-                )
-            } else getExpends(accountId)
+                    )
+                }
+            )
         }
     }
 
@@ -122,13 +103,5 @@ class ExpendituresViewModel @Inject constructor(
                 )
             }
         )
-    }
-
-    // Костыль сделан, чтобы все соответствовало требованиям задания...
-    private fun getAccountIdFromPrefs(callback: (Int) -> Unit) {
-        viewModelScope.launch(dispatcher) {
-            val id = prefs.getInt(Variables.CURRENT_ACCOUNT_ID, -1)
-            callback(id)
-        }
     }
 }

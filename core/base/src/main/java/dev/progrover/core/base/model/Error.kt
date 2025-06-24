@@ -6,5 +6,5 @@ import androidx.annotation.StringRes
  * Класс для связывания ошибок
  */
 open class Error(
-   @StringRes open val message: Int,
-)
+   @StringRes open val messageId: Int,
+) : Throwable()

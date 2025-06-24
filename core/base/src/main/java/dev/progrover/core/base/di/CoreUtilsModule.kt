@@ -6,7 +6,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.progrover.core.base.utils.JsonConverter
-import dev.progrover.core.base.utils.Variables
 import javax.inject.Singleton
 
 @Module
@@ -17,8 +16,4 @@ class CoreUtilsModule {
     @Singleton
     fun provideJsonConverter(moshi: Moshi): JsonConverter =
         JsonConverter(moshi = moshi)
-
-    @Provides
-    @Singleton
-    fun provideVariables() = Variables
 }
