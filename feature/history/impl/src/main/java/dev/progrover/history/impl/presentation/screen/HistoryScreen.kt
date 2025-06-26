@@ -27,7 +27,6 @@ internal fun HistoryScreen(
     LaunchedEffect(key1 = viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
-
                 is HistoryUIEffect.ShowError ->
                     snackbarHostState.showSnackbar(
                         message = context.getString(effect.messageResId),

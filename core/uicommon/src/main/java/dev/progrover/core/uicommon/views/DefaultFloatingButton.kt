@@ -26,7 +26,6 @@ fun DefaultFloatingButton(
     backgroundColor: Color = AppTheme.colors.brightGreen,
     onClick: () -> Unit = {},
 ) {
-
     Text(
         modifier = modifier
             .noRippleClickable { onClick() }

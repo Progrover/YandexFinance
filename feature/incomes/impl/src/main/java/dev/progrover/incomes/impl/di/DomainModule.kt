@@ -6,9 +6,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.progrover.core.base.data.api.TransactionsApi
 import dev.progrover.core.base.di.CoroutineQualifiers
+import dev.progrover.incomes.api.domain.interactor.IncomesInteractor
 import dev.progrover.incomes.impl.data.mapper.IncomesDTOMapper
 import dev.progrover.incomes.impl.data.repository.IncomesRepositoryImpl
-import dev.progrover.incomes.api.domain.interactor.IncomesInteractor
 import dev.progrover.incomes.impl.domain.interactor.IncomesInteractorImpl
 import dev.progrover.incomes.impl.domain.repository.IncomesRepository
 import kotlinx.coroutines.CoroutineDispatcher

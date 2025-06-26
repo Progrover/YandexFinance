@@ -14,7 +14,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-
+/**
+ * Абстрактный класс ViewModel, от которого наследуются все ViewModel
+ */
 abstract class BaseViewModel<Event : UIEvent, State : UIState, Effect : UIEffect>
     (initialState: State) : ViewModel() {
 
@@ -65,9 +67,7 @@ abstract class BaseViewModel<Event : UIEvent, State : UIState, Effect : UIEffect
         subscribeEvents()
     }
 
-    /**
-     * Функция, перезапускающая запрос трижды с интервалом в 2 секунды при code 500
-     */
+     // Функция, перезапускающая запрос трижды с интервалом в 2 секунды при code 500
     protected fun <T> tryMultipleLoad(
         triesCount: Int = 4,
         function: suspend () -> ApiResponse<T>,

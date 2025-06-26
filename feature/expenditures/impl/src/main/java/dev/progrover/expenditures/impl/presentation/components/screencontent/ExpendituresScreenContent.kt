@@ -34,7 +34,6 @@ internal fun ExpendituresScreenContent(
     onEvent: (ExpendituresUIEvent) -> Unit,
     snackbarHostState: SnackbarHostState,
 ) {
-
     val scrollState = rememberScrollState()
     Box(
         modifier = Modifier
@@ -49,9 +48,9 @@ internal fun ExpendituresScreenContent(
                     condition = !uiState.isLoading,
                     trueExtension = {
                         verticalScroll(scrollState)
-                    }),
+                    }
+                ),
             toolbar = {
-
                 DefaultToolbar(
                     modifier = Modifier,
                     title = stringResource(R.string.expenditures_title),
@@ -85,7 +84,9 @@ internal fun ExpendituresScreenContent(
                         onClick = { onEvent(ExpendituresUIEvent.OnExpenditureItemClick(expenditure.id)) }
                     )
                 }
-            } else ProgressIndicator()
+            } else {
+                ProgressIndicator()
+            }
         }
 
         DefaultRoundButton(
@@ -106,11 +107,12 @@ internal fun ExpendituresScreenContent(
             hostState = snackbarHostState,
         )
 
-        if (uiState.error != null)
+        if (uiState.error != null) {
             CustomAlertDialog(
                 modifier = Modifier,
                 error = uiState.error,
                 onDismiss = { onEvent(ExpendituresUIEvent.OnErrorDialogDone) }
             )
+        }
     }
 }

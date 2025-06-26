@@ -21,7 +21,6 @@ fun BasicColumn(
     toolbar: @Composable (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-
     Column(
         modifier = Modifier,
     ) {

@@ -11,7 +11,9 @@ import dev.progrover.account.impl.presentation.screen.AccountScreen
 import dev.progrover.account.impl.presentation.viewmodel.AccountViewModel
 import dev.progrover.core.base.navigation.NavigationFactory
 import javax.inject.Inject
-
+/**
+ * Необходим для навигации account feature
+ */
 class AccountNavigationFactory @Inject constructor() : NavigationFactory {
 
     override fun create(builder: NavGraphBuilder, navController: NavHostController) {
@@ -19,7 +21,6 @@ class AccountNavigationFactory @Inject constructor() : NavigationFactory {
             startDestination = ACCOUNT_SCREEN,
             route = ROUTE_NAME
         ) {
-
             composable(route = ACCOUNT_SCREEN) {
                 val viewModel: AccountViewModel = hiltViewModel()
                 AccountScreen(viewModel = viewModel, navController = navController)

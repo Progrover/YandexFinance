@@ -8,7 +8,9 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
-
+/**
+ * Необходим для получения информации с сервера о счетах
+ */
 interface AccountApi {
 
     @GET("accounts")
@@ -37,5 +39,5 @@ interface AccountApi {
     @DELETE("accounts/{id}")
     suspend fun deleteAccountById(
         @Path("id") id: Int
-    ) : Response<Unit>
+    ): Response<Unit>
 }

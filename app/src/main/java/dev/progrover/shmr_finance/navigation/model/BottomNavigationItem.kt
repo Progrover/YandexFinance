@@ -6,7 +6,9 @@ import dev.progrover.expenditures.api.ExpendituresFeature
 import dev.progrover.incomes.api.IncomesFeature
 import dev.progrover.settings.api.SettingsFeature
 import dev.progrover.shmr_finance.R
-
+/**
+ * Класс - элемент нижнего навигационного меню
+ */
 sealed class BottomNavigationItem(
     val route: String,
     val iconResId: Int,

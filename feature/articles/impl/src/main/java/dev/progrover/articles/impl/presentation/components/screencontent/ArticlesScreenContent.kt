@@ -38,7 +38,6 @@ internal fun ArticlesScreenContent(
             .background(AppTheme.colors.surface)
             .bottomNavigationPadding()
     ) {
-
         BasicColumn(
             modifier = modifier
                 .fillMaxSize()
@@ -46,9 +45,9 @@ internal fun ArticlesScreenContent(
                     condition = !uiState.isLoading,
                     trueExtension = {
                         verticalScroll(scrollState)
-                    }),
+                    }
+                ),
             toolbar = {
-
                 DefaultToolbar(
                     modifier = Modifier,
                     title = stringResource(R.string.articles_title),
@@ -75,7 +74,9 @@ internal fun ArticlesScreenContent(
                         onClick = { onEvent(ArticlesUIEvent.OnArticleClick(article.id)) }
                     )
                 }
-            } else ProgressIndicator()
+            } else {
+                ProgressIndicator()
+            }
         }
 
         SnackbarHost(
@@ -85,11 +86,12 @@ internal fun ArticlesScreenContent(
             hostState = snackbarHostState,
         )
 
-        if (uiState.error != null)
+        if (uiState.error != null) {
             CustomAlertDialog(
                 modifier = Modifier,
                 error = uiState.error,
                 onDismiss = { onEvent(ArticlesUIEvent.OnErrorDialogDone) }
             )
+        }
     }
 }

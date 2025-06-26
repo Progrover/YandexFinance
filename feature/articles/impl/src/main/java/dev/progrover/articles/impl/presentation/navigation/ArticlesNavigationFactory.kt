@@ -11,7 +11,9 @@ import dev.progrover.articles.impl.presentation.screen.ArticlesScreen
 import dev.progrover.articles.impl.presentation.viewmodel.ArticlesViewModel
 import dev.progrover.core.base.navigation.NavigationFactory
 import javax.inject.Inject
-
+/**
+ * Необходим для навигации articles feature
+ */
 class ArticlesNavigationFactory @Inject constructor() : NavigationFactory {
 
     override fun create(builder: NavGraphBuilder, navController: NavHostController) {
@@ -19,7 +21,6 @@ class ArticlesNavigationFactory @Inject constructor() : NavigationFactory {
             startDestination = ARTICLES_SCREEN,
             route = ROUTE_NAME
         ) {
-
             composable(route = ARTICLES_SCREEN) {
                 val viewModel: ArticlesViewModel = hiltViewModel()
                 ArticlesScreen(viewModel = viewModel, navController = navController)

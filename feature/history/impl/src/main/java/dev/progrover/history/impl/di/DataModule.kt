@@ -14,7 +14,6 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun providesHistoryDTOMapper(
-    ): HistoryDTOMapper =
+    fun providesHistoryDTOMapper(): HistoryDTOMapper =
         HistoryDTOMapperImpl()
 }

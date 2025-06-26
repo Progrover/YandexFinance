@@ -10,7 +10,9 @@ import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.shmr_finance.core.uicommon.R
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
+/**
+ * ViewModel, привязанная к articles feature
+ */
 @HiltViewModel
 class ArticlesViewModel @Inject constructor(
     private val articlesRepository: ArticlesRepository,

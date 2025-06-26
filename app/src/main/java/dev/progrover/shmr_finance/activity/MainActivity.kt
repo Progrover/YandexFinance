@@ -32,6 +32,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * Главный Actitivy приложения
+ */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
@@ -61,7 +64,6 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         orientationRequest()
         setContent {
-
             AppThemeComposable {
                 val scaffoldState: ScaffoldState = rememberScaffoldState()
                 val bottomSheetNavigator = rememberBottomSheetNavigator()

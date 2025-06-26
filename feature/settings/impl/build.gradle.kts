@@ -47,8 +47,8 @@ dependencies {
     navigation()
     coil()
     settingsApi()
-    //encrypt
-    implementation("org.mindrot:jbcrypt:0.4")
+    // encrypt
+    implementation(libs.jbcrypt)
 }
 
 kapt {

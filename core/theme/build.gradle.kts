@@ -23,7 +23,6 @@ android {
     buildFeatures {
         compose = true
     }
-
 }
 
 composeCompiler {

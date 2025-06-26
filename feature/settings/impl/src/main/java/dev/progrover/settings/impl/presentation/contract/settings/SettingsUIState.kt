@@ -4,7 +4,9 @@ import dev.progrover.core.base.presentation.mvi.UIState
 import dev.progrover.settings.impl.domain.model.Chapter
 import dev.progrover.settings.impl.domain.model.ChapterRoute
 import dev.progrover.shmr_finance.feature.settings.impl.R
-
+/**
+ * Класс, необходимый для отслеживания состояния settings feature
+ */
 data class SettingsUIState(
     val isLoading: Boolean = false,
     val chapters: List<Chapter> = listOf(

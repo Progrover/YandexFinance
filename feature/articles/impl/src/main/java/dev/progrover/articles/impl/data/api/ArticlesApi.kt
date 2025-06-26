@@ -4,7 +4,9 @@ import dev.progrover.core.base.model.Category
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
-
+/**
+ * Необходим для получения информации с сервера о категориях
+ */
 interface ArticlesApi {
     @GET("categories")
     suspend fun getArticles(): Response<List<Category>>

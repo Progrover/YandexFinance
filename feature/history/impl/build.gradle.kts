@@ -50,7 +50,7 @@ dependencies {
     expendituresApi()
     historyApi()
     accountApi()
-    //encrypt
+    // encrypt
     implementation(libs.jbcrypt)
 }
 

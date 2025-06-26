@@ -22,7 +22,6 @@ internal fun ExpendituresScreen(
     navController: NavController,
     viewModel: ExpendituresViewModel,
 ) {
-
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -30,7 +29,6 @@ internal fun ExpendituresScreen(
     LaunchedEffect(key1 = viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
-
                 is ExpendituresUIEffect.ShowError ->
                     snackbarHostState.showSnackbar(
                         message = context.getString(effect.messageResId),

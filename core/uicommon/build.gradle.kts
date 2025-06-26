@@ -37,6 +37,6 @@ dependencies {
     coreBase()
     compose()
     coil()
-    implementation(Dependencies.composeMaterial) //необходимо для темы
+    implementation(Dependencies.composeMaterial) // необходимо для темы
     implementation(Dependencies.composeActivity)
 }

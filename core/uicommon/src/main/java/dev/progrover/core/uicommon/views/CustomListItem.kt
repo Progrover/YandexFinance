@@ -31,16 +31,15 @@ fun CustomListItem(
     customElement: @Composable () -> Unit,
     onClick: (() -> Unit)? = null,
 ) {
-
     Column(
         modifier = modifier
             .conditionally(
                 onClick != null,
-                trueExtension = { noRippleClickable { onClick!!.invoke() } })
+                trueExtension = { noRippleClickable { onClick!!.invoke() } }
+            )
             .fillMaxWidth()
             .background(backgroundColor),
     ) {
-
         Row(
             modifier = Modifier
                 .padding(
@@ -50,7 +49,6 @@ fun CustomListItem(
             horizontalArrangement = Arrangement.spacedBy(AppTheme.paddings.padding16),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-
             Text(
                 modifier = Modifier,
                 text = title,

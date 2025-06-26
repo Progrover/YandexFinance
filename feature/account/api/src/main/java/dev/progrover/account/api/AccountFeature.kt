@@ -2,7 +2,9 @@ package dev.progrover.account.api
 
 import androidx.navigation.NavController
 import dev.progrover.core.base.utils.customNavigate
-
+/**
+ * Класс, содержащий варианты навигации к экранам account feature
+ */
 object AccountFeature {
 
     const val ROUTE_NAME = "accountFeature"

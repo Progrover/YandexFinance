@@ -32,19 +32,16 @@ internal fun AccountScreenContent(
     onEvent: (AccountUIEvent) -> Unit,
     snackbarHostState: SnackbarHostState,
 ) {
-
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(AppTheme.colors.surface)
             .bottomNavigationPadding()
     ) {
-
         BasicColumn(
             modifier = modifier
                 .fillMaxSize(),
             toolbar = {
-
                 DefaultToolbar(
                     modifier = Modifier,
                     title = stringResource(R.string.account_title),
@@ -99,11 +96,12 @@ internal fun AccountScreenContent(
             hostState = snackbarHostState,
         )
 
-        if (uiState.error != null)
+        if (uiState.error != null) {
             CustomAlertDialog(
                 modifier = Modifier,
                 error = uiState.error,
                 onDismiss = { onEvent(AccountUIEvent.OnErrorDialogDone) }
             )
+        }
     }
 }

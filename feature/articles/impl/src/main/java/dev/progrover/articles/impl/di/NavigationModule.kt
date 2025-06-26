@@ -5,9 +5,9 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
+import dev.progrover.articles.impl.presentation.navigation.ArticlesNavigationFactory
 import dev.progrover.core.base.di.NavigationFactoryQualifiers
 import dev.progrover.core.base.navigation.NavigationFactory
-import dev.progrover.articles.impl.presentation.navigation.ArticlesNavigationFactory
 import javax.inject.Singleton
 
 @Module

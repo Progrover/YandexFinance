@@ -9,7 +9,9 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-
+/**
+ * Класс, от которого наследуются все Repository приложения
+ */
 open class BaseRepository @Inject constructor(
     @CoroutineQualifiers.IoDispatcher
     private val dispatcher: CoroutineDispatcher,

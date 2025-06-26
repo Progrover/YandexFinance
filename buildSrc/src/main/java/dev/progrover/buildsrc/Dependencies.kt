@@ -2,7 +2,6 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.project
 
 object Dependencies {
-    const val kotlinGP = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     const val kotlinSerialization = "org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}"
 
     const val composeMaterial3 = "androidx.compose.material3:material3:${Versions.composeMaterial3}"
@@ -20,8 +19,6 @@ object Dependencies {
         "com.google.accompanist:accompanist-swiperefresh:${Versions.swipeRefresh}"
     const val uiController =
         "com.google.accompanist:accompanist-systemuicontroller:${Versions.accompanist}"
-    const val flowlayout = "com.google.accompanist:accompanist-flowlayout:${Versions.accompanist}"
-    const val permissions = "com.google.accompanist:accompanist-permissions:${Versions.permissions}"
 
     const val hiltAndroid = "com.google.dagger:hilt-android:${Versions.hilt}"
     const val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
@@ -52,8 +49,6 @@ object Dependencies {
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
     const val coroutinesPlayServices =
         "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:${Versions.coroutines}"
-    const val serialization =
-        "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.serialization}"
 
     const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
     const val viewModelCompose =
@@ -61,22 +56,13 @@ object Dependencies {
 
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
 
-    const val lifecycleService = "androidx.lifecycle:lifecycle-service:${Versions.lifecycle}"
     const val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
     const val lifecycleProcess = "androidx.lifecycle:lifecycle-process:${Versions.lifecycle}"
 
     const val debugChucker = "com.github.chuckerteam.chucker:library:${Versions.chucker}"
     const val releaseChucker = "com.github.chuckerteam.chucker:library-no-op:${Versions.chucker}"
 
-    const val glideOld = "com.github.bumptech.glide:glide:${Versions.glide}"
-    const val imageBadge = "io.github.nikartm:image-support:${Versions.badge}"
-
     const val securityCrypto = "androidx.security:security-crypto-ktx:${Versions.securityCrypto}"
-}
-
-fun DependencyHandler.glide() {
-    implementation(Dependencies.glideOld)
-    implementation(Dependencies.imageBadge)
 }
 
 fun DependencyHandler.restApiMonitoring() {
@@ -108,10 +94,6 @@ fun DependencyHandler.work() {
     implementation(Dependencies.workRuntime)
     kapt(Dependencies.workCompiler)
     implementation(Dependencies.hiltWork)
-}
-
-fun DependencyHandler.service() {
-    implementation(Dependencies.lifecycleService)
 }
 
 fun DependencyHandler.securityCrypto() {

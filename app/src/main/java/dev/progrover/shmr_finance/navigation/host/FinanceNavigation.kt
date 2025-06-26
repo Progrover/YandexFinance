@@ -27,7 +27,6 @@ internal fun FinanceNavigation(
     navController: NavHostController,
     navigationFactories: @JvmSuppressWildcards Set<NavigationFactory>,
 ) {
-
     val uiState by viewModel.uiState.collectAsState()
 
     ModalBottomSheetLayout(
@@ -35,14 +34,12 @@ internal fun FinanceNavigation(
         sheetBackgroundColor = AppTheme.colors.surface,
         scrimColor = AppTheme.colors.surface.copy(alpha = 0.4f),
     ) {
-
         Scaffold(
             scaffoldState = scaffoldState,
             bottomBar = {
                 BottomNavigationBar(uiState = uiState, navController = navController)
             },
         ) {
-
             NavHost(
                 navController = navController,
                 startDestination = ExpendituresFeature.ROUTE_NAME

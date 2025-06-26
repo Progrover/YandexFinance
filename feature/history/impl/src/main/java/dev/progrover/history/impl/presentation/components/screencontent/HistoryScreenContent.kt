@@ -37,7 +37,6 @@ internal fun HistoryScreenContent(
     onEvent: (HistoryUIEvent) -> Unit,
     snackbarHostState: SnackbarHostState,
 ) {
-
     val scrollState = rememberScrollState()
 
     Box(
@@ -53,9 +52,9 @@ internal fun HistoryScreenContent(
                     condition = !uiState.isLoading,
                     trueExtension = {
                         verticalScroll(scrollState)
-                    }),
+                    }
+                ),
             toolbar = {
-
                 DefaultToolbar(
                     modifier = Modifier,
                     title = stringResource(R.string.history),
@@ -94,7 +93,6 @@ internal fun HistoryScreenContent(
                 )
             },
         ) {
-
             if (!uiState.isLoading) {
                 uiState.history.forEach { history ->
                     DefaultListItem(
@@ -113,7 +111,9 @@ internal fun HistoryScreenContent(
                         onClick = { }
                     )
                 }
-            } else ProgressIndicator()
+            } else {
+                ProgressIndicator()
+            }
         }
         SnackbarHost(
             modifier = Modifier
@@ -122,7 +122,7 @@ internal fun HistoryScreenContent(
             hostState = snackbarHostState,
         )
 
-        if (uiState.showDatePicker == DatePickerState.StartPick)
+        if (uiState.showDatePicker == DatePickerState.StartPick) {
             DateDialog(
                 selectedDate = uiState.startForPresentation,
                 onOkClick = { millis ->
@@ -134,8 +134,9 @@ internal fun HistoryScreenContent(
                     )
                 },
             )
+        }
 
-        if (uiState.showDatePicker == DatePickerState.EndPick)
+        if (uiState.showDatePicker == DatePickerState.EndPick) {
             DateDialog(
                 selectedDate = uiState.end,
                 onOkClick = { millis ->
@@ -147,12 +148,14 @@ internal fun HistoryScreenContent(
                     )
                 },
             )
+        }
 
-        if (uiState.error != null)
+        if (uiState.error != null) {
             CustomAlertDialog(
                 modifier = Modifier,
                 error = uiState.error,
                 onDismiss = { onEvent(HistoryUIEvent.OnErrorDialogDone) }
             )
+        }
     }
 }

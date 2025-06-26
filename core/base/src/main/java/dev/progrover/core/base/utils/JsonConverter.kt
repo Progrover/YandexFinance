@@ -4,7 +4,9 @@ import com.squareup.moshi.Moshi
 import timber.log.Timber
 import java.io.IOException
 import java.lang.reflect.ParameterizedType
-
+/**
+ * Класс, необходимый для сереализации-десереализации json структур
+ */
 class JsonConverter(
     private val moshi: Moshi,
 ) {

@@ -11,7 +11,9 @@ import dev.progrover.expenditures.api.ExpendituresFeature.ROUTE_NAME
 import dev.progrover.expenditures.impl.presentation.screen.ExpendituresScreen
 import dev.progrover.expenditures.impl.presentation.viewmodel.ExpendituresViewModel
 import javax.inject.Inject
-
+/**
+ * Необходим для навигации expenditures feature
+ */
 class ExpendituresNavigationFactory @Inject constructor() : NavigationFactory {
 
     override fun create(builder: NavGraphBuilder, navController: NavHostController) {
@@ -19,7 +21,6 @@ class ExpendituresNavigationFactory @Inject constructor() : NavigationFactory {
             startDestination = EXPENDITURES_SCREEN,
             route = ROUTE_NAME
         ) {
-
             composable(route = EXPENDITURES_SCREEN) {
                 val viewModel: ExpendituresViewModel = hiltViewModel()
                 ExpendituresScreen(viewModel = viewModel, navController = navController)

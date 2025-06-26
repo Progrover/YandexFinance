@@ -31,7 +31,6 @@ fun DefaultToolbar(
     onLeftIconClick: (() -> Unit)? = null,
     onRightIconClick: (() -> Unit)? = null,
 ) {
-
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -42,9 +41,7 @@ fun DefaultToolbar(
                 vertical = AppTheme.paddings.padding8,
             )
     ) {
-
         if (leftIconId != null) {
-
             Image(
                 modifier = Modifier
                     .conditionally(
@@ -52,7 +49,8 @@ fun DefaultToolbar(
                             onLeftIconClick != null,
                         trueExtension = {
                             noRippleClickable { onLeftIconClick?.invoke() }
-                        })
+                        }
+                    )
                     .align(Alignment.CenterVertically)
                     .padding(AppTheme.paddings.padding12)
                     .size(AppTheme.sizes.size24),
@@ -76,7 +74,6 @@ fun DefaultToolbar(
         Spacer(Modifier.weight(1f))
 
         if (rightIconId != null) {
-
             Image(
                 modifier = Modifier
                     .conditionally(
@@ -84,7 +81,8 @@ fun DefaultToolbar(
                             onRightIconClick != null,
                         trueExtension = {
                             noRippleClickable { onRightIconClick?.invoke() }
-                        })
+                        }
+                    )
                     .align(Alignment.CenterVertically)
                     .padding(AppTheme.paddings.padding12)
                     .size(AppTheme.sizes.size24),

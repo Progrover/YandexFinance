@@ -34,4 +34,3 @@ fun Long.toDateTimePresentation(): String =
         .format(DateTimeFormatter.ofPattern("dd.MM.yy HH:mm"))
 
 fun String.toMillis() = Instant.parse(this).toEpochMilli()
-

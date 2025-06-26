@@ -34,7 +34,6 @@ internal fun IncomesScreenContent(
     onEvent: (IncomesUIEvent) -> Unit,
     snackbarHostState: SnackbarHostState,
 ) {
-
     val scrollState = rememberScrollState()
     Box(
         modifier = Modifier
@@ -42,7 +41,6 @@ internal fun IncomesScreenContent(
             .background(AppTheme.colors.surface)
             .bottomNavigationPadding()
     ) {
-
         BasicColumn(
             modifier = modifier
                 .fillMaxSize()
@@ -50,9 +48,9 @@ internal fun IncomesScreenContent(
                     condition = !uiState.isLoading,
                     trueExtension = {
                         verticalScroll(scrollState)
-                    }),
+                    }
+                ),
             toolbar = {
-
                 DefaultToolbar(
                     modifier = Modifier,
                     title = stringResource(R.string.incomes_title),
@@ -86,7 +84,9 @@ internal fun IncomesScreenContent(
                         onClick = { onEvent(IncomesUIEvent.OnIncomeItemClick(income.id)) }
                     )
                 }
-            } else ProgressIndicator()
+            } else {
+                ProgressIndicator()
+            }
         }
 
         DefaultRoundButton(
@@ -107,11 +107,12 @@ internal fun IncomesScreenContent(
             hostState = snackbarHostState,
         )
 
-        if (uiState.error != null)
+        if (uiState.error != null) {
             CustomAlertDialog(
                 modifier = Modifier,
                 error = uiState.error,
                 onDismiss = { onEvent(IncomesUIEvent.OnErrorDialogDone) }
             )
+        }
     }
 }
