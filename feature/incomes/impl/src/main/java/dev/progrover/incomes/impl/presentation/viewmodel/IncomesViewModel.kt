@@ -15,7 +15,9 @@ import dev.progrover.incomes.impl.presentation.contract.incomes.IncomesUIState
 import dev.progrover.shmr_finance.core.uicommon.R
 import timber.log.Timber
 import javax.inject.Inject
-
+/**
+ * ViewModel, привязанная к incomes feature
+ */
 @HiltViewModel
 class IncomesViewModel @Inject constructor(
     private val incomesRepository: IncomesRepository,

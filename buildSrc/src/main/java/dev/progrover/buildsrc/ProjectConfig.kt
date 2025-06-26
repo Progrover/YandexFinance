@@ -18,4 +18,4 @@ object ProjectConfig {
     const val PROGUARD_DEFAULT = "proguard-android-optimize.txt"
 }
 
-fun String.toBundle() = ProjectConfig.appBundle + this.replace(':','.')
+fun String.toBundle() = ProjectConfig.appBundle + this.replace(':', '.')

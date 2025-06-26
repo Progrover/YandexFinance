@@ -1,7 +1,6 @@
 package dev.progrover.account.api.domain
 
 import kotlinx.coroutines.CoroutineScope
-
 /**
  * Api интерфейс для получения текущего accountId
  */

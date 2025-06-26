@@ -101,9 +101,7 @@ fun DateDialog(
         tonalElevation = 0.dp,
         properties = DialogProperties(usePlatformDefaultWidth = false),
         content = {
-
             Column {
-
                 DatePicker(
                     state = datePickerState,
                     title = null,
@@ -120,7 +118,6 @@ fun DateDialog(
                         ),
                     horizontalArrangement = Arrangement.spacedBy(AppTheme.paddings.padding8)
                 ) {
-
                     Text(
                         modifier = Modifier
                             .noRippleClickable { clearFlag = !clearFlag }

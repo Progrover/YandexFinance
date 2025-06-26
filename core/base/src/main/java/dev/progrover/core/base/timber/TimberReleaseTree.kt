@@ -1,11 +1,12 @@
-
 import android.util.Log
 import timber.log.Timber
-
+/**
+ * Необходим для логирования
+ */
 class TimberReleaseTree : Timber.Tree() {
-
     /**
-     * для использования не фатальных ошибок для крашлитики использовать Timber.e или Timber.w как Timber.e(throwable, mwssage)
+     * для использования не фатальных ошибок для крашлитики использовать
+     * Timber.e или Timber.w как Timber.e(throwable, mwssage)
      */
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
         when (priority) {
@@ -19,6 +20,6 @@ class TimberReleaseTree : Timber.Tree() {
         message: String,
         throwable: Throwable?,
     ) {
-        //TODO install crashlytics and send errors
+        // TODO install crashlytics and send errors
     }
 }

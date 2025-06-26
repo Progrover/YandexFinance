@@ -54,7 +54,6 @@ fun DefaultListItem(
             .fillMaxWidth()
             .background(backgroundColor),
     ) {
-
         Row(
             modifier = Modifier
                 .padding(
@@ -62,7 +61,6 @@ fun DefaultListItem(
                     vertical = verticalPadding,
                 ),
         ) {
-
             if (!startIcon.isNullOrBlank()) {
                 Box(
                     modifier = Modifier
@@ -73,18 +71,21 @@ fun DefaultListItem(
                         .align(Alignment.CenterVertically),
                     contentAlignment = Alignment.Center,
                 ) {
-
                     Text(
                         modifier = Modifier,
                         text = startIcon,
                         style = when (startIcon.isUnicode()) {
-                            true -> AppTheme.typography.emoji.copy(fontSize = with(density) {
+                            true -> AppTheme.typography.emoji.copy(
+                                fontSize = with(density) {
                                 (AppTheme.typography.emoji.fontSize.value / fontScale).sp
-                            })
+                            }
+                            )
 
-                            false -> AppTheme.typography.emoji.copy(fontSize = with(density) {
+                            false -> AppTheme.typography.emoji.copy(
+                                fontSize = with(density) {
                                 (10 / fontScale).sp
-                            })
+                            }
+                            )
                         },
                     )
                 }
@@ -96,7 +97,6 @@ fun DefaultListItem(
                     .align(Alignment.CenterVertically)
                     .padding(vertical = verticalTextPadding),
             ) {
-
                 Text(
                     modifier = Modifier
                         .padding(end = AppTheme.paddings.padding16),
@@ -124,7 +124,6 @@ fun DefaultListItem(
                     modifier = Modifier
                         .align(Alignment.CenterVertically),
                 ) {
-
                     Text(
                         modifier = Modifier,
                         text = additionalText,

@@ -7,7 +7,9 @@ import androidx.core.content.edit
 import com.squareup.moshi.Moshi
 import timber.log.Timber
 import java.lang.reflect.ParameterizedType
-
+/**
+ * Класс-реализация Prefs. Необходим для работы с кэшем
+ */
 open class SharedPrefsImpl(
     application: Application,
     prefsName: String,

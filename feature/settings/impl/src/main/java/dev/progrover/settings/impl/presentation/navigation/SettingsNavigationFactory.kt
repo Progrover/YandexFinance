@@ -11,7 +11,9 @@ import dev.progrover.settings.api.SettingsFeature.SETTINGS_SCREEN
 import dev.progrover.settings.impl.presentation.screen.SettingsScreen
 import dev.progrover.settings.impl.presentation.viewmodel.SettingsViewModel
 import javax.inject.Inject
-
+/**
+ * Необходим для навигации settings feature
+ */
 class SettingsNavigationFactory @Inject constructor() : NavigationFactory {
 
     override fun create(builder: NavGraphBuilder, navController: NavHostController) {
@@ -19,7 +21,6 @@ class SettingsNavigationFactory @Inject constructor() : NavigationFactory {
             startDestination = SETTINGS_SCREEN,
             route = ROUTE_NAME
         ) {
-
             composable(route = SETTINGS_SCREEN) {
                 val viewModel: SettingsViewModel = hiltViewModel()
                 SettingsScreen(viewModel = viewModel, navController = navController)

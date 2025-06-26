@@ -12,7 +12,6 @@ val properties = Properties()
 properties.load(project.rootProject.file("local.properties").inputStream())
 val token = properties.getProperty("TOKEN") ?: ""
 
-
 android {
     namespace = ProjectConfig.appBundle
     compileSdk = ProjectConfig.compileSdk

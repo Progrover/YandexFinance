@@ -9,7 +9,9 @@ import dev.progrover.account.impl.presentation.contract.account.AccountUIState
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.shmr_finance.core.uicommon.R
 import javax.inject.Inject
-
+/**
+ * ViewModel, привязанная к account feature
+ */
 @HiltViewModel
 class AccountViewModel @Inject constructor(
     private val accountRepository: AccountRepository,
@@ -22,7 +24,6 @@ class AccountViewModel @Inject constructor(
 
     override fun handleUIEvent(event: AccountUIEvent) =
         when (event) {
-
             AccountUIEvent.OnAddClick ->
                 setEffect(AccountUIEffect.ShowError(R.string.in_develop))
 

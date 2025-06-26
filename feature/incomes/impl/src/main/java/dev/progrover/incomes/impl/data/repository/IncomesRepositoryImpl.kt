@@ -54,7 +54,9 @@ class IncomesRepositoryImpl @Inject constructor(
                                 incomesDTOMapper.mapTransactionsToIncomes(result)
                             )
                         )
-                    } else ApiResponse(code = response.code())
+                    } else {
+                        ApiResponse(code = response.code())
+                    }
                 } else {
                     ApiResponse()
                 }
@@ -89,7 +91,9 @@ class IncomesRepositoryImpl @Inject constructor(
                             incomesDTOMapper.mapTransactionsToIncomesDetailed(result)
                         )
                     )
-                } else ApiResponse(code = response.code())
+                } else {
+                    ApiResponse(code = response.code())
+                }
             } else {
                 ApiResponse()
             }

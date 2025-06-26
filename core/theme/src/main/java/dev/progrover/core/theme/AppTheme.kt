@@ -1,7 +1,6 @@
 package dev.progrover.core.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
@@ -33,14 +32,12 @@ object AppTheme {
         get() = LocalAppSizes.current
 }
 
-
 @Composable
 fun AppThemeComposable(
     darkTheme: Boolean = isSystemInDarkTheme(),
     darkStatusBarIcons: Boolean = !isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-
     val colors: AppColors = remember(darkTheme) {
         when (darkTheme) {
             true -> AppColors.DarkColors
@@ -51,8 +48,6 @@ fun AppThemeComposable(
     val statusbarColor: Color = Color.Transparent
 
     val systemUiController = rememberSystemUiController()
-
-    val isDarkModeIconsEnabled = MaterialTheme.colors.isLight
 
     SideEffect {
         systemUiController.setStatusBarColor(
@@ -70,10 +65,3 @@ fun AppThemeComposable(
         content()
     }
 }
-
-
-
-
-
-
-

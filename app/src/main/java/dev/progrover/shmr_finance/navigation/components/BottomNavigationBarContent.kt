@@ -29,19 +29,16 @@ fun BottomNavigationBarContent(
     navArguments: Bundle?,
     onClick: (BottomNavigationItem) -> Unit,
 ) {
-
     AnimatedVisibility(
         visible = isBottomBarVisible,
         enter = slideInVertically(initialOffsetY = { it }),
         exit = slideOutVertically(targetOffsetY = { it }),
     ) {
-
         Surface(
             modifier = Modifier
                 .navigationBarsPadding()
                 .fillMaxWidth()
         ) {
-
             Row(
                 modifier = Modifier
                     .background(AppTheme.colors.surfaceContainer)
@@ -52,7 +49,6 @@ fun BottomNavigationBarContent(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 BottomBarItem(
                     modifier = Modifier
                         .padding(
@@ -62,10 +58,12 @@ fun BottomNavigationBarContent(
                     item = BottomNavigationItem.ExpendituresScreen,
                     isSelected =
                         currentDestination?.hierarchy
-                            ?.any { it.route == BottomNavigationItem.ExpendituresScreen.route } == true
-                                || (navArguments?.keySet()?.any { key ->
+                            ?.any { it.route == BottomNavigationItem.ExpendituresScreen.route } == true ||
+                                (
+                                    navArguments?.keySet()?.any { key ->
                             navArguments.get(key) == RouteDesc.Expenditures
-                        } ?: false),
+                        } ?: false
+                                ),
                     onClick = onClick,
                 )
 
@@ -78,10 +76,12 @@ fun BottomNavigationBarContent(
                     item = BottomNavigationItem.IncomesScreen,
                     isSelected = currentDestination?.hierarchy
                         ?.any { it.route == BottomNavigationItem.IncomesScreen.route } == true ||
-                            (navArguments?.keySet()
+                            (
+                                navArguments?.keySet()
                                 ?.any { key ->
                                     navArguments.get(key) == RouteDesc.Incomes
-                                } ?: false),
+                                } ?: false
+                            ),
                     onClick = onClick,
                 )
 

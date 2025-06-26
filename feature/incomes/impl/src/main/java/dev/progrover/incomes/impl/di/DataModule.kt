@@ -14,6 +14,6 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun providesIncomesDTOMapper() : IncomesDTOMapper =
+    fun providesIncomesDTOMapper(): IncomesDTOMapper =
         IncomesDTOMapperImpl()
 }

@@ -14,7 +14,9 @@ import dev.progrover.history.api.HistoryFeature.ROUTE_NAME
 import dev.progrover.history.impl.presentation.screen.HistoryScreen
 import dev.progrover.history.impl.presentation.viewmodel.HistoryViewModel
 import javax.inject.Inject
-
+/**
+ * Необходим для навигации history feature
+ */
 class HistoryNavigationFactory @Inject constructor() : NavigationFactory {
 
     override fun create(builder: NavGraphBuilder, navController: NavHostController) {
@@ -22,7 +24,6 @@ class HistoryNavigationFactory @Inject constructor() : NavigationFactory {
             startDestination = HISTORY_PAGE,
             route = ROUTE_NAME
         ) {
-
             composable(
                 route = HISTORY_PAGE,
                 arguments = listOf(

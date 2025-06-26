@@ -22,7 +22,6 @@ fun DefaultRoundButton(
     iconId: Int = R.drawable.add,
     onClick: () -> Unit,
 ) {
-
     Box(
         modifier = modifier
             .noRippleClickable { onClick() }
@@ -31,7 +30,6 @@ fun DefaultRoundButton(
             .background(AppTheme.colors.brightGreen),
         contentAlignment = Alignment.Center,
     ) {
-
         Image(
             modifier = Modifier,
             imageVector = ImageVector.vectorResource(iconId),

@@ -39,27 +39,23 @@ internal fun SettingsScreenContent(
             .background(AppTheme.colors.surface)
             .bottomNavigationPadding()
     ) {
-
         BasicColumn(
             modifier = modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState()),
             toolbar = {
-
                 DefaultToolbar(
                     modifier = Modifier,
                     title = stringResource(R.string.settings_title),
                 )
             },
         ) {
-
             CustomListItem(
                 modifier = Modifier,
                 backgroundColor = AppTheme.colors.containerHigh,
                 title = stringResource(R.string.theme),
                 titleColor = AppTheme.colors.textSecondary,
                 customElement = {
-
                     Switch(
                         modifier = Modifier
                             .padding(vertical = AppTheme.paddings.padding4)

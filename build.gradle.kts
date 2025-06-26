@@ -21,6 +21,10 @@ buildscript {
     }
 }
 
+dependencies {
+    detektPlugins(libs.detekt.formatting)
+}
+
 detekt {
     toolVersion = libs.versions.detekt.get()
     config.setFrom(file(File(rootDir, "config/detekt/detekt.yml")))

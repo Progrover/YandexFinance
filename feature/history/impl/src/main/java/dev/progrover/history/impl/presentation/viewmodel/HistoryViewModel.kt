@@ -21,7 +21,9 @@ import dev.progrover.history.impl.presentation.navigation.HistoryNavigationFacto
 import dev.progrover.shmr_finance.core.uicommon.R
 import timber.log.Timber
 import javax.inject.Inject
-
+/**
+ * ViewModel, привязанная к history feature
+ */
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
@@ -172,5 +174,7 @@ class HistoryViewModel @Inject constructor(
                     showDatePicker = DatePickerState.None,
                 )
             )
-        } else ifNot()
+        } else {
+            ifNot()
+        }
 }

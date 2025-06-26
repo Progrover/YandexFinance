@@ -52,7 +52,9 @@ class ExpendituresRepositoryImpl @Inject constructor(
                                 expendituresDTOMapper.mapTransactionsToExpenditures(result)
                             )
                         )
-                    } else ApiResponse(response.code())
+                    } else {
+                        ApiResponse(response.code())
+                    }
                 } else {
                     ApiResponse()
                 }
@@ -88,7 +90,9 @@ class ExpendituresRepositoryImpl @Inject constructor(
                                 expendituresDTOMapper.mapTransactionsToExpendituresDetailed(result)
                             )
                         )
-                    } else ApiResponse(response.code())
+                    } else {
+                        ApiResponse(response.code())
+                    }
                 } else {
                     ApiResponse()
                 }

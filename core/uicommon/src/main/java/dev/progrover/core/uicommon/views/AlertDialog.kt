@@ -59,7 +59,6 @@ fun CustomAlertDialog(
         false -> onDismiss
     },
 ) {
-
     var visible by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
@@ -95,7 +94,6 @@ fun CustomAlertDialog(
         ),
         exit = fadeOut(tween(1000))
     ) {
-
         Row(
             modifier = modifier
                 .clip(RoundedCornerShape(10.dp))
@@ -103,7 +101,6 @@ fun CustomAlertDialog(
                 .padding(AppTheme.paddings.padding12),
             horizontalArrangement = Arrangement.spacedBy(AppTheme.paddings.padding6)
         ) {
-
             if (startIconRes != null) {
                 Image(
                     modifier = Modifier
@@ -113,7 +110,9 @@ fun CustomAlertDialog(
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(AppTheme.colors.white),
                 )
-            } else Box(Modifier.size(AppTheme.sizes.size24))
+            } else {
+                Box(Modifier.size(AppTheme.sizes.size24))
+            }
 
             Text(
                 modifier = Modifier
@@ -135,7 +134,9 @@ fun CustomAlertDialog(
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(AppTheme.colors.white),
                 )
-            } else Box(Modifier.size(AppTheme.sizes.size24))
+            } else {
+                Box(Modifier.size(AppTheme.sizes.size24))
+            }
         }
     }
 }

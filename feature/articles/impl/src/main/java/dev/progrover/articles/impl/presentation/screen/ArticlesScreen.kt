@@ -20,7 +20,6 @@ internal fun ArticlesScreen(
     navController: NavController,
     viewModel: ArticlesViewModel,
 ) {
-
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -28,7 +27,6 @@ internal fun ArticlesScreen(
     LaunchedEffect(key1 = viewModel.effect) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
-
                 is ArticlesUIEffect.ShowError ->
                     snackbarHostState.showSnackbar(
                         message = context.getString(effect.messageResId),

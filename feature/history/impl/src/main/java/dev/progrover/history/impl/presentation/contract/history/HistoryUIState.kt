@@ -5,7 +5,9 @@ import dev.progrover.core.base.presentation.mvi.UIState
 import dev.progrover.core.base.utils.getFirstDayOfCurrentMonthForPresentation
 import dev.progrover.core.base.utils.getRealFirstDayOfCurrentMonth
 import dev.progrover.history.impl.domain.model.HistoryElement
-
+/**
+ * Класс, необходимый для отслеживания состояния history feature
+ */
 data class HistoryUIState(
     val isLoading: Boolean = false,
     val total: String = "???",
@@ -16,14 +18,14 @@ data class HistoryUIState(
     val currency: String = "",
     val showDatePicker: DatePickerState = DatePickerState.None
 ) : UIState {
-    /**
-     * Почему-то DatePicker перескакивает на предыдущий день,
-     * если указывать getRealFirstDayOfCurrentMonth()
-     */
+     // Почему-то DatePicker перескакивает на предыдущий день,
+     // если указывать getRealFirstDayOfCurrentMonth()
     val startForPresentation =
-        if (start == getRealFirstDayOfCurrentMonth())
+        if (start == getRealFirstDayOfCurrentMonth()) {
             getFirstDayOfCurrentMonthForPresentation()
-        else start
+        } else {
+            start
+        }
 }
 
 enum class DatePickerState {

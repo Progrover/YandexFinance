@@ -15,7 +15,9 @@ import dev.progrover.expenditures.impl.presentation.contract.expenditures.Expend
 import dev.progrover.shmr_finance.core.uicommon.R
 import timber.log.Timber
 import javax.inject.Inject
-
+/**
+ * ViewModel, привязанная к expenditures feature
+ */
 @HiltViewModel
 class ExpendituresViewModel @Inject constructor(
     private val expendituresRepository: ExpendituresRepository,

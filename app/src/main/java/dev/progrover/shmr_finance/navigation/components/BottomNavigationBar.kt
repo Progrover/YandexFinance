@@ -19,7 +19,6 @@ fun BottomNavigationBar(
     uiState: MainUIState,
     navController: NavController,
 ) {
-
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     BottomNavigationBarContent(

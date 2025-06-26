@@ -8,7 +8,9 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
-
+/**
+ * Необходим для получения информации с сервера о транзакциях
+ */
 interface TransactionsApi {
 
     @GET("transactions/account/{accountId}/period")
@@ -25,7 +27,7 @@ interface TransactionsApi {
         @Body amount: String,
         @Body transactionDate: String,
         @Body comment: String
-    ) : Response<Unit>
+    ): Response<Unit>
 
     @GET("transactions/{id}")
     suspend fun getTransactionById(

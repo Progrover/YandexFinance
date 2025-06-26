@@ -47,7 +47,7 @@ dependencies {
     navigation()
     coil()
     accountApi()
-    //encrypt
+    // encrypt
     implementation(libs.jbcrypt)
 }
 

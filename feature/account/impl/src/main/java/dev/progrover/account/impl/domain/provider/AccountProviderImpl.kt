@@ -22,7 +22,9 @@ class AccountProviderImpl @Inject constructor(
 
     override fun getId(scope: CoroutineScope, withResponse: (Result<Int>) -> Unit) {
         scope.launch(dispatcher + exceptionHandler) {
-            if (accountId != null) withResponse(Result.success(accountId)) else {
+            if (accountId != null) {
+                withResponse(Result.success(accountId))
+            } else {
                 val response = accountInteractor.getAccounts()
                 response.value?.let { list ->
                     try {

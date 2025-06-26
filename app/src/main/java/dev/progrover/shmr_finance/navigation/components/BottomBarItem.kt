@@ -33,7 +33,6 @@ fun RowScope.BottomBarItem(
     selectedColor: Color = AppTheme.colors.brightGreen,
     unselectedColor: Color = AppTheme.colors.textSecondary,
 ) {
-
     NavigationBarItem(
         modifier = modifier,
         icon = {
@@ -49,7 +48,6 @@ fun RowScope.BottomBarItem(
                         }
                     ),
             ) {
-
                 Image(
                     modifier = Modifier
                         .padding(
@@ -68,7 +66,6 @@ fun RowScope.BottomBarItem(
             }
         },
         label = {
-
             Text(
                 modifier = Modifier,
                 text = stringResource(id = item.caption),

@@ -2,7 +2,9 @@ package dev.progrover.settings.api
 
 import androidx.navigation.NavController
 import dev.progrover.core.base.utils.customNavigate
-
+/**
+ * Класс, содержащий варианты навигации к экранам settings feature
+ */
 object SettingsFeature {
 
     const val ROUTE_NAME = "settingsFeature"

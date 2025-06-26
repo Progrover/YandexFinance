@@ -7,9 +7,9 @@ import dev.progrover.expenditures.impl.domain.model.Expenditure
 interface ExpendituresDTOMapper {
     fun mapTransactionsToExpenditures(
         transactions: List<Transaction>
-    ) : List<Expenditure>
+    ): List<Expenditure>
 
     fun mapTransactionsToExpendituresDetailed(
         transactions: List<Transaction>
-    ) : List<ExpenditureDetailed>
+    ): List<ExpenditureDetailed>
 }
