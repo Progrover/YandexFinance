@@ -1,5 +1,6 @@
 package dev.progrover.core.uicommon.views
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -38,6 +39,7 @@ fun DefaultListItem(
     captionTitle: String? = null,
     captionAdditional: String? = null,
     additionalText: String? = null,
+    @DrawableRes startIconResId: Int? = null,
     startIcon: String? = null,
     endIconResId: Int? = null,
     verticalTextPadding: Dp = 0.dp,
@@ -77,16 +79,34 @@ fun DefaultListItem(
                         style = when (startIcon.isUnicode()) {
                             true -> AppTheme.typography.emoji.copy(
                                 fontSize = with(density) {
-                                (AppTheme.typography.emoji.fontSize.value / fontScale).sp
-                            }
+                                    (AppTheme.typography.emoji.fontSize.value / fontScale).sp
+                                }
                             )
 
                             false -> AppTheme.typography.emoji.copy(
                                 fontSize = with(density) {
-                                (10 / fontScale).sp
-                            }
+                                    (10 / fontScale).sp
+                                }
                             )
                         },
+                    )
+                }
+            }
+
+            if (startIconResId != null) {
+                Box(
+                    modifier = Modifier
+                        .padding(end = AppTheme.paddings.padding16)
+                        .size(AppTheme.sizes.size24)
+                        .clip(CircleShape)
+                        .background(iconBackgroundColor)
+                        .align(Alignment.CenterVertically),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Image(
+                        modifier = Modifier,
+                        imageVector = ImageVector.vectorResource(startIconResId),
+                        contentDescription = null,
                     )
                 }
             }

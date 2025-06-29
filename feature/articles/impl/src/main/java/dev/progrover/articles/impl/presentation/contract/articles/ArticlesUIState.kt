@@ -1,7 +1,7 @@
 package dev.progrover.articles.impl.presentation.contract.articles
 
 import dev.progrover.core.base.model.Category
-import dev.progrover.core.base.model.Error
+import dev.progrover.core.base.model.Alert
 import dev.progrover.core.base.presentation.mvi.UIState
 
 /**
@@ -15,5 +15,5 @@ data class ArticlesUIState(
     // приходится вводить дополнительную переменную для отображения
     // отсортированного списка
     val articlesForPresentation: List<Category> = emptyList(),
-    val error: Error? = null,
+    val alert: Alert? = null,
 ) : UIState

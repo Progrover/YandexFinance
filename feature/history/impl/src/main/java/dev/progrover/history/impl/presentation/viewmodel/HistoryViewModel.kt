@@ -4,14 +4,14 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.progrover.account.api.domain.AccountIdProvider
-import dev.progrover.core.base.model.Error
+import dev.progrover.core.base.model.Alert
 import dev.progrover.core.base.navigation.RouteDesc
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.addCurrency
 import dev.progrover.core.base.utils.formatToAmount
 import dev.progrover.core.base.utils.toServerRequest
 import dev.progrover.history.impl.domain.model.HistoryElement
-import dev.progrover.history.impl.domain.model.HistoryError
+import dev.progrover.history.impl.domain.model.HistoryAlert
 import dev.progrover.history.impl.domain.repository.HistoryRepository
 import dev.progrover.history.impl.presentation.contract.history.DatePickerState
 import dev.progrover.history.impl.presentation.contract.history.HistoryUIEffect
@@ -43,7 +43,7 @@ class HistoryViewModel @Inject constructor(
     override fun handleUIEvent(event: HistoryUIEvent) =
         when (event) {
             HistoryUIEvent.OnErrorDialogDone ->
-                setState(currentState.copy(error = null))
+                setState(currentState.copy(alert = null))
 
             HistoryUIEvent.OnBackClick ->
                 setEffect(HistoryUIEffect.NavigateBack)
@@ -110,7 +110,7 @@ class HistoryViewModel @Inject constructor(
                 onFailure = {
                     setState(
                         currentState.copy(
-                            error = it as Error,
+                            alert = it as Alert,
                         )
                     )
                 }
@@ -142,7 +142,7 @@ class HistoryViewModel @Inject constructor(
             onFailure = { message ->
                 setState(
                     currentState.copy(
-                        error = message,
+                        alert = message,
                     )
                 )
             }
@@ -170,7 +170,7 @@ class HistoryViewModel @Inject constructor(
         if (start > end) {
             setState(
                 currentState.copy(
-                    error = HistoryError.IncorrectDataPickError,
+                    alert = HistoryAlert.IncorrectDataPickError,
                     showDatePicker = DatePickerState.None,
                 )
             )

@@ -2,7 +2,7 @@ package dev.progrover.account.impl.domain.provider
 
 import dev.progrover.account.api.domain.AccountIdProvider
 import dev.progrover.account.impl.domain.interactor.AccountInteractor
-import dev.progrover.account.impl.domain.model.AccountError
+import dev.progrover.account.impl.domain.model.AccountAlert
 import dev.progrover.core.base.di.CoroutineQualifiers
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -30,7 +30,7 @@ class AccountProviderImpl @Inject constructor(
                     try {
                         withResponse(Result.success(list.first().id))
                     } catch (e: Exception) {
-                        withResponse(Result.failure(AccountError.NoAccountError))
+                        withResponse(Result.failure(AccountAlert.NoAccountError))
                     }
                 } ?: withResponse(Result.failure(response.error))
             }

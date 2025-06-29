@@ -4,4 +4,10 @@
     <string name="total_amount">Баланс</string>
     <string name="account_title">Мой счет</string>
     <string name="no_account_error">У данного пользователя нет аккаунтов!</string>
+    <string name="currency_error">Не удалось обновить валюту счёта! Проверьте подключение к интернету и перезагрузите страницу =)</string>
+    <string name="currency_complete">Валюта счёта успешно обновлена!</string>
+    <string name="rubble">Российский рубль</string>
+    <string name="dollar">Американский доллар</string>
+    <string name="euro">Евро</string>
+    <string name="cancel">Отмена</string>
 </resources>

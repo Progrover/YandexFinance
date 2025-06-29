@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import dev.progrover.account.api.AccountFeature
 import dev.progrover.account.impl.presentation.components.screencontent.AccountScreenContent
 import dev.progrover.account.impl.presentation.contract.account.AccountUIEffect
 import dev.progrover.account.impl.presentation.viewmodel.AccountViewModel
@@ -33,6 +34,9 @@ internal fun AccountScreen(
                         withDismissAction = true,
                         duration = SnackbarDuration.Short,
                     )
+
+                AccountUIEffect.NavigateToCurrencySheet ->
+                    AccountFeature.openCurrencyPickScreen(navController)
             }
         }
     }

@@ -1,11 +1,13 @@
 package dev.progrover.shmr_finance.navigation.host
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.google.accompanist.navigation.material.BottomSheetNavigator
@@ -31,8 +33,12 @@ internal fun FinanceNavigation(
 
     ModalBottomSheetLayout(
         bottomSheetNavigator = bottomSheetNavigator,
-        sheetBackgroundColor = AppTheme.colors.surface,
-        scrimColor = AppTheme.colors.surface.copy(alpha = 0.4f),
+        sheetBackgroundColor = AppTheme.colors.white,
+        scrimColor = Color.Black.copy(alpha = 0.4f),
+        sheetShape = RoundedCornerShape(
+            topStart = AppTheme.paddings.padding32,
+            topEnd = AppTheme.paddings.padding32
+        ),
     ) {
         Scaffold(
             scaffoldState = scaffoldState,

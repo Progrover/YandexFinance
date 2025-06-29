@@ -40,7 +40,7 @@ class ArticlesViewModel @Inject constructor(
                 setEffect(ArticlesUIEffect.ShowError(R.string.in_develop))
 
             ArticlesUIEvent.OnErrorDialogDone ->
-                setState(currentState.copy(error = null))
+                setState(currentState.copy(alert = null))
 
             is ArticlesUIEvent.OnSearchTextChange -> {
                 setState(currentState.copy(searchText = event.newText))
@@ -64,7 +64,7 @@ class ArticlesViewModel @Inject constructor(
                     )
                 },
                 onFailure = { message ->
-                    setState(currentState.copy(error = message))
+                    setState(currentState.copy(alert = message))
                 },
             )
         }

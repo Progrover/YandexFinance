@@ -1,6 +1,7 @@
 package dev.progrover.account.impl.data.api
 
 import dev.progrover.core.base.model.AccountDetailed
+import dev.progrover.account.impl.data.model.ManageAccountRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -18,9 +19,7 @@ interface AccountApi {
 
     @POST("accounts")
     suspend fun createNewAccount(
-        @Body name: String,
-        @Body balance: String,
-        @Body currency: String,
+        @Body accountRequest: ManageAccountRequest,
     ): Response<AccountDetailed>
 
     @GET("accounts/{id}")
@@ -31,9 +30,7 @@ interface AccountApi {
     @PUT("accounts/{id}")
     suspend fun updateAccountById(
         @Path("id") id: Int,
-        @Body name: String,
-        @Body balance: String,
-        @Body currency: String,
+        @Body accountRequest: ManageAccountRequest,
     ): Response<AccountDetailed>
 
     @DELETE("accounts/{id}")

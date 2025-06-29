@@ -3,7 +3,7 @@ package dev.progrover.incomes.impl.presentation.viewmodel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.progrover.account.api.domain.AccountIdProvider
-import dev.progrover.core.base.model.Error
+import dev.progrover.core.base.model.Alert
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.addCurrency
 import dev.progrover.core.base.utils.formatToAmount
@@ -44,7 +44,7 @@ class IncomesViewModel @Inject constructor(
                 setEffect(IncomesUIEffect.ShowError(R.string.in_develop))
 
             IncomesUIEvent.OnErrorDialogDone ->
-                setState(currentState.copy(error = null))
+                setState(currentState.copy(alert = null))
         }
 
     private fun loadInfo() {
@@ -54,7 +54,7 @@ class IncomesViewModel @Inject constructor(
                 onFailure = {
                     setState(
                         currentState.copy(
-                            error = it as Error,
+                            alert = it as Alert,
                         )
                     )
                 }
@@ -95,7 +95,7 @@ class IncomesViewModel @Inject constructor(
             onFailure = { message ->
                 setState(
                     currentState.copy(
-                        error = message,
+                        alert = message,
                     )
                 )
             }

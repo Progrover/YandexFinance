@@ -5,7 +5,7 @@ import java.text.NumberFormat
 import java.util.Locale
 
 fun String.isUnicode(): Boolean =
-    !this.contains("[А-Яа-яA-Za-z0-9!\"#$%&'()*+,-./:;\\\\<=>?@\\[\\]^_`{|}~]".toRegex())
+    !this.contains("[А-Яа-яA-Za-z0-9!\"#%&'()*+,-./:;\\\\<=>?@\\[\\]^_`{|}~]".toRegex())
 
 fun NavController.customNavigate(route: String) {
     this.navigate(route) {
@@ -31,10 +31,10 @@ fun String.addCurrency(currency: String) = this.plus(
     }
 )
 
-fun String.getCurrency() =
+fun String.getCurrency(withSpace: Boolean = true) =
     when (this) {
-        "RUB" -> " ₽"
-        "USD" -> " $"
-        "EUR" -> " €"
+        "RUB" -> "₽"
+        "USD" -> "$"
+        "EUR" -> "€"
         else -> " ???"
-    }
+    }.let { if (withSpace) " $it" else it }
