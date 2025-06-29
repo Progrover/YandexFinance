@@ -8,7 +8,7 @@ import dev.progrover.expenditures.impl.domain.model.Expenditure
  */
 data class ExpendituresUIState(
     val isLoading: Boolean = false,
-    val totalExpenditures: String = "??? ₽",
+    val totalExpenditures: String = "",
     val alert: Alert? = null,
     val expenditures: List<Expenditure> = emptyList(),
     val currency: String = "",

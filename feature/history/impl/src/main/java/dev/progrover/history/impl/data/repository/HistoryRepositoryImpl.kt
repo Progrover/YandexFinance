@@ -29,7 +29,7 @@ class HistoryRepositoryImpl(
         start: String,
         end: String,
         type: RouteDesc,
-    ): ApiResponse<Pair<String, List<HistoryElement>>> =
+    ): ApiResponse<List<HistoryElement>> =
         executeOnIO {
             when (type) {
                 RouteDesc.Incomes -> {
@@ -41,10 +41,8 @@ class HistoryRepositoryImpl(
 
                     if (response.value != null) {
                         ApiResponse(
-                            value = Pair(
-                                response.value!!.first,
-                                historyDTOMapper.mapIncomesToHistory(response.value!!.second),
-                            )
+                            value =
+                                historyDTOMapper.mapIncomesToHistory(response.value!!),
                         )
                     } else {
                         ApiResponse(
@@ -63,10 +61,8 @@ class HistoryRepositoryImpl(
 
                     if (response.value != null) {
                         ApiResponse(
-                            value = Pair(
-                                response.value!!.first,
-                                historyDTOMapper.mapExpendituresToHistory(response.value!!.second),
-                            )
+                            value =
+                                historyDTOMapper.mapExpendituresToHistory(response.value!!),
                         )
                     } else {
                         ApiResponse(

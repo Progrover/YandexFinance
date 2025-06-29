@@ -28,7 +28,7 @@ class ExpendituresRepositoryImpl @Inject constructor(
     coroutineExceptionHandler = coroutineExceptionHandler,
 ) {
     @SuppressLint("SimpleDateFormat")
-    override suspend fun getExpenditures(accountId: Int): ApiResponse<Pair<String, List<Expenditure>>> =
+    override suspend fun getExpenditures(accountId: Int): ApiResponse<List<Expenditure>> =
         executeOnIO {
             try {
                 val startDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
@@ -44,12 +44,9 @@ class ExpendituresRepositoryImpl @Inject constructor(
                         val result = response.body()!!.filter { transaction ->
                             !transaction.category.isIncome
                         }
-                        val currency =
-                            if (result.isNotEmpty()) result.first().account.currency else "RUB"
                         ApiResponse(
-                            value = Pair(
-                                currency,
-                                expendituresDTOMapper.mapTransactionsToExpenditures(result)
+                            value = expendituresDTOMapper.mapTransactionsToExpenditures(
+                                result
                             )
                         )
                     } else {
@@ -68,7 +65,7 @@ class ExpendituresRepositoryImpl @Inject constructor(
         accountId: Int,
         start: String,
         end: String
-    ): ApiResponse<Pair<String, List<ExpenditureDetailed>>> =
+    ): ApiResponse<List<ExpenditureDetailed>> =
         executeOnIO {
             try {
                 if (tokenAvaliable) {
@@ -82,13 +79,9 @@ class ExpendituresRepositoryImpl @Inject constructor(
                         val result = response.body()!!.filter { transaction ->
                             !transaction.category.isIncome
                         }
-                        val currency =
-                            if (result.isNotEmpty()) result.first().account.currency else "RUB"
                         ApiResponse(
-                            value = Pair(
-                                currency,
+                            value =
                                 expendituresDTOMapper.mapTransactionsToExpendituresDetailed(result)
-                            )
                         )
                     } else {
                         ApiResponse(response.code())

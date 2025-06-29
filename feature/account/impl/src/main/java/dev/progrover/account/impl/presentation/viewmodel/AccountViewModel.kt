@@ -2,6 +2,7 @@ package dev.progrover.account.impl.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.progrover.account.api.domain.AccountPropertiesProvider
 import dev.progrover.account.impl.domain.model.AccountAlert
 import dev.progrover.account.impl.domain.repository.AccountRepository
 import dev.progrover.account.impl.presentation.contract.account.AccountUIEffect
@@ -22,6 +23,7 @@ import javax.inject.Inject
 class AccountViewModel @Inject constructor(
     private val accountRepository: AccountRepository,
     private val currencyUpdater: CurrencyUpdater,
+    private val accountProvider: AccountPropertiesProvider,
 ) :
     BaseViewModel<AccountUIEvent, AccountUIState, AccountUIEffect>(AccountUIState()) {
 
@@ -84,6 +86,7 @@ class AccountViewModel @Inject constructor(
             tryMultipleLoad(
                 function = { accountRepository.updateAccountById(currentAccount.copy(currency = newCurrency)) },
                 onSuccess = { newAccount ->
+                    accountProvider.setCurrency(newAccount.currency)
                     setState(
                         currentState.copy(
                             isLoading = false,

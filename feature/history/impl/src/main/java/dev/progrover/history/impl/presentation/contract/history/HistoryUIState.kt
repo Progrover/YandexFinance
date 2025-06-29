@@ -10,7 +10,7 @@ import dev.progrover.history.impl.domain.model.HistoryElement
  */
 data class HistoryUIState(
     val isLoading: Boolean = false,
-    val total: String = "???",
+    val total: String = "",
     val start: Long = getRealFirstDayOfCurrentMonth(),
     val end: Long = System.currentTimeMillis(),
     val alert: Alert? = null,

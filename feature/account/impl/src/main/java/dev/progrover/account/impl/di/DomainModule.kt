@@ -4,12 +4,12 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.progrover.account.api.domain.AccountIdProvider
+import dev.progrover.account.api.domain.AccountPropertiesProvider
 import dev.progrover.account.impl.data.api.AccountApi
 import dev.progrover.account.impl.data.repository.AccountRepositoryImpl
 import dev.progrover.account.impl.domain.interactor.AccountInteractor
 import dev.progrover.account.impl.domain.interactor.AccountInteractorImpl
-import dev.progrover.account.impl.domain.provider.AccountProviderImpl
+import dev.progrover.account.impl.domain.provider.AccountPropertiesImpl
 import dev.progrover.account.impl.domain.repository.AccountRepository
 import dev.progrover.account.impl.presentation.navigation.CurrencyUpdater
 import dev.progrover.core.base.di.CoroutineQualifiers
@@ -53,8 +53,8 @@ class DomainModule {
         dispatcher: CoroutineDispatcher,
         @CoroutineQualifiers.DefaultCoroutineExceptionHandler
         exceptionHandler: CoroutineExceptionHandler
-    ): AccountIdProvider =
-        AccountProviderImpl(
+    ): AccountPropertiesProvider =
+        AccountPropertiesImpl(
             accountInteractor = accountInteractor,
             dispatcher = dispatcher,
             exceptionHandler = exceptionHandler,

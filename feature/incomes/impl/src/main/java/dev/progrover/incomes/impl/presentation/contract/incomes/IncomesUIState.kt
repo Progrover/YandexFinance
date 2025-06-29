@@ -8,7 +8,7 @@ import dev.progrover.incomes.impl.domain.model.Income
  */
 data class IncomesUIState(
     val isLoading: Boolean = false,
-    val totalIncomes: String = "??? ₽",
+    val totalIncomes: String = "",
     val incomes: List<Income> = emptyList(),
     val alert: Alert? = null,
     val currency: String = "",

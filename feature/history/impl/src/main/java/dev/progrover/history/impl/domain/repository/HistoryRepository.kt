@@ -11,5 +11,5 @@ interface HistoryRepository {
         start: String,
         end: String,
         type: RouteDesc,
-    ): ApiResponse<Pair<String, List<HistoryElement>>>
+    ): ApiResponse<List<HistoryElement>>
 }

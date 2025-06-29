@@ -2,7 +2,7 @@ package dev.progrover.incomes.impl.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.progrover.account.api.domain.AccountIdProvider
+import dev.progrover.account.api.domain.AccountPropertiesProvider
 import dev.progrover.core.base.model.Alert
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.addCurrency
@@ -15,13 +15,14 @@ import dev.progrover.incomes.impl.presentation.contract.incomes.IncomesUIState
 import dev.progrover.shmr_finance.core.uicommon.R
 import timber.log.Timber
 import javax.inject.Inject
+
 /**
  * ViewModel, привязанная к incomes feature
  */
 @HiltViewModel
 class IncomesViewModel @Inject constructor(
     private val incomesRepository: IncomesRepository,
-    private val idProvider: AccountIdProvider,
+    private val idProvider: AccountPropertiesProvider,
 ) :
     BaseViewModel<IncomesUIEvent, IncomesUIState, IncomesUIEffect>(IncomesUIState()) {
 
@@ -86,9 +87,9 @@ class IncomesViewModel @Inject constructor(
                 setState(
                     currentState.copy(
                         isLoading = false,
-                        incomes = result.second,
-                        currency = result.first,
-                        totalIncomes = countTotalAmount(result.second, result.first),
+                        incomes = result,
+                        currency = idProvider.getCurrency(),
+                        totalIncomes = countTotalAmount(result, idProvider.getCurrency()),
                     )
                 )
             },
