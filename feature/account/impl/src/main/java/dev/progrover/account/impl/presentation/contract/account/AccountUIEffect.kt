@@ -8,6 +8,7 @@ import dev.progrover.core.base.presentation.mvi.UIEffect
  */
 sealed class AccountUIEffect : UIEffect {
     class ShowError(@StringRes val messageResId: Int) : AccountUIEffect()
+    class NavigateToNameAndBalanceScreen(val accountStr: String) : AccountUIEffect()
 
     data object NavigateToCurrencySheet : AccountUIEffect()
 }

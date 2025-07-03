@@ -45,7 +45,7 @@ fun DefaultListItem(
     verticalTextPadding: Dp = 0.dp,
     horizontalPadding: Dp = AppTheme.paddings.padding16,
     verticalPadding: Dp = AppTheme.paddings.padding8,
-    dividerVisible: Boolean = true,
+    dividerVisible: Boolean = false,
     onClick: () -> Unit,
 ) {
     val density = LocalDensity.current

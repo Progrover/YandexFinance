@@ -38,3 +38,14 @@ fun String.getCurrency(withSpace: Boolean = true) =
         "EUR" -> "€"
         else -> " ???"
     }.let { if (withSpace) " $it" else it }
+
+/**
+ * Расширения для передачи сериализованных объектов через аргументы навигации.
+ * Нужны для замены символов, которые являются специальными символами навигации
+ * и могут привести к ошибке при десериализации
+ */
+fun String.toRouteArgument() : String =
+    this.replace("/", "~[slash]~").replace("?", "~[question]~")
+
+fun String.fromRouteArgument() : String =
+    this.replace("~[slash]~","/").replace("~[question]~", "?")

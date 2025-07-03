@@ -8,9 +8,13 @@ import dev.progrover.account.impl.domain.repository.AccountRepository
 import dev.progrover.account.impl.presentation.contract.account.AccountUIEffect
 import dev.progrover.account.impl.presentation.contract.account.AccountUIEvent
 import dev.progrover.account.impl.presentation.contract.account.AccountUIState
+import dev.progrover.account.impl.presentation.navigation.BalanceAndNameUpdater
 import dev.progrover.account.impl.presentation.navigation.CurrencyUpdater
+import dev.progrover.core.base.model.AccountDetailed
 import dev.progrover.core.base.model.Alert
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
+import dev.progrover.core.base.utils.JsonConverter
+import dev.progrover.core.base.utils.toRouteArgument
 import dev.progrover.shmr_finance.core.uicommon.R
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -24,10 +28,14 @@ class AccountViewModel @Inject constructor(
     private val accountRepository: AccountRepository,
     private val currencyUpdater: CurrencyUpdater,
     private val accountProvider: AccountPropertiesProvider,
+    private val balanceAndNameUpdater: BalanceAndNameUpdater,
+    private val jsonConverter: JsonConverter,
 ) :
     BaseViewModel<AccountUIEvent, AccountUIState, AccountUIEffect>(AccountUIState()) {
 
     init {
+        startBalanceUpdater()
+        startNameUpdater()
         startCurrencyUpdater()
         loadInfo()
     }
@@ -40,8 +48,18 @@ class AccountViewModel @Inject constructor(
             AccountUIEvent.OnCurrencyClick ->
                 setEffect(AccountUIEffect.NavigateToCurrencySheet)
 
-            AccountUIEvent.OnEditClick ->
-                setEffect(AccountUIEffect.ShowError(R.string.in_develop))
+            AccountUIEvent.OnEditClick -> {
+                currentState.account?.let { account ->
+                    setEffect(
+                        AccountUIEffect.NavigateToNameAndBalanceScreen(
+                            jsonConverter.toJson(
+                                account,
+                                AccountDetailed::class.java
+                            ).toRouteArgument()
+                        )
+                    )
+                } ?: setState(currentState.copy(alert = AccountAlert.NoAccountError))
+            }
 
             AccountUIEvent.OnTotalAmountClick ->
                 setEffect(AccountUIEffect.ShowError(R.string.in_develop))
@@ -116,6 +134,32 @@ class AccountViewModel @Inject constructor(
         viewModelScope.launch {
             currencyUpdater.currencyUpdateChannel.collectLatest { newCurrency ->
                 updateCurrency(newCurrency)
+            }
+        }
+    }
+
+    private fun startBalanceUpdater() {
+        viewModelScope.launch {
+            balanceAndNameUpdater.balanceUpdateChannel.collectLatest { newBalance ->
+                setState(
+                    currentState.copy(
+                        account = currentState.account!!.copy(balance = newBalance),
+                        alert = AccountAlert.BalanceOrNameSuccess
+                    )
+                )
+            }
+        }
+    }
+
+    private fun startNameUpdater() {
+        viewModelScope.launch {
+            balanceAndNameUpdater.nameUpdateChannel.collectLatest { newName ->
+                setState(
+                    currentState.copy(
+                        account = currentState.account!!.copy(name = newName),
+                        alert = AccountAlert.BalanceOrNameSuccess
+                    )
+                )
             }
         }
     }

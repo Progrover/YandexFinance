@@ -37,6 +37,9 @@ internal fun AccountScreen(
 
                 AccountUIEffect.NavigateToCurrencySheet ->
                     AccountFeature.openCurrencyPickScreen(navController)
+
+                is AccountUIEffect.NavigateToNameAndBalanceScreen ->
+                    AccountFeature.openBalanceAndNameScreen(navController, effect.accountStr)
             }
         }
     }

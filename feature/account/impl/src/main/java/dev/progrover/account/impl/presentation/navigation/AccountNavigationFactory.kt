@@ -8,11 +8,14 @@ import androidx.navigation.navigation
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.bottomSheet
 import dev.progrover.account.api.AccountFeature.ACCOUNT_SCREEN
+import dev.progrover.account.api.AccountFeature.BALANCE_NAME_SCREEN
 import dev.progrover.account.api.AccountFeature.CURRENCY_SCREEN
 import dev.progrover.account.api.AccountFeature.ROUTE_NAME
 import dev.progrover.account.impl.presentation.screen.AccountScreen
+import dev.progrover.account.impl.presentation.screen.BalanceNameScreen
 import dev.progrover.account.impl.presentation.screen.CurrencyScreen
 import dev.progrover.account.impl.presentation.viewmodel.AccountViewModel
+import dev.progrover.account.impl.presentation.viewmodel.BalanceNameViewModel
 import dev.progrover.account.impl.presentation.viewmodel.CurrencyViewModel
 import dev.progrover.core.base.navigation.NavigationFactory
 import javax.inject.Inject
@@ -39,6 +42,18 @@ class AccountNavigationFactory @Inject constructor() : NavigationFactory {
                 val viewModel: CurrencyViewModel = hiltViewModel()
                 CurrencyScreen(viewModel = viewModel, navController = navController)
             }
+
+            composable(
+                route = ACCOUNT_CHANGES_PAGE,
+            ) {
+                val viewModel: BalanceNameViewModel = hiltViewModel()
+                BalanceNameScreen(viewModel = viewModel, navController = navController)
+            }
         }
+    }
+
+    companion object {
+        internal const val ACCOUNT_ARG_KEY = "accountArgKey"
+        private const val ACCOUNT_CHANGES_PAGE = "$BALANCE_NAME_SCREEN/{$ACCOUNT_ARG_KEY}"
     }
 }

@@ -11,6 +11,7 @@ import dev.progrover.account.impl.domain.interactor.AccountInteractor
 import dev.progrover.account.impl.domain.interactor.AccountInteractorImpl
 import dev.progrover.account.impl.domain.provider.AccountPropertiesImpl
 import dev.progrover.account.impl.domain.repository.AccountRepository
+import dev.progrover.account.impl.presentation.navigation.BalanceAndNameUpdater
 import dev.progrover.account.impl.presentation.navigation.CurrencyUpdater
 import dev.progrover.core.base.di.CoroutineQualifiers
 import kotlinx.coroutines.CoroutineDispatcher
@@ -63,4 +64,8 @@ class DomainModule {
     @Provides
     @Singleton
     fun providesCurrencyUpdater() = CurrencyUpdater
+
+    @Provides
+    @Singleton
+    fun providesBalanceAndNameUpdater() = BalanceAndNameUpdater
 }

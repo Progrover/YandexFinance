@@ -5,9 +5,16 @@
     <string name="account_title">Мой счет</string>
     <string name="no_account_error">У данного пользователя нет аккаунтов!</string>
     <string name="currency_error">Не удалось обновить валюту счёта! Проверьте подключение к интернету и перезагрузите страницу =)</string>
+    <string name="name_or_balance_error">Не удалось обновить данные счёта! Проверьте подключение к интернету и перезагрузите страницу =)</string>
     <string name="currency_complete">Валюта счёта успешно обновлена!</string>
+    <string name="changes_complete">Изменения применены!</string>
+    <string name="account_not_received_error">Редактирование невозможно, пока мы не получим аккаунт!</string>
     <string name="rubble">Российский рубль</string>
     <string name="dollar">Американский доллар</string>
+    <string name="account_name">Название</string>
+    <string name="account_hint">Не оставляйте поле пустым!</string>
+    <string name="account_balance">Баланс</string>
     <string name="euro">Евро</string>
     <string name="cancel">Отмена</string>
+    <string name="account_changes">Редактирование счета</string>
 </resources>

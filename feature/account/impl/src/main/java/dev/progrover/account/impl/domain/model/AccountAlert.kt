@@ -16,4 +16,9 @@ sealed class AccountAlert(
         R.string.currency_complete,
         AlertType.Success
     )
+    data object BalanceOrNameSuccess : AccountAlert(
+        R.string.changes_complete,
+        AlertType.Success
+    )
+    data object BalanceOrNameError : AccountAlert(R.string.name_or_balance_error)
 }
