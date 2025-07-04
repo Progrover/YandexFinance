@@ -1,6 +1,9 @@
 package dev.progrover.core.base.utils
 
 import androidx.navigation.NavController
+import java.net.URLDecoder
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -44,8 +47,8 @@ fun String.getCurrency(withSpace: Boolean = true) =
  * Нужны для замены символов, которые являются специальными символами навигации
  * и могут привести к ошибке при десериализации
  */
-fun String.toRouteArgument() : String =
-    this.replace("/", "~[slash]~").replace("?", "~[question]~")
+fun String.toRouteArgument(): String =
+    URLEncoder.encode(this, StandardCharsets.UTF_8.toString())
 
-fun String.fromRouteArgument() : String =
-    this.replace("~[slash]~","/").replace("~[question]~", "?")
+fun String.fromRouteArgument(): String =
+    URLDecoder.decode(this, StandardCharsets.UTF_8.toString())

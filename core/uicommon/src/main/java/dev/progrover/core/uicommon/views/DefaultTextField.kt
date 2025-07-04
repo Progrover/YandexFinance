@@ -34,8 +34,7 @@ import dev.progrover.core.uicommon.utils.conditionally
 fun DefaultTextField(
     modifier: Modifier = Modifier
         .fillMaxWidth()
-        .background(AppTheme.colors.containerHigh)
-        .padding(AppTheme.paddings.padding4),
+        .background(AppTheme.colors.containerHigh),
     enabled: Boolean = true,
     text: String,
     focusRequester: FocusRequester? = null,

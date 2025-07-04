@@ -12,6 +12,7 @@ import dev.progrover.account.impl.presentation.navigation.BalanceAndNameUpdater
 import dev.progrover.core.base.model.AccountDetailed
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.JsonConverter
+import dev.progrover.core.base.utils.fromRouteArgument
 import javax.inject.Inject
 
 /**

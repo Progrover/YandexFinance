@@ -3,7 +3,9 @@ package dev.progrover.account.impl.presentation.navigation
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.bottomSheet
@@ -45,6 +47,9 @@ class AccountNavigationFactory @Inject constructor() : NavigationFactory {
 
             composable(
                 route = ACCOUNT_CHANGES_PAGE,
+                arguments = listOf(
+                    navArgument(ACCOUNT_ARG_KEY) { type = NavType.StringType }
+                )
             ) {
                 val viewModel: BalanceNameViewModel = hiltViewModel()
                 BalanceNameScreen(viewModel = viewModel, navController = navController)

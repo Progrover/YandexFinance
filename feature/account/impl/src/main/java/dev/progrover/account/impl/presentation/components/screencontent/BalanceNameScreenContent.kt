@@ -3,7 +3,6 @@ package dev.progrover.account.impl.presentation.components.screencontent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
@@ -68,11 +67,11 @@ internal fun BalanceNameScreenContent(
 
                         DefaultTextField(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .background(AppTheme.colors.surface)
+                                .background(AppTheme.colors.white)
                                 .padding(AppTheme.paddings.padding4),
-                            text = uiState.account!!.name,
+                            text = uiState.account?.name ?: "",
                             dividerVisible = false,
+                            enabled = uiState.account != null,
                             focusRequester = focusRequester,
                             hintResId = R.string.account_hint,
                             onTextChange = { newText -> onEvent(BalanceUIEvent.OnNameChange(newText)) }
@@ -86,16 +85,17 @@ internal fun BalanceNameScreenContent(
                     titleColor = AppTheme.colors.textMain,
                     backgroundColor = AppTheme.colors.white,
                     startIcon = "\uD83D\uDCB0",
+                    dividerVisible = false,
                     iconBackgroundColor = AppTheme.colors.white,
                     customElement = {
 
                         DefaultTextField(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .background(AppTheme.colors.surface)
+                                .background(AppTheme.colors.white)
                                 .padding(AppTheme.paddings.padding4),
-                            text = uiState.account!!.balance,
+                            text = uiState.account?.balance ?: "",
                             dividerVisible = false,
+                            enabled = uiState.account != null,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             focusRequester = focusRequester,
                             hintResId = R.string.account_hint,

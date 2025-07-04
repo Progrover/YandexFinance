@@ -55,7 +55,7 @@ class AccountViewModel @Inject constructor(
                             jsonConverter.toJson(
                                 account,
                                 AccountDetailed::class.java
-                            ).toRouteArgument()
+                            )
                         )
                     )
                 } ?: setState(currentState.copy(alert = AccountAlert.NoAccountError))

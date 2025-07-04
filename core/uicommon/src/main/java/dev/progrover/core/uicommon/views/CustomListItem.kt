@@ -1,11 +1,9 @@
 package dev.progrover.core.uicommon.views
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -37,6 +35,7 @@ fun CustomListItem(
     verticalPadding: Dp = AppTheme.paddings.padding8,
     customElement: @Composable () -> Unit,
     startIcon: String? = null,
+    dividerVisible: Boolean = true,
     iconBackgroundColor: Color = AppTheme.colors.paleGreen,
     onClick: (() -> Unit)? = null,
 ) {
@@ -57,7 +56,6 @@ fun CustomListItem(
                     horizontal = horizontalPadding,
                     vertical = verticalPadding,
                 ),
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.paddings.padding16),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             if (!startIcon.isNullOrBlank()) {
@@ -91,7 +89,8 @@ fun CustomListItem(
             }
 
             Text(
-                modifier = Modifier,
+                modifier = Modifier
+                    .weight(1f),
                 text = title,
                 color = titleColor,
                 style = AppTheme.typography.bodyLarge,
@@ -99,14 +98,15 @@ fun CustomListItem(
                 overflow = TextOverflow.Ellipsis,
             )
 
-            Spacer(Modifier.weight(1f))
+            Box(modifier = Modifier.weight(3f)) { customElement() }
 
-            customElement()
         }
 
-        HorizontalDivider(
-            thickness = 1.dp,
-            color = AppTheme.colors.border,
-        )
+        if (dividerVisible) {
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = AppTheme.colors.border,
+            )
+        }
     }
 }

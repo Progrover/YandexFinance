@@ -20,5 +20,5 @@ object AccountFeature {
         navController.customNavigate(CURRENCY_SCREEN)
 
     fun openBalanceAndNameScreen(navController: NavController, accountStr: String) =
-        navController.customNavigate("$BALANCE_NAME_SCREEN/{$accountStr}")
+        navController.customNavigate("$BALANCE_NAME_SCREEN/$accountStr")
 }
