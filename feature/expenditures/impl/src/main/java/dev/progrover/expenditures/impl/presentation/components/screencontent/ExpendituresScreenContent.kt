@@ -107,10 +107,10 @@ internal fun ExpendituresScreenContent(
             hostState = snackbarHostState,
         )
 
-        if (uiState.error != null) {
+        if (uiState.alert != null) {
             CustomAlertDialog(
                 modifier = Modifier,
-                error = uiState.error,
+                alert = uiState.alert,
                 onDismiss = { onEvent(ExpendituresUIEvent.OnErrorDialogDone) }
             )
         }

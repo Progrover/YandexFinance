@@ -9,17 +9,22 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import dev.progrover.articles.impl.presentation.contract.articles.ArticlesUIEvent
 import dev.progrover.articles.impl.presentation.contract.articles.ArticlesUIState
 import dev.progrover.core.theme.AppTheme
 import dev.progrover.core.uicommon.utils.bottomNavigationPadding
 import dev.progrover.core.uicommon.utils.conditionally
+import dev.progrover.core.uicommon.utils.noRippleClickable
 import dev.progrover.core.uicommon.views.BasicColumn
 import dev.progrover.core.uicommon.views.CustomAlertDialog
 import dev.progrover.core.uicommon.views.DefaultListItem
+import dev.progrover.core.uicommon.views.DefaultTextField
 import dev.progrover.core.uicommon.views.DefaultToolbar
 import dev.progrover.core.uicommon.views.ProgressIndicator
 import dev.progrover.shmr_finance.feature.articles.impl.R
@@ -31,7 +36,10 @@ internal fun ArticlesScreenContent(
     onEvent: (ArticlesUIEvent) -> Unit,
     snackbarHostState: SnackbarHostState,
 ) {
+
     val scrollState = rememberScrollState()
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -41,6 +49,9 @@ internal fun ArticlesScreenContent(
         BasicColumn(
             modifier = modifier
                 .fillMaxSize()
+                .noRippleClickable {
+                    focusManager.clearFocus()
+                }
                 .conditionally(
                     condition = !uiState.isLoading,
                     trueExtension = {
@@ -53,19 +64,19 @@ internal fun ArticlesScreenContent(
                     title = stringResource(R.string.articles_title),
                 )
 
-                DefaultListItem(
-                    modifier = Modifier,
-                    backgroundColor = AppTheme.colors.containerHigh,
-                    title = stringResource(R.string.find_article),
-                    verticalTextPadding = AppTheme.paddings.padding8,
-                    titleColor = AppTheme.colors.textSecondary,
-                    endIconResId = R.drawable.find,
-                    onClick = { onEvent(ArticlesUIEvent.OnFindArticleClick) },
+                DefaultTextField(
+                    text = uiState.searchText,
+                    hintResId = R.string.find_article,
+                    endIconId = R.drawable.find,
+                    focusRequester = focusRequester,
+                    onTextChange = { newText ->
+                        onEvent(ArticlesUIEvent.OnSearchTextChange(newText))
+                    }
                 )
             },
         ) {
             if (!uiState.isLoading) {
-                uiState.articles.forEach { article ->
+                uiState.articlesForPresentation.forEach { article ->
                     DefaultListItem(
                         modifier = Modifier,
                         title = article.name,
@@ -86,10 +97,10 @@ internal fun ArticlesScreenContent(
             hostState = snackbarHostState,
         )
 
-        if (uiState.error != null) {
+        if (uiState.alert != null) {
             CustomAlertDialog(
                 modifier = Modifier,
-                error = uiState.error,
+                alert = uiState.alert,
                 onDismiss = { onEvent(ArticlesUIEvent.OnErrorDialogDone) }
             )
         }

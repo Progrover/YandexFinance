@@ -8,5 +8,5 @@ interface ExpendituresInteractor {
         accountId: Int,
         startDate: String,
         endDate: String
-    ): ApiResponse<Pair<String, List<ExpenditureDetailed>>>
+    ): ApiResponse<List<ExpenditureDetailed>>
 }

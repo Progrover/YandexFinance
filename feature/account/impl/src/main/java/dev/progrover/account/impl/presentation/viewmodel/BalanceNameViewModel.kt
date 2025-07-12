@@ -1,0 +1,83 @@
+package dev.progrover.account.impl.presentation.viewmodel
+
+import androidx.lifecycle.SavedStateHandle
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.progrover.account.impl.domain.model.AccountAlert
+import dev.progrover.account.impl.domain.repository.AccountRepository
+import dev.progrover.account.impl.presentation.contract.balance.BalanceUIEffect
+import dev.progrover.account.impl.presentation.contract.balance.BalanceUIEvent
+import dev.progrover.account.impl.presentation.contract.balance.BalanceUIState
+import dev.progrover.account.impl.presentation.navigation.AccountNavigationFactory.Companion.ACCOUNT_ARG_KEY
+import dev.progrover.account.impl.presentation.navigation.BalanceAndNameUpdater
+import dev.progrover.core.base.model.AccountDetailed
+import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
+import dev.progrover.core.base.utils.JsonConverter
+import dev.progrover.core.base.utils.fromRouteArgument
+import javax.inject.Inject
+
+/**
+ * ViewModel, привязанная к currency screen
+ */
+@HiltViewModel
+class BalanceNameViewModel @Inject constructor(
+    private val balanceAndNameUpdater: BalanceAndNameUpdater,
+    private val accountRepository: AccountRepository,
+    private val jsonConverter: JsonConverter,
+    savedStateHandle: SavedStateHandle,
+) :
+    BaseViewModel<BalanceUIEvent, BalanceUIState, BalanceUIEffect>(BalanceUIState()) {
+
+    private val accountStr: String? = savedStateHandle[ACCOUNT_ARG_KEY]
+
+    init {
+        loadInfo()
+    }
+
+    override fun handleUIEvent(event: BalanceUIEvent) {
+        when (event) {
+            BalanceUIEvent.OnBackClick ->
+                setEffect(BalanceUIEffect.NavigateBack)
+
+            is BalanceUIEvent.OnBalanceChange ->
+                setState(currentState.copy(account = currentState.account!!.copy(balance = event.newBalance)))
+
+            BalanceUIEvent.OnConfirmClick ->
+                sendChanges()
+
+            BalanceUIEvent.OnErrorDialogDone ->
+                setState(currentState.copy(alert = null))
+
+            is BalanceUIEvent.OnNameChange ->
+                setState(currentState.copy(account = currentState.account!!.copy(name = event.newName)))
+        }
+    }
+
+    private fun loadInfo() {
+        jsonConverter.fromJson(
+            accountStr!!,
+            AccountDetailed::class.java,
+            null
+        )?.let {
+            setState(
+                currentState.copy(
+                    account = it
+                )
+            )
+        } ?: setState(currentState.copy(alert = AccountAlert.BalanceOrNameError))
+
+    }
+
+    private fun sendChanges() {
+        tryMultipleLoad(
+            function = { accountRepository.updateAccountById(currentState.account!!) },
+            onSuccess = {
+                balanceAndNameUpdater.setBalance(currentState.account!!.balance)
+                balanceAndNameUpdater.setName(currentState.account!!.name)
+                setEffect(BalanceUIEffect.NavigateBack)
+            },
+            onFailure = {
+                setState(currentState.copy(alert = AccountAlert.BalanceOrNameError))
+            }
+        )
+    }
+}

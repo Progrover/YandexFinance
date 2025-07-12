@@ -14,6 +14,6 @@ class IncomesInteractorImpl @Inject constructor(
         accountId: Int,
         start: String,
         end: String
-    ): ApiResponse<Pair<String, List<IncomeDetailed>>> =
+    ): ApiResponse<List<IncomeDetailed>> =
         repository.getIncomesDetailed(accountId, start, end)
 }

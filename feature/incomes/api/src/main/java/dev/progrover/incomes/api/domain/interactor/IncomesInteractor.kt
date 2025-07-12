@@ -8,5 +8,5 @@ interface IncomesInteractor {
         accountId: Int,
         start: String,
         end: String,
-    ): ApiResponse<Pair<String, List<IncomeDetailed>>>
+    ): ApiResponse<List<IncomeDetailed>>
 }

@@ -1,6 +1,7 @@
 package dev.progrover.account.impl.data.repository
 
 import dev.progrover.account.impl.data.api.AccountApi
+import dev.progrover.account.impl.data.model.ManageAccountRequest
 import dev.progrover.account.impl.domain.repository.AccountRepository
 import dev.progrover.core.base.data.repository.BaseRepository
 import dev.progrover.core.base.di.CoroutineQualifiers
@@ -68,9 +69,11 @@ class AccountRepositoryImpl @Inject constructor(
             try {
                 if (tokenAvaliable) {
                     val response = accountApi.createNewAccount(
-                        name,
-                        balance,
-                        currency,
+                        accountRequest = ManageAccountRequest(
+                            name = name,
+                            currency = currency,
+                            balance = balance,
+                        )
                     )
 
                     when (response.isSuccessful) {
@@ -92,9 +95,11 @@ class AccountRepositoryImpl @Inject constructor(
                 if (tokenAvaliable) {
                     val response = accountApi.updateAccountById(
                         id = account.id,
-                        name = account.name,
-                        balance = account.balance,
-                        currency = account.currency,
+                        accountRequest = ManageAccountRequest(
+                            name = account.name,
+                            currency = account.currency,
+                            balance = account.balance,
+                        )
                     )
 
                     when (response.isSuccessful) {

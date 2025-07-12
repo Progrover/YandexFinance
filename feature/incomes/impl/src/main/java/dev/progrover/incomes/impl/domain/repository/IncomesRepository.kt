@@ -7,11 +7,11 @@ import dev.progrover.incomes.impl.domain.model.Income
 interface IncomesRepository {
     suspend fun getIncomes(
         accountId: Int,
-    ): ApiResponse<Pair<String, List<Income>>>
+    ): ApiResponse<List<Income>>
 
     suspend fun getIncomesDetailed(
         accountId: Int,
         start: String,
         end: String,
-    ): ApiResponse<Pair<String, List<IncomeDetailed>>>
+    ): ApiResponse<List<IncomeDetailed>>
 }

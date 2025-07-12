@@ -3,15 +3,15 @@ package dev.progrover.history.impl.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.progrover.account.api.domain.AccountIdProvider
-import dev.progrover.core.base.model.Error
+import dev.progrover.account.api.domain.AccountPropertiesProvider
+import dev.progrover.core.base.model.Alert
 import dev.progrover.core.base.navigation.RouteDesc
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.addCurrency
 import dev.progrover.core.base.utils.formatToAmount
 import dev.progrover.core.base.utils.toServerRequest
+import dev.progrover.history.impl.domain.model.HistoryAlert
 import dev.progrover.history.impl.domain.model.HistoryElement
-import dev.progrover.history.impl.domain.model.HistoryError
 import dev.progrover.history.impl.domain.repository.HistoryRepository
 import dev.progrover.history.impl.presentation.contract.history.DatePickerState
 import dev.progrover.history.impl.presentation.contract.history.HistoryUIEffect
@@ -21,6 +21,7 @@ import dev.progrover.history.impl.presentation.navigation.HistoryNavigationFacto
 import dev.progrover.shmr_finance.core.uicommon.R
 import timber.log.Timber
 import javax.inject.Inject
+
 /**
  * ViewModel, привязанная к history feature
  */
@@ -28,7 +29,7 @@ import javax.inject.Inject
 class HistoryViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val historyRepository: HistoryRepository,
-    private val idProvider: AccountIdProvider,
+    private val idProvider: AccountPropertiesProvider,
 ) :
     BaseViewModel<HistoryUIEvent, HistoryUIState, HistoryUIEffect>(
         HistoryUIState()
@@ -43,7 +44,7 @@ class HistoryViewModel @Inject constructor(
     override fun handleUIEvent(event: HistoryUIEvent) =
         when (event) {
             HistoryUIEvent.OnErrorDialogDone ->
-                setState(currentState.copy(error = null))
+                setState(currentState.copy(alert = null))
 
             HistoryUIEvent.OnBackClick ->
                 setEffect(HistoryUIEffect.NavigateBack)
@@ -110,7 +111,7 @@ class HistoryViewModel @Inject constructor(
                 onFailure = {
                     setState(
                         currentState.copy(
-                            error = it as Error,
+                            alert = it as Alert,
                         )
                     )
                 }
@@ -133,16 +134,16 @@ class HistoryViewModel @Inject constructor(
                 setState(
                     currentState.copy(
                         isLoading = false,
-                        history = result.second,
-                        currency = result.first,
-                        total = countTotalAmount(result.second, result.first),
+                        history = result,
+                        currency = idProvider.getCurrency(),
+                        total = countTotalAmount(result, idProvider.getCurrency()),
                     )
                 )
             },
             onFailure = { message ->
                 setState(
                     currentState.copy(
-                        error = message,
+                        alert = message,
                     )
                 )
             }
@@ -170,7 +171,7 @@ class HistoryViewModel @Inject constructor(
         if (start > end) {
             setState(
                 currentState.copy(
-                    error = HistoryError.IncorrectDataPickError,
+                    alert = HistoryAlert.IncorrectDataPickError,
                     showDatePicker = DatePickerState.None,
                 )
             )

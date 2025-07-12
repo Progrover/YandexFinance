@@ -30,7 +30,7 @@ class IncomesRepositoryImpl @Inject constructor(
     @SuppressLint("SimpleDateFormat")
     override suspend fun getIncomes(
         accountId: Int,
-    ): ApiResponse<Pair<String, List<Income>>> =
+    ): ApiResponse<List<Income>> =
         executeOnIO {
             try {
                 val startDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
@@ -46,13 +46,9 @@ class IncomesRepositoryImpl @Inject constructor(
                         val result = response.body()!!.filter { transaction ->
                             transaction.category.isIncome
                         }
-                        val currency =
-                            if (result.isNotEmpty()) result.first().account.currency else "RUB"
                         ApiResponse(
-                            value = Pair(
-                                currency,
+                            value =
                                 incomesDTOMapper.mapTransactionsToIncomes(result)
-                            )
                         )
                     } else {
                         ApiResponse(code = response.code())
@@ -70,36 +66,32 @@ class IncomesRepositoryImpl @Inject constructor(
         accountId: Int,
         start: String,
         end: String
-    ): ApiResponse<Pair<String, List<IncomeDetailed>>> =
+    ): ApiResponse<List<IncomeDetailed>> =
         executeOnIO {
-        try {
-            if (tokenAvaliable) {
-                val response = transactionsApi.getTransactions(
-                    accountId = accountId,
-                    startDate = start,
-                    endDate = end,
-                )
-                if (response.isSuccessful) {
-                    val result = response.body()!!.filter { transaction ->
-                        transaction.category.isIncome
-                    }
-                    val currency =
-                        if (result.isNotEmpty()) result.first().account.currency else "RUB"
-                    ApiResponse(
-                        value = Pair(
-                            currency,
-                            incomesDTOMapper.mapTransactionsToIncomesDetailed(result)
-                        )
+            try {
+                if (tokenAvaliable) {
+                    val response = transactionsApi.getTransactions(
+                        accountId = accountId,
+                        startDate = start,
+                        endDate = end,
                     )
+                    if (response.isSuccessful) {
+                        val result = response.body()!!.filter { transaction ->
+                            transaction.category.isIncome
+                        }
+                        ApiResponse(
+                            value =
+                                incomesDTOMapper.mapTransactionsToIncomesDetailed(result)
+                        )
+                    } else {
+                        ApiResponse(code = response.code())
+                    }
                 } else {
-                    ApiResponse(code = response.code())
+                    ApiResponse()
                 }
-            } else {
-                ApiResponse()
+            } catch (e: Exception) {
+                Timber.e("GetIncomesDetailed error", e)
+                ApiResponse(error = getErrorMessage(e))
             }
-        } catch (e: Exception) {
-            Timber.e("GetIncomesDetailed error", e)
-            ApiResponse(error = getErrorMessage(e))
         }
-    }
 }

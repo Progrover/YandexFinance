@@ -6,16 +6,24 @@ import dev.progrover.articles.impl.domain.repository.ArticlesRepository
 import dev.progrover.articles.impl.presentation.contract.articles.ArticlesUIEffect
 import dev.progrover.articles.impl.presentation.contract.articles.ArticlesUIEvent
 import dev.progrover.articles.impl.presentation.contract.articles.ArticlesUIState
+import dev.progrover.core.base.di.CoroutineQualifiers
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.shmr_finance.core.uicommon.R
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 /**
  * ViewModel, привязанная к articles feature
  */
 @HiltViewModel
 class ArticlesViewModel @Inject constructor(
     private val articlesRepository: ArticlesRepository,
+    @CoroutineQualifiers.DefaultCoroutineExceptionHandler
+    private val exceptionHandler: CoroutineExceptionHandler,
+    @CoroutineQualifiers.IoDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
 ) :
     BaseViewModel<ArticlesUIEvent, ArticlesUIState, ArticlesUIEffect>(ArticlesUIState()) {
 
@@ -32,7 +40,12 @@ class ArticlesViewModel @Inject constructor(
                 setEffect(ArticlesUIEffect.ShowError(R.string.in_develop))
 
             ArticlesUIEvent.OnErrorDialogDone ->
-                setState(currentState.copy(error = null))
+                setState(currentState.copy(alert = null))
+
+            is ArticlesUIEvent.OnSearchTextChange -> {
+                setState(currentState.copy(searchText = event.newText))
+                updateArticles(event.newText)
+            }
         }
 
     private fun loadInfo() {
@@ -45,13 +58,26 @@ class ArticlesViewModel @Inject constructor(
                     setState(
                         currentState.copy(
                             isLoading = false,
-                            articles = result
+                            allArticles = result,
+                            articlesForPresentation = result,
                         )
                     )
                 },
                 onFailure = { message ->
-                    setState(currentState.copy(error = message))
+                    setState(currentState.copy(alert = message))
                 },
+            )
+        }
+    }
+
+    private fun updateArticles(requestContent: String) {
+        viewModelScope.launch(exceptionHandler + ioDispatcher) {
+            setState(
+                currentState.copy(
+                    articlesForPresentation = currentState.allArticles.filter { article ->
+                        article.name.contains(requestContent.trim(), ignoreCase = true)
+                    }
+                )
             )
         }
     }

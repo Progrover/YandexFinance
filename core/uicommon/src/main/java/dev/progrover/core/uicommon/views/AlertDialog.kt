@@ -25,7 +25,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -33,7 +32,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import dev.progrover.core.base.model.Error
+import dev.progrover.core.base.model.Alert
+import dev.progrover.core.base.model.AlertType
 import dev.progrover.core.base.model.ServerError
 import dev.progrover.core.base.model.ServerError.TokenError
 import dev.progrover.core.theme.AppTheme
@@ -44,11 +44,9 @@ import kotlinx.coroutines.delay
 @Composable
 fun CustomAlertDialog(
     modifier: Modifier,
-    backgroundColor: Color = AppTheme.colors.error,
-    error: Error,
-    @DrawableRes startIconRes: Int? = R.drawable.error,
+    alert: Alert,
     @DrawableRes endIconRes: Int? = R.drawable.cross,
-    dismissTime: DismissTime = when (error) {
+    dismissTime: DismissTime = when (alert) {
         TokenError -> DismissTime.NoDismiss
         ServerError.InternetError -> DismissTime.Long
         else -> DismissTime.Short
@@ -60,6 +58,10 @@ fun CustomAlertDialog(
     },
 ) {
     var visible by remember { mutableStateOf(false) }
+    val backgroundColor = when (alert.type) {
+        AlertType.Error -> AppTheme.colors.error
+        AlertType.Success -> AppTheme.colors.brightGreen
+    }
 
     LaunchedEffect(Unit) {
         visible = true
@@ -101,24 +103,23 @@ fun CustomAlertDialog(
                 .padding(AppTheme.paddings.padding12),
             horizontalArrangement = Arrangement.spacedBy(AppTheme.paddings.padding6)
         ) {
-            if (startIconRes != null) {
-                Image(
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .size(AppTheme.sizes.size24),
-                    imageVector = ImageVector.vectorResource(startIconRes),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(AppTheme.colors.white),
-                )
-            } else {
-                Box(Modifier.size(AppTheme.sizes.size24))
-            }
+            Image(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .size(AppTheme.sizes.size24),
+                imageVector = ImageVector.vectorResource(when(alert.type) {
+                    AlertType.Error -> R.drawable.error
+                    AlertType.Success -> R.drawable.tick
+                }),
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(AppTheme.colors.white),
+            )
 
             Text(
                 modifier = Modifier
                     .weight(1f)
                     .align(Alignment.CenterVertically),
-                text = stringResource(error.messageId),
+                text = stringResource(alert.messageId),
                 style = AppTheme.typography.bodyLarge.copy(fontWeight = W500),
                 color = AppTheme.colors.white,
                 textAlign = TextAlign.Center,

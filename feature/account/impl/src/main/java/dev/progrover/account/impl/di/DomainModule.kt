@@ -4,13 +4,15 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.progrover.account.api.domain.AccountIdProvider
+import dev.progrover.account.api.domain.AccountPropertiesProvider
 import dev.progrover.account.impl.data.api.AccountApi
 import dev.progrover.account.impl.data.repository.AccountRepositoryImpl
 import dev.progrover.account.impl.domain.interactor.AccountInteractor
 import dev.progrover.account.impl.domain.interactor.AccountInteractorImpl
-import dev.progrover.account.impl.domain.provider.AccountProviderImpl
+import dev.progrover.account.impl.domain.provider.AccountPropertiesImpl
 import dev.progrover.account.impl.domain.repository.AccountRepository
+import dev.progrover.account.impl.presentation.navigation.BalanceAndNameUpdater
+import dev.progrover.account.impl.presentation.navigation.CurrencyUpdater
 import dev.progrover.core.base.di.CoroutineQualifiers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -22,7 +24,7 @@ class DomainModule {
 
     @Provides
     @Singleton
-    fun provideAccountRepository(
+    fun providesAccountRepository(
         @CoroutineQualifiers.DefaultCoroutineExceptionHandler
         coroutineExceptionHandler: CoroutineExceptionHandler,
         @CoroutineQualifiers.IoDispatcher
@@ -37,7 +39,7 @@ class DomainModule {
 
     @Provides
     @Singleton
-    fun provideAccountInteractor(
+    fun providesAccountInteractor(
         repository: AccountRepository,
     ): AccountInteractor =
         AccountInteractorImpl(
@@ -46,16 +48,24 @@ class DomainModule {
 
     @Provides
     @Singleton
-    fun provideAccountProvider(
+    fun providesAccountProvider(
         accountInteractor: AccountInteractor,
         @CoroutineQualifiers.IoDispatcher
         dispatcher: CoroutineDispatcher,
         @CoroutineQualifiers.DefaultCoroutineExceptionHandler
         exceptionHandler: CoroutineExceptionHandler
-    ): AccountIdProvider =
-        AccountProviderImpl(
+    ): AccountPropertiesProvider =
+        AccountPropertiesImpl(
             accountInteractor = accountInteractor,
             dispatcher = dispatcher,
             exceptionHandler = exceptionHandler,
         )
+
+    @Provides
+    @Singleton
+    fun providesCurrencyUpdater() = CurrencyUpdater
+
+    @Provides
+    @Singleton
+    fun providesBalanceAndNameUpdater() = BalanceAndNameUpdater
 }

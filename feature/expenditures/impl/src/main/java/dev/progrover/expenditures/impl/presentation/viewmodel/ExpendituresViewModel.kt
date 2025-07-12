@@ -2,8 +2,8 @@ package dev.progrover.expenditures.impl.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.progrover.account.api.domain.AccountIdProvider
-import dev.progrover.core.base.model.Error
+import dev.progrover.account.api.domain.AccountPropertiesProvider
+import dev.progrover.core.base.model.Alert
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.addCurrency
 import dev.progrover.core.base.utils.formatToAmount
@@ -21,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ExpendituresViewModel @Inject constructor(
     private val expendituresRepository: ExpendituresRepository,
-    private val idProvider: AccountIdProvider,
+    private val idProvider: AccountPropertiesProvider,
 ) :
     BaseViewModel<ExpendituresUIEvent, ExpendituresUIState, ExpendituresUIEffect>(
         ExpendituresUIState()
@@ -46,7 +46,7 @@ class ExpendituresViewModel @Inject constructor(
                 setEffect(ExpendituresUIEffect.ShowError(R.string.in_develop))
 
             ExpendituresUIEvent.OnErrorDialogDone ->
-                setState(currentState.copy(error = null))
+                setState(currentState.copy(alert = null))
         }
 
     private fun loadInfo() {
@@ -57,7 +57,7 @@ class ExpendituresViewModel @Inject constructor(
                 onFailure = {
                     setState(
                         currentState.copy(
-                            error = it as Error,
+                            alert = it as Alert,
                         )
                     )
                 }
@@ -91,16 +91,16 @@ class ExpendituresViewModel @Inject constructor(
                 setState(
                     currentState.copy(
                         isLoading = false,
-                        currency = result.first,
-                        expenditures = result.second,
-                        totalExpenditures = countTotalAmount(result.second, result.first),
+                        currency = idProvider.getCurrency(),
+                        expenditures = result,
+                        totalExpenditures = countTotalAmount(result, idProvider.getCurrency()),
                     )
                 )
             },
             onFailure = { message ->
                 setState(
                     currentState.copy(
-                        error = message,
+                        alert = message,
                     )
                 )
             }

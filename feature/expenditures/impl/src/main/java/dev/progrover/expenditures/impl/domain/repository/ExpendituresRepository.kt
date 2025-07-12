@@ -8,11 +8,11 @@ interface ExpendituresRepository {
 
     suspend fun getExpenditures(
         accountId: Int
-    ): ApiResponse<Pair<String, List<Expenditure>>>
+    ): ApiResponse<List<Expenditure>>
 
     suspend fun getExpendituresDetailed(
         accountId: Int,
         start: String,
         end: String,
-    ): ApiResponse<Pair<String, List<ExpenditureDetailed>>>
+    ): ApiResponse<List<ExpenditureDetailed>>
 }

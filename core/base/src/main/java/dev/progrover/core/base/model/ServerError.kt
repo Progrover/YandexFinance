@@ -5,7 +5,7 @@ import dev.progrover.shmr_finance.core.base.R
 
 sealed class ServerError(
     @StringRes override val messageId: Int,
-) : Error(messageId) {
+) : Alert(messageId) {
     data object Error_400 : ServerError(R.string.error_400)
 
     data object Error_401 : ServerError(R.string.error_401)

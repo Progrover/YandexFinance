@@ -10,6 +10,7 @@ data class AppColors(
     val textSecondary: Color,
     val white: Color,
     val surface: Color,
+    val scrim: Color,
     val border: Color,
     val surfaceContainer: Color,
     val containerHigh: Color,
@@ -30,7 +31,8 @@ data class AppColors(
             containerHigh = Color(0xFFECE6F0),
             outline = Color(0xFF79747E),
             surfaceContainerHigh = Color(0xFFE6E0E9),
-            error = Color(0xFFF5203F),
+            error = Color(0xFFE46962),
+            scrim = Color.Black.copy(alpha = 0.5f),
         )
 
         // Создал с заделом на будущее подключение темной темы
@@ -47,7 +49,8 @@ data class AppColors(
             outline = Color(0xFF79747E),
             surfaceContainerHigh = Color(0xFFE6E0E9),
             error = Color(0xFFF5203F),
-            )
+            scrim = Color.Black.copy(alpha = 0.5f),
+        )
     }
 }
 
