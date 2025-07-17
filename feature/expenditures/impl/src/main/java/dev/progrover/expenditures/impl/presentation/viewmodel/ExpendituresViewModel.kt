@@ -4,6 +4,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.progrover.account.api.domain.AccountPropertiesProvider
 import dev.progrover.core.base.model.Alert
+import dev.progrover.core.base.model.TransactionsUpdater
+import dev.progrover.core.base.navigation.RouteDesc
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.addCurrency
 import dev.progrover.core.base.utils.formatToAmount
@@ -13,8 +15,11 @@ import dev.progrover.expenditures.impl.presentation.contract.expenditures.Expend
 import dev.progrover.expenditures.impl.presentation.contract.expenditures.ExpendituresUIEvent
 import dev.progrover.expenditures.impl.presentation.contract.expenditures.ExpendituresUIState
 import dev.progrover.shmr_finance.core.uicommon.R
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
+
 /**
  * ViewModel, привязанная к expenditures feature
  */
@@ -22,12 +27,14 @@ import javax.inject.Inject
 class ExpendituresViewModel @Inject constructor(
     private val expendituresRepository: ExpendituresRepository,
     private val idProvider: AccountPropertiesProvider,
+    private val transactionsUpdater: TransactionsUpdater,
 ) :
     BaseViewModel<ExpendituresUIEvent, ExpendituresUIState, ExpendituresUIEffect>(
         ExpendituresUIState()
     ) {
 
     init {
+        subscribeOnTransactionsChanges()
         loadInfo()
     }
 
@@ -40,10 +47,10 @@ class ExpendituresViewModel @Inject constructor(
                 setEffect(ExpendituresUIEffect.ShowError(R.string.in_develop))
 
             is ExpendituresUIEvent.OnExpenditureItemClick ->
-                setEffect(ExpendituresUIEffect.ShowError(R.string.in_develop))
+                setEffect(ExpendituresUIEffect.NavigateToEditTransactionScreen(event.id))
 
             ExpendituresUIEvent.OnAddExpenditureClick ->
-                setEffect(ExpendituresUIEffect.ShowError(R.string.in_develop))
+                setEffect(ExpendituresUIEffect.NavigateToCreateTransactionScreen)
 
             ExpendituresUIEvent.OnErrorDialogDone ->
                 setState(currentState.copy(alert = null))
@@ -105,5 +112,16 @@ class ExpendituresViewModel @Inject constructor(
                 )
             }
         )
+    }
+
+    private fun subscribeOnTransactionsChanges() {
+        viewModelScope.launch {
+            transactionsUpdater.updateChannel.collectLatest { route ->
+                when (route) {
+                    RouteDesc.Incomes -> Unit
+                    RouteDesc.Expenditures -> loadInfo()
+                }
+            }
+        }
     }
 }

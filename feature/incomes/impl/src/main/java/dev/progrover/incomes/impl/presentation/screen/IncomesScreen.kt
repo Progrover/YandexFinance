@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import dev.progrover.core.base.navigation.RouteDesc
+import dev.progrover.feature.edit.api.EditFeature
 import dev.progrover.history.api.HistoryFeature
 import dev.progrover.incomes.impl.presentation.components.screencontent.IncomesScreenContent
 import dev.progrover.incomes.impl.presentation.contract.incomes.IncomesUIEffect
@@ -38,6 +39,19 @@ internal fun IncomesScreen(
 
                 IncomesUIEffect.NavigateToHistoryScreen ->
                     HistoryFeature.openHistoryScreen(navController, RouteDesc.Incomes)
+
+                IncomesUIEffect.NavigateToAddTransactionScreen ->
+                    EditFeature.openAddScreen(
+                        navController = navController,
+                        transactionType = RouteDesc.Incomes,
+                    )
+
+                is IncomesUIEffect.NavigateToEditTransactionScreen ->
+                    EditFeature.openEditScreen(
+                        navController = navController,
+                        transactionType = RouteDesc.Incomes,
+                        transactionId = effect.id
+                    )
             }
         }
     }

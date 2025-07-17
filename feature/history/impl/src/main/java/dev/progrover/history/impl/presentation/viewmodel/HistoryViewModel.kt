@@ -5,11 +5,12 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.progrover.account.api.domain.AccountPropertiesProvider
 import dev.progrover.core.base.model.Alert
+import dev.progrover.core.base.model.TransactionsUpdater
 import dev.progrover.core.base.navigation.RouteDesc
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.addCurrency
 import dev.progrover.core.base.utils.formatToAmount
-import dev.progrover.core.base.utils.toServerRequest
+import dev.progrover.core.base.utils.dateToServerRequest
 import dev.progrover.history.impl.domain.model.HistoryAlert
 import dev.progrover.history.impl.domain.model.HistoryElement
 import dev.progrover.history.impl.domain.repository.HistoryRepository
@@ -19,6 +20,8 @@ import dev.progrover.history.impl.presentation.contract.history.HistoryUIEvent
 import dev.progrover.history.impl.presentation.contract.history.HistoryUIState
 import dev.progrover.history.impl.presentation.navigation.HistoryNavigationFactory.Companion.ARG_KEY_ROUTE
 import dev.progrover.shmr_finance.core.uicommon.R
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -30,6 +33,7 @@ class HistoryViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val historyRepository: HistoryRepository,
     private val idProvider: AccountPropertiesProvider,
+    private val transactionsUpdater: TransactionsUpdater,
 ) :
     BaseViewModel<HistoryUIEvent, HistoryUIState, HistoryUIEffect>(
         HistoryUIState()
@@ -38,6 +42,7 @@ class HistoryViewModel @Inject constructor(
     private val itemType: RouteDesc = savedStateHandle[ARG_KEY_ROUTE]!!
 
     init {
+        subscribeOnTransactionsChanges()
         loadHistory()
     }
 
@@ -101,6 +106,14 @@ class HistoryViewModel @Inject constructor(
 
             HistoryUIEvent.OnDatePickerClose ->
                 setState(currentState.copy(showDatePicker = DatePickerState.None))
+
+            is HistoryUIEvent.OnHistoryItemClick ->
+                setEffect(
+                    HistoryUIEffect.NavigateToEditTransactionScreen(
+                        id = event.id,
+                        transactionType = itemType
+                    )
+                )
         }
 
     private fun loadHistory() {
@@ -125,8 +138,8 @@ class HistoryViewModel @Inject constructor(
                 historyRepository.getHistory(
                     accountId,
                     type = itemType,
-                    start = currentState.start.toServerRequest(),
-                    end = currentState.end.toServerRequest()
+                    start = currentState.start.dateToServerRequest(),
+                    end = currentState.end.dateToServerRequest()
                 )
             },
             onSuccess = { result ->
@@ -178,4 +191,12 @@ class HistoryViewModel @Inject constructor(
         } else {
             ifNot()
         }
+
+    private fun subscribeOnTransactionsChanges() {
+        viewModelScope.launch {
+            transactionsUpdater.updateChannel.collectLatest { route ->
+                if (route == itemType) loadHistory()
+            }
+        }
+    }
 }

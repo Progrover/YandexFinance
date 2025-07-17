@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dev.progrover.core.theme.AppTheme
@@ -38,5 +39,6 @@ fun DefaultFloatingButton(
         text = text,
         color = textColor,
         style = textStyle,
+        textAlign = TextAlign.Center
     )
 }

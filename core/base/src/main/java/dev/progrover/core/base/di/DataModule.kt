@@ -11,6 +11,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.progrover.core.base.data.storage.Prefs
 import dev.progrover.core.base.data.storage.SharedPrefsImpl
+import dev.progrover.core.base.model.TransactionsUpdater
 import javax.inject.Singleton
 
 @Module
@@ -35,4 +36,8 @@ class DataModule {
             prefsName = "cookiePrefs",
             moshi = moshi
         )
+
+    @Provides
+    @Singleton
+    fun providesTransactionUpdater() = TransactionsUpdater
 }

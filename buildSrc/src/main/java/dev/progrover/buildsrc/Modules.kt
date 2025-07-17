@@ -43,4 +43,10 @@ object Feature {
         const val api = "$history:api"
         const val impl = "$history:impl"
     }
+
+    object Edit {
+        private const val edit = "$feature:edit"
+        const val api = "$edit:api"
+        const val impl = "$edit:impl"
+    }
 }

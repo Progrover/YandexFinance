@@ -38,4 +38,22 @@ class ArticlesRepositoryImpl @Inject constructor(
             Timber.e("GetArticles error", e)
             ApiResponse(error = getErrorMessage(e))
         }
+
+    override suspend fun getArticlesByType(isIncome: Boolean): ApiResponse<List<Category>> =
+        try {
+            if (tokenAvaliable) {
+                val response = articlesApi.getArticlesByType(isIncome)
+
+                if (response.isSuccessful) {
+                    ApiResponse(value = response.body())
+                } else {
+                    ApiResponse(code = response.code())
+                }
+            } else {
+                ApiResponse()
+            }
+        } catch (e: Exception) {
+            Timber.e("GetArticlesByType error", e)
+            ApiResponse(error = getErrorMessage(e))
+        }
 }

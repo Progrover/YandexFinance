@@ -1,5 +1,6 @@
 package dev.progrover.account.impl.domain.interactor
 
+import dev.progrover.account.api.domain.interactor.AccountInteractor
 import dev.progrover.account.impl.domain.repository.AccountRepository
 import dev.progrover.core.base.model.AccountDetailed
 import dev.progrover.core.base.model.ApiResponse
@@ -10,4 +11,7 @@ class AccountInteractorImpl @Inject constructor(
 ) : AccountInteractor {
     override suspend fun getAccounts(): ApiResponse<List<AccountDetailed>> =
         repository.getAccounts()
+
+    override suspend fun getAccountById(id: Int): ApiResponse<AccountDetailed> =
+        repository.getAccountById(id)
 }
