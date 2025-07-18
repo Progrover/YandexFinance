@@ -8,4 +8,5 @@ interface AccountPropertiesProvider {
     fun getId(scope: CoroutineScope, withResponse: (Result<Int>) -> Unit)
     fun getCurrency() : String
     fun setCurrency(newCurrency: String)
+    fun getName() : String
 }

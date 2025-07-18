@@ -1,13 +1,11 @@
 package dev.progrover.settings.impl.presentation.viewmodel
 
-import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.settings.impl.presentation.contract.settings.SettingsUIEffect
 import dev.progrover.settings.impl.presentation.contract.settings.SettingsUIEvent
 import dev.progrover.settings.impl.presentation.contract.settings.SettingsUIState
 import javax.inject.Inject
 
-@HiltViewModel
 class SettingsViewModel @Inject constructor() :
     BaseViewModel<SettingsUIEvent, SettingsUIState, SettingsUIEffect>(SettingsUIState()) {
 

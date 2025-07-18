@@ -30,5 +30,5 @@ composeCompiler {
 
 dependencies {
     coreBase()
-    hiltNavigation()
+    navigation()
 }

@@ -20,14 +20,10 @@ object Dependencies {
     const val uiController =
         "com.google.accompanist:accompanist-systemuicontroller:${Versions.accompanist}"
 
-    const val hiltAndroid = "com.google.dagger:hilt-android:${Versions.hilt}"
-    const val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
-    const val hiltAgp = "com.google.dagger:hilt-android-gradle-plugin:${Versions.hilt}"
-    const val hiltNavigation = "androidx.hilt:hilt-navigation-compose:${Versions.hiltNavigation}"
+    const val daggerAndroid = "com.google.dagger:dagger:${Versions.dagger}"
+    const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
 
     const val workRuntime = "androidx.work:work-runtime-ktx:${Versions.workRuntime}"
-    const val workCompiler = "androidx.hilt:hilt-compiler:${Versions.hiltCompiler}"
-    const val hiltWork = "androidx.hilt:hilt-work:${Versions.hiltWork}"
 
     const val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okhttp}"
     const val okHttpLoggerInterceptor =
@@ -84,16 +80,13 @@ fun DependencyHandler.timber() {
     api(Dependencies.timber)
 }
 
-fun DependencyHandler.hilt() {
-    implementation(Dependencies.hiltAndroid)
-    kapt(Dependencies.hiltCompiler)
-    implementation(Dependencies.hiltNavigation)
+fun DependencyHandler.dagger() {
+    implementation(Dependencies.daggerAndroid)
+    kapt(Dependencies.daggerCompiler)
 }
 
 fun DependencyHandler.work() {
     implementation(Dependencies.workRuntime)
-    kapt(Dependencies.workCompiler)
-    implementation(Dependencies.hiltWork)
 }
 
 fun DependencyHandler.securityCrypto() {
@@ -103,10 +96,6 @@ fun DependencyHandler.securityCrypto() {
 fun DependencyHandler.navigation() {
     implementation(Dependencies.navigationCompose)
     implementation(Dependencies.navigationMaterial)
-}
-
-fun DependencyHandler.hiltNavigation() {
-    implementation(Dependencies.hiltNavigation)
 }
 
 fun DependencyHandler.coroutines() {
@@ -178,4 +167,8 @@ fun DependencyHandler.articlesApi() {
 
 fun DependencyHandler.historyApi() {
     implementation(project(Feature.History.api))
+}
+
+fun DependencyHandler.editApi() {
+    implementation(project(Feature.Edit.api))
 }

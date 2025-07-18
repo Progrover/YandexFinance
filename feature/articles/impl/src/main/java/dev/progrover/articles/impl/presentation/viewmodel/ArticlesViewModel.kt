@@ -1,7 +1,6 @@
 package dev.progrover.articles.impl.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.progrover.articles.impl.domain.repository.ArticlesRepository
 import dev.progrover.articles.impl.presentation.contract.articles.ArticlesUIEffect
 import dev.progrover.articles.impl.presentation.contract.articles.ArticlesUIEvent
@@ -17,7 +16,6 @@ import javax.inject.Inject
 /**
  * ViewModel, привязанная к articles feature
  */
-@HiltViewModel
 class ArticlesViewModel @Inject constructor(
     private val articlesRepository: ArticlesRepository,
     @CoroutineQualifiers.DefaultCoroutineExceptionHandler

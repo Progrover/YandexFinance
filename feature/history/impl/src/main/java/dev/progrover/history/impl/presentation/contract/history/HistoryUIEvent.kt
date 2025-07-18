@@ -13,5 +13,6 @@ sealed class HistoryUIEvent : UIEvent {
     data object OnErrorDialogDone : HistoryUIEvent()
     data object OnDatePickerClose : HistoryUIEvent()
 
+    class OnHistoryItemClick(val id: Int) : HistoryUIEvent()
     class OnNewDateSelected(val date: Long, val type: DatePickerState) : HistoryUIEvent()
 }

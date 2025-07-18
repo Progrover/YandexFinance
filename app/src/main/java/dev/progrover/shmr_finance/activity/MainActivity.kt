@@ -17,13 +17,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
-import dagger.hilt.android.AndroidEntryPoint
 import dev.progrover.core.base.di.NavigationFactoryQualifiers
 import dev.progrover.core.base.navigation.NavigationFactory
 import dev.progrover.core.theme.AppThemeComposable
+import dev.progrover.shmr_finance.MainApplication
+import dev.progrover.shmr_finance.di.ApplicationComponent
 import dev.progrover.shmr_finance.navigation.host.FinanceNavigation
 import dev.progrover.shmr_finance.viewmodel.MainActivityViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -35,14 +37,17 @@ import javax.inject.Inject
 /**
  * Главный Actitivy приложения
  */
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private lateinit var appComponent: ApplicationComponent
+
+    private lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val viewModel: MainActivityViewModel by viewModels { viewModelFactory }
 
     @Inject
     @NavigationFactoryQualifiers.MainActivity
-    lateinit var navigationFactories: @JvmSuppressWildcards Set<NavigationFactory>
-
-    private val viewModel by viewModels<MainActivityViewModel>()
+    lateinit var navigationFactories: Set<@JvmSuppressWildcards NavigationFactory>
 
     private var animationEnd = false
 
@@ -60,6 +65,10 @@ class MainActivity : ComponentActivity() {
             delay(2000)
             animationEnd = true
         }
+        appComponent = (application as MainApplication).getApplicationComponent()
+        appComponent.inject(this)
+
+        viewModelFactory = appComponent.getMainViewModelFactory()
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
         orientationRequest()

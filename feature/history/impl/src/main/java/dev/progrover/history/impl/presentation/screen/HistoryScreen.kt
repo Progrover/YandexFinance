@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import dev.progrover.feature.edit.api.EditFeature
 import dev.progrover.history.impl.presentation.components.screencontent.HistoryScreenContent
 import dev.progrover.history.impl.presentation.contract.history.HistoryUIEffect
 import dev.progrover.history.impl.presentation.viewmodel.HistoryViewModel
@@ -36,6 +37,13 @@ internal fun HistoryScreen(
 
                 HistoryUIEffect.NavigateBack ->
                     navController.popBackStack()
+
+                is HistoryUIEffect.NavigateToEditTransactionScreen ->
+                    EditFeature.openEditScreen(
+                        navController = navController,
+                        transactionType = effect.transactionType,
+                        transactionId = effect.id
+                    )
             }
         }
     }

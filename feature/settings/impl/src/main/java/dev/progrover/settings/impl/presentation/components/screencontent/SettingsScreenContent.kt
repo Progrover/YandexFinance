@@ -2,6 +2,8 @@ package dev.progrover.settings.impl.presentation.components.screencontent
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -56,23 +58,27 @@ internal fun SettingsScreenContent(
                 title = stringResource(R.string.theme),
                 titleColor = AppTheme.colors.textSecondary,
                 customElement = {
-                    Switch(
-                        modifier = Modifier
-                            .padding(vertical = AppTheme.paddings.padding4)
-                            .height(32.dp),
-                        checked = uiState.themeModeOn,
-                        onCheckedChange = { newStatus ->
-                            onEvent(SettingsUIEvent.OnThemeClick(newStatus))
-                        },
-                        colors = SwitchDefaults.colors(
-                            checkedBorderColor = AppTheme.colors.brightGreen,
-                            uncheckedBorderColor = AppTheme.colors.outline,
-                            checkedThumbColor = AppTheme.colors.brightGreen,
-                            checkedTrackColor = AppTheme.colors.paleGreen,
-                            uncheckedThumbColor = AppTheme.colors.outline,
-                            uncheckedTrackColor = AppTheme.colors.surfaceContainerHigh,
+                    Row {
+                        Spacer(Modifier.weight(1f))
+
+                        Switch(
+                            modifier = Modifier
+                                .padding(vertical = AppTheme.paddings.padding4)
+                                .height(32.dp),
+                            checked = uiState.themeModeOn,
+                            onCheckedChange = { newStatus ->
+                                onEvent(SettingsUIEvent.OnThemeClick(newStatus))
+                            },
+                            colors = SwitchDefaults.colors(
+                                checkedBorderColor = AppTheme.colors.brightGreen,
+                                uncheckedBorderColor = AppTheme.colors.outline,
+                                checkedThumbColor = AppTheme.colors.brightGreen,
+                                checkedTrackColor = AppTheme.colors.paleGreen,
+                                uncheckedThumbColor = AppTheme.colors.outline,
+                                uncheckedTrackColor = AppTheme.colors.surfaceContainerHigh,
+                            )
                         )
-                    )
+                    }
                 },
             )
 

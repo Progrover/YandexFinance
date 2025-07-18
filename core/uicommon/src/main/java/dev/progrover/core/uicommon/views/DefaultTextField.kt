@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dev.progrover.core.theme.AppTheme
 import dev.progrover.core.uicommon.utils.conditionally
@@ -37,6 +38,7 @@ fun DefaultTextField(
         .background(AppTheme.colors.containerHigh),
     enabled: Boolean = true,
     text: String,
+    innerVerticalPadding: Dp = 0.dp,
     focusRequester: FocusRequester? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
     @StringRes hintResId: Int,
@@ -80,7 +82,9 @@ fun DefaultTextField(
                 } else Spacer(Modifier.width(AppTheme.paddings.padding16))
 
                 Box(
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier
+                        .padding(vertical = innerVerticalPadding)
+                        .weight(1f)
                 ) {
 
                     if (text.isEmpty()) {

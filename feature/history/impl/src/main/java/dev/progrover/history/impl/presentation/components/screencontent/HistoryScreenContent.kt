@@ -108,7 +108,7 @@ internal fun HistoryScreenContent(
                             false -> AppTheme.paddings.padding4
                         },
                         endIconResId = dev.progrover.shmr_finance.core.uicommon.R.drawable.right_arrow,
-                        onClick = { }
+                        onClick = { onEvent(HistoryUIEvent.OnHistoryItemClick(history.id)) }
                     )
                 }
             } else {

@@ -14,6 +14,7 @@ import dev.progrover.core.base.navigation.RouteDesc
 import dev.progrover.expenditures.impl.presentation.components.screencontent.ExpendituresScreenContent
 import dev.progrover.expenditures.impl.presentation.contract.expenditures.ExpendituresUIEffect
 import dev.progrover.expenditures.impl.presentation.viewmodel.ExpendituresViewModel
+import dev.progrover.feature.edit.api.EditFeature
 import dev.progrover.history.api.HistoryFeature
 import kotlinx.coroutines.flow.collectLatest
 
@@ -38,6 +39,19 @@ internal fun ExpendituresScreen(
 
                 ExpendituresUIEffect.NavigateToHistoryScreen ->
                     HistoryFeature.openHistoryScreen(navController, RouteDesc.Expenditures)
+
+                ExpendituresUIEffect.NavigateToCreateTransactionScreen ->
+                    EditFeature.openAddScreen(
+                        navController = navController,
+                        transactionType = RouteDesc.Expenditures
+                    )
+
+                is ExpendituresUIEffect.NavigateToEditTransactionScreen ->
+                    EditFeature.openEditScreen(
+                        navController = navController,
+                        transactionType = RouteDesc.Expenditures,
+                        transactionId = effect.id
+                    )
             }
         }
     }

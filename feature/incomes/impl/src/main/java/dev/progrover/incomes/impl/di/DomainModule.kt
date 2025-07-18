@@ -2,8 +2,6 @@ package dev.progrover.incomes.impl.di
 
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import dev.progrover.core.base.data.api.TransactionsApi
 import dev.progrover.core.base.di.CoroutineQualifiers
 import dev.progrover.incomes.api.domain.interactor.IncomesInteractor
@@ -16,7 +14,6 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
 class DomainModule {
 
     @Provides

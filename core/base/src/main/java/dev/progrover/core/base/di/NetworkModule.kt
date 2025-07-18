@@ -4,8 +4,6 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import dev.progrover.core.base.data.api.TransactionsApi
 import dev.progrover.core.base.data.interceptor.BaseInterceptor
 import dev.progrover.core.base.data.interceptor.BaseInterceptorImpl
@@ -18,7 +16,6 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
 class NetworkModule {
 
     @Provides

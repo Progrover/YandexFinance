@@ -1,7 +1,6 @@
 plugins {
     id(Plugins.library)
     id(Plugins.android)
-    id(Plugins.hilt)
     kotlin(Plugins.kapt)
     alias(libs.plugins.compose.compiler)
 }
@@ -42,13 +41,14 @@ dependencies {
     coreTheme()
     coreUiCommon()
 
-    hilt()
+    dagger()
     compose()
     navigation()
     coil()
     incomesApi()
     accountApi()
     historyApi()
+    editApi()
     // encrypt
     implementation(libs.jbcrypt)
 }

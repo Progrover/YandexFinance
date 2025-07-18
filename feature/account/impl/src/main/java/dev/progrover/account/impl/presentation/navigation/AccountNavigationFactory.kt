@@ -1,6 +1,6 @@
 package dev.progrover.account.impl.presentation.navigation
 
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -13,6 +13,7 @@ import dev.progrover.account.api.AccountFeature.ACCOUNT_SCREEN
 import dev.progrover.account.api.AccountFeature.BALANCE_NAME_SCREEN
 import dev.progrover.account.api.AccountFeature.CURRENCY_SCREEN
 import dev.progrover.account.api.AccountFeature.ROUTE_NAME
+import dev.progrover.account.impl.di.SavedStateViewModelFactory
 import dev.progrover.account.impl.presentation.screen.AccountScreen
 import dev.progrover.account.impl.presentation.screen.BalanceNameScreen
 import dev.progrover.account.impl.presentation.screen.CurrencyScreen
@@ -21,10 +22,12 @@ import dev.progrover.account.impl.presentation.viewmodel.BalanceNameViewModel
 import dev.progrover.account.impl.presentation.viewmodel.CurrencyViewModel
 import dev.progrover.core.base.navigation.NavigationFactory
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Необходим для навигации account feature
  */
+@Singleton
 class AccountNavigationFactory @Inject constructor() : NavigationFactory {
 
     @OptIn(ExperimentalMaterialNavigationApi::class)
@@ -36,12 +39,18 @@ class AccountNavigationFactory @Inject constructor() : NavigationFactory {
             composable(
                 route = ACCOUNT_SCREEN,
             ) {
-                val viewModel: AccountViewModel = hiltViewModel()
+                val component = AccountComponent()
+                val viewModel: AccountViewModel = viewModel<AccountViewModel>(
+                    factory = component.getAccountViewModelFactory(),
+                )
                 AccountScreen(viewModel = viewModel, navController = navController)
             }
 
             bottomSheet(route = CURRENCY_SCREEN) {
-                val viewModel: CurrencyViewModel = hiltViewModel()
+                val component = AccountComponent()
+                val viewModel: CurrencyViewModel = viewModel<CurrencyViewModel>(
+                    factory = component.getAccountViewModelFactory(),
+                )
                 CurrencyScreen(viewModel = viewModel, navController = navController)
             }
 
@@ -50,8 +59,15 @@ class AccountNavigationFactory @Inject constructor() : NavigationFactory {
                 arguments = listOf(
                     navArgument(ACCOUNT_ARG_KEY) { type = NavType.StringType }
                 )
-            ) {
-                val viewModel: BalanceNameViewModel = hiltViewModel()
+            ) { entry ->
+                val component = AccountComponent()
+                val viewModel: BalanceNameViewModel = viewModel<BalanceNameViewModel>(
+                    factory = SavedStateViewModelFactory(
+                        assistedFactory = component.getBalanceViewModelFactory(),
+                        owner = entry,
+                        defaultArgs = entry.arguments
+                    ),
+                )
                 BalanceNameScreen(viewModel = viewModel, navController = navController)
             }
         }

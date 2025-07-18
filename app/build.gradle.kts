@@ -4,7 +4,6 @@ plugins {
     id(Plugins.application)
     id(Plugins.android)
     kotlin(Plugins.kapt)
-    id(Plugins.hilt)
     alias(libs.plugins.compose.compiler)
 }
 
@@ -99,7 +98,7 @@ dependencies {
     base()
     navigation()
     compose()
-    hilt()
+    dagger()
     coil()
     work()
     coroutinesPlayServices()
@@ -111,6 +110,7 @@ dependencies {
     articlesApi()
     settingsApi()
     historyApi()
+    editApi()
 
     implementation(project(Feature.Incomes.impl))
     implementation(project(Feature.Expenditures.impl))
@@ -118,6 +118,7 @@ dependencies {
     implementation(project(Feature.Articles.impl))
     implementation(project(Feature.Settings.impl))
     implementation(project(Feature.History.impl))
+    implementation(project(Feature.Edit.impl))
 }
 
 kapt {

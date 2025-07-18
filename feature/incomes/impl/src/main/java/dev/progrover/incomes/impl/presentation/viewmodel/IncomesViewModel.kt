@@ -1,9 +1,10 @@
 package dev.progrover.incomes.impl.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.progrover.account.api.domain.AccountPropertiesProvider
 import dev.progrover.core.base.model.Alert
+import dev.progrover.core.base.model.TransactionsUpdater
+import dev.progrover.core.base.navigation.RouteDesc
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.addCurrency
 import dev.progrover.core.base.utils.formatToAmount
@@ -13,20 +14,23 @@ import dev.progrover.incomes.impl.presentation.contract.incomes.IncomesUIEffect
 import dev.progrover.incomes.impl.presentation.contract.incomes.IncomesUIEvent
 import dev.progrover.incomes.impl.presentation.contract.incomes.IncomesUIState
 import dev.progrover.shmr_finance.core.uicommon.R
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
 /**
  * ViewModel, привязанная к incomes feature
  */
-@HiltViewModel
 class IncomesViewModel @Inject constructor(
     private val incomesRepository: IncomesRepository,
     private val idProvider: AccountPropertiesProvider,
+    private val transactionsUpdater: TransactionsUpdater,
 ) :
     BaseViewModel<IncomesUIEvent, IncomesUIState, IncomesUIEffect>(IncomesUIState()) {
 
     init {
+        subscribeOnTransactionsChanges()
         loadInfo()
     }
 
@@ -39,10 +43,10 @@ class IncomesViewModel @Inject constructor(
                 setEffect(IncomesUIEffect.ShowError(R.string.in_develop))
 
             is IncomesUIEvent.OnIncomeItemClick ->
-                setEffect(IncomesUIEffect.ShowError(R.string.in_develop))
+                setEffect(IncomesUIEffect.NavigateToEditTransactionScreen(event.id))
 
             IncomesUIEvent.OnAddIncomeClick ->
-                setEffect(IncomesUIEffect.ShowError(R.string.in_develop))
+                setEffect(IncomesUIEffect.NavigateToAddTransactionScreen)
 
             IncomesUIEvent.OnErrorDialogDone ->
                 setState(currentState.copy(alert = null))
@@ -101,5 +105,16 @@ class IncomesViewModel @Inject constructor(
                 )
             }
         )
+    }
+
+    private fun subscribeOnTransactionsChanges() {
+        viewModelScope.launch {
+            transactionsUpdater.updateChannel.collectLatest { route ->
+                when (route) {
+                    RouteDesc.Incomes -> loadInfo()
+                    RouteDesc.Expenditures -> Unit
+                }
+            }
+        }
     }
 }

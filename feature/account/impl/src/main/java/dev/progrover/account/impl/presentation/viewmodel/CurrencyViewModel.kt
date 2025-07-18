@@ -1,6 +1,5 @@
 package dev.progrover.account.impl.presentation.viewmodel
 
-import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.progrover.account.impl.presentation.contract.currency.CurrencyUIEffect
 import dev.progrover.account.impl.presentation.contract.currency.CurrencyUIEvent
 import dev.progrover.account.impl.presentation.contract.currency.CurrencyUIState
@@ -11,7 +10,6 @@ import javax.inject.Inject
 /**
  * ViewModel, привязанная к currency screen
  */
-@HiltViewModel
 class CurrencyViewModel @Inject constructor(
     private val currencyUpdater: CurrencyUpdater,
 ) :

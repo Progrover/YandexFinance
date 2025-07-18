@@ -98,7 +98,7 @@ fun CustomListItem(
                 overflow = TextOverflow.Ellipsis,
             )
 
-            Box(modifier = Modifier.weight(3f)) { customElement() }
+            Box(modifier = Modifier.weight(2f)) { customElement() }
 
         }
 
