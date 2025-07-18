@@ -3,7 +3,6 @@ import java.util.Properties
 plugins {
     id(Plugins.library)
     id(Plugins.android)
-    id(Plugins.hilt)
     kotlin(Plugins.kapt)
     alias(libs.plugins.compose.compiler)
 }
@@ -46,7 +45,7 @@ composeCompiler {
 dependencies {
 
     restApiMonitoring()
-    hilt()
+    dagger()
     viewModel()
     coroutines()
     navigation()

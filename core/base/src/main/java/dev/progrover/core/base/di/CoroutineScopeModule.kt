@@ -2,8 +2,6 @@ package dev.progrover.core.base.di
 
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -11,7 +9,6 @@ import kotlinx.coroutines.SupervisorJob
 import timber.log.Timber
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
 @Module
 class CoroutineScopeModule {
 

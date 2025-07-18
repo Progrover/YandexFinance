@@ -1,7 +1,8 @@
 package dev.progrover.account.impl.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import dev.progrover.account.impl.domain.model.AccountAlert
 import dev.progrover.account.impl.domain.repository.AccountRepository
 import dev.progrover.account.impl.presentation.contract.balance.BalanceUIEffect
@@ -12,18 +13,16 @@ import dev.progrover.account.impl.presentation.navigation.BalanceAndNameUpdater
 import dev.progrover.core.base.model.AccountDetailed
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.JsonConverter
-import dev.progrover.core.base.utils.fromRouteArgument
-import javax.inject.Inject
 
 /**
  * ViewModel, привязанная к currency screen
  */
-@HiltViewModel
-class BalanceNameViewModel @Inject constructor(
+
+class BalanceNameViewModel @AssistedInject constructor(
     private val balanceAndNameUpdater: BalanceAndNameUpdater,
     private val accountRepository: AccountRepository,
     private val jsonConverter: JsonConverter,
-    savedStateHandle: SavedStateHandle,
+    @Assisted savedStateHandle: SavedStateHandle,
 ) :
     BaseViewModel<BalanceUIEvent, BalanceUIState, BalanceUIEffect>(BalanceUIState()) {
 

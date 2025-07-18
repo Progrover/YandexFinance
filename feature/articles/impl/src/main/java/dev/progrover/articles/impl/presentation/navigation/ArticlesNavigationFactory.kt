@@ -1,6 +1,6 @@
 package dev.progrover.articles.impl.presentation.navigation
 
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -11,9 +11,12 @@ import dev.progrover.articles.impl.presentation.screen.ArticlesScreen
 import dev.progrover.articles.impl.presentation.viewmodel.ArticlesViewModel
 import dev.progrover.core.base.navigation.NavigationFactory
 import javax.inject.Inject
+import javax.inject.Singleton
+
 /**
  * Необходим для навигации articles feature
  */
+@Singleton
 class ArticlesNavigationFactory @Inject constructor() : NavigationFactory {
 
     override fun create(builder: NavGraphBuilder, navController: NavHostController) {
@@ -22,7 +25,11 @@ class ArticlesNavigationFactory @Inject constructor() : NavigationFactory {
             route = ROUTE_NAME
         ) {
             composable(route = ARTICLES_SCREEN) {
-                val viewModel: ArticlesViewModel = hiltViewModel()
+
+                val component = ArticlesComponent()
+                val viewModel: ArticlesViewModel = viewModel(
+                    factory = component.getArticlesViewModelFactory()
+                )
                 ArticlesScreen(viewModel = viewModel, navController = navController)
             }
         }

@@ -14,13 +14,11 @@ object Versions {
     const val swipeRefresh = "0.35.0-alpha"
 
     // di
-    const val hilt = "2.56.2"
+    const val dagger = "2.56.2"
     const val hiltNavigation = "1.1.0"
 
     // work
     const val workRuntime = "2.8.1"
-    const val hiltCompiler = "1.0.0"
-    const val hiltWork = "1.1.0"
 
     // network
     const val okhttp = "5.0.0-alpha.16"

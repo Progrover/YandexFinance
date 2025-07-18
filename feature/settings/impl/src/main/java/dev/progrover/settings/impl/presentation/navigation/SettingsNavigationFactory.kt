@@ -1,6 +1,6 @@
 package dev.progrover.settings.impl.presentation.navigation
 
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -11,9 +11,12 @@ import dev.progrover.settings.api.SettingsFeature.SETTINGS_SCREEN
 import dev.progrover.settings.impl.presentation.screen.SettingsScreen
 import dev.progrover.settings.impl.presentation.viewmodel.SettingsViewModel
 import javax.inject.Inject
+import javax.inject.Singleton
+
 /**
  * Необходим для навигации settings feature
  */
+@Singleton
 class SettingsNavigationFactory @Inject constructor() : NavigationFactory {
 
     override fun create(builder: NavGraphBuilder, navController: NavHostController) {
@@ -22,7 +25,10 @@ class SettingsNavigationFactory @Inject constructor() : NavigationFactory {
             route = ROUTE_NAME
         ) {
             composable(route = SETTINGS_SCREEN) {
-                val viewModel: SettingsViewModel = hiltViewModel()
+                val component = SettingsComponent()
+                val viewModel: SettingsViewModel = viewModel<SettingsViewModel>(
+                    factory = component.getSettingsViewModelFactory()
+                )
                 SettingsScreen(viewModel = viewModel, navController = navController)
             }
         }

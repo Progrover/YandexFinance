@@ -2,15 +2,16 @@ package dev.progrover.history.impl.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import dev.progrover.account.api.domain.AccountPropertiesProvider
 import dev.progrover.core.base.model.Alert
 import dev.progrover.core.base.model.TransactionsUpdater
 import dev.progrover.core.base.navigation.RouteDesc
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.addCurrency
-import dev.progrover.core.base.utils.formatToAmount
 import dev.progrover.core.base.utils.dateToServerRequest
+import dev.progrover.core.base.utils.formatToAmount
 import dev.progrover.history.impl.domain.model.HistoryAlert
 import dev.progrover.history.impl.domain.model.HistoryElement
 import dev.progrover.history.impl.domain.repository.HistoryRepository
@@ -23,14 +24,12 @@ import dev.progrover.shmr_finance.core.uicommon.R
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 /**
  * ViewModel, привязанная к history feature
  */
-@HiltViewModel
-class HistoryViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+class HistoryViewModel @AssistedInject constructor(
+    @Assisted savedStateHandle: SavedStateHandle,
     private val historyRepository: HistoryRepository,
     private val idProvider: AccountPropertiesProvider,
     private val transactionsUpdater: TransactionsUpdater,

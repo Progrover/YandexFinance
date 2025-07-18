@@ -6,22 +6,18 @@ import android.content.Context
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
 import dev.progrover.core.base.data.storage.Prefs
 import dev.progrover.core.base.data.storage.SharedPrefsImpl
 import dev.progrover.core.base.model.TransactionsUpdater
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
 class DataModule {
 
     @Provides
     @Singleton
     fun provideContentResolver(
-        @ApplicationContext context: Context,
+        context: Context,
     ): ContentResolver =
         context.contentResolver
 

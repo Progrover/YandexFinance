@@ -1,7 +1,6 @@
 package dev.progrover.incomes.impl.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.progrover.account.api.domain.AccountPropertiesProvider
 import dev.progrover.core.base.model.Alert
 import dev.progrover.core.base.model.TransactionsUpdater
@@ -23,7 +22,6 @@ import javax.inject.Inject
 /**
  * ViewModel, привязанная к incomes feature
  */
-@HiltViewModel
 class IncomesViewModel @Inject constructor(
     private val incomesRepository: IncomesRepository,
     private val idProvider: AccountPropertiesProvider,

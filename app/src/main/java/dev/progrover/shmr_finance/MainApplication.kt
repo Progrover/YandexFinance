@@ -2,29 +2,42 @@ package dev.progrover.shmr_finance
 
 import TimberReleaseTree
 import android.app.Application
-import androidx.hilt.work.HiltWorkerFactory
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.work.Configuration
 import coil.ImageLoader
 import coil.ImageLoaderFactory
-import dagger.hilt.android.HiltAndroidApp
+import dev.progrover.core.base.di.BaseComponent
+import dev.progrover.core.base.di.BaseComponentProvider
+import dev.progrover.core.base.di.DaggerBaseComponent
 import dev.progrover.core.uicommon.utils.ImageRequestDefaults
+import dev.progrover.shmr_finance.di.ApplicationComponent
+import dev.progrover.shmr_finance.di.ApplicationComponentProvider
+import dev.progrover.shmr_finance.di.CustomWorkerFactory
+import dev.progrover.shmr_finance.di.DaggerApplicationComponent
 import timber.log.Timber
 import javax.inject.Inject
 
-@HiltAndroidApp
 class MainApplication :
     Application(),
     DefaultLifecycleObserver,
     Configuration.Provider,
-    ImageLoaderFactory {
+    ImageLoaderFactory,
+    BaseComponentProvider,
+    ApplicationComponentProvider {
+
+    private lateinit var appComponent: ApplicationComponent
 
     @Inject
-    lateinit var workerFactory: HiltWorkerFactory
+    lateinit var workerFactory: CustomWorkerFactory
 
     override fun onCreate() {
         super<Application>.onCreate()
+
+        appComponent = DaggerApplicationComponent.factory()
+            .create(this, _baseComponent)
+
+        appComponent.inject(this)
 
         val isDebugBuild = BuildConfig.DEBUG
         val timberTree = when (isDebugBuild) {
@@ -49,4 +62,14 @@ class MainApplication :
             .networkCachePolicy(ImageRequestDefaults.cachePolicy)
             .build()
     }
+
+    private val _baseComponent: BaseComponent by lazy {
+        DaggerBaseComponent.factory().create(this, this)
+    }
+
+    override fun getBaseComponent(): BaseComponent =
+        _baseComponent
+
+    override fun getApplicationComponent(): ApplicationComponent =
+        appComponent
 }

@@ -4,7 +4,6 @@ plugins {
     id(Plugins.application)
     id(Plugins.android)
     kotlin(Plugins.kapt)
-    id(Plugins.hilt)
     alias(libs.plugins.compose.compiler)
 }
 
@@ -99,7 +98,7 @@ dependencies {
     base()
     navigation()
     compose()
-    hilt()
+    dagger()
     coil()
     work()
     coroutinesPlayServices()

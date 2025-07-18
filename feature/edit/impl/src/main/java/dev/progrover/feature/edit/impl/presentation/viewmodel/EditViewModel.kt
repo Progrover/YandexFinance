@@ -2,7 +2,8 @@ package dev.progrover.feature.edit.impl.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import dev.progrover.account.api.domain.AccountPropertiesProvider
 import dev.progrover.articles.api.domain.interactor.ArticlesInteractor
 import dev.progrover.core.base.model.Alert
@@ -25,18 +26,16 @@ import dev.progrover.feature.edit.impl.presentation.navigation.EditNavigationFac
 import dev.progrover.feature.edit.impl.presentation.navigation.EditNavigationFactory.Companion.ARG_KEY_TYPE_TRANSACTION
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  * ViewModel, привязанная к edit feature
  */
-@HiltViewModel
-class EditViewModel @Inject constructor(
+class EditViewModel @AssistedInject constructor(
     private val editRepository: EditRepository,
     private val idProvider: AccountPropertiesProvider,
     private val transactionsUpdater: TransactionsUpdater,
     private val articlesInteractor: ArticlesInteractor,
-    savedStateHandle: SavedStateHandle,
+    @Assisted savedStateHandle: SavedStateHandle,
 ) :
     BaseViewModel<EditUIEvent, EditUIState, EditUIEffect>(
         EditUIState(

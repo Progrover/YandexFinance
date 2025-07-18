@@ -2,12 +2,10 @@ package dev.progrover.account.impl.di
 
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import dev.progrover.account.api.domain.AccountPropertiesProvider
+import dev.progrover.account.api.domain.interactor.AccountInteractor
 import dev.progrover.account.impl.data.api.AccountApi
 import dev.progrover.account.impl.data.repository.AccountRepositoryImpl
-import dev.progrover.account.api.domain.interactor.AccountInteractor
 import dev.progrover.account.impl.domain.interactor.AccountInteractorImpl
 import dev.progrover.account.impl.domain.provider.AccountPropertiesImpl
 import dev.progrover.account.impl.domain.repository.AccountRepository
@@ -19,7 +17,6 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
 class DomainModule {
 
     @Provides

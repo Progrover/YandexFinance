@@ -2,8 +2,6 @@ package dev.progrover.expenditures.impl.di
 
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import dev.progrover.core.base.data.api.TransactionsApi
 import dev.progrover.core.base.di.CoroutineQualifiers
 import dev.progrover.expenditures.api.domain.interactor.ExpendituresInteractor
@@ -13,14 +11,12 @@ import dev.progrover.expenditures.impl.domain.interactor.ExpendituresInteractorI
 import dev.progrover.expenditures.impl.domain.repository.ExpendituresRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
-import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
 class DomainModule {
 
     @Provides
-    @Singleton
+    @ExpendituresScope
     fun provideExpendituresRepository(
         @CoroutineQualifiers.DefaultCoroutineExceptionHandler
         coroutineExceptionHandler: CoroutineExceptionHandler,
@@ -37,7 +33,7 @@ class DomainModule {
         )
 
     @Provides
-    @Singleton
+    @ExpendituresScope
     fun provideExpendituresInteractor(
         repository: ExpendituresRepository,
     ): ExpendituresInteractor =

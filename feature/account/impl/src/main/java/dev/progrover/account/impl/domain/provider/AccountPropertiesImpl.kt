@@ -40,8 +40,9 @@ class AccountPropertiesImpl @Inject constructor(
     }
 
     override fun getCurrency(): String = account?.currency ?: "???"
+
     override fun setCurrency(newCurrency: String) {
-        account = account!!.copy(currency = newCurrency)
+        account = account?.copy(currency = newCurrency)
     }
 
     override fun getName(): String =

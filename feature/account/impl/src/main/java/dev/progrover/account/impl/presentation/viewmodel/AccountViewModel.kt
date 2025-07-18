@@ -1,7 +1,6 @@
 package dev.progrover.account.impl.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.progrover.account.api.domain.AccountPropertiesProvider
 import dev.progrover.account.impl.domain.model.AccountAlert
 import dev.progrover.account.impl.domain.repository.AccountRepository
@@ -14,7 +13,6 @@ import dev.progrover.core.base.model.AccountDetailed
 import dev.progrover.core.base.model.Alert
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.JsonConverter
-import dev.progrover.core.base.utils.toRouteArgument
 import dev.progrover.shmr_finance.core.uicommon.R
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -23,7 +21,6 @@ import javax.inject.Inject
 /**
  * ViewModel, привязанная к account screen
  */
-@HiltViewModel
 class AccountViewModel @Inject constructor(
     private val accountRepository: AccountRepository,
     private val currencyUpdater: CurrencyUpdater,
