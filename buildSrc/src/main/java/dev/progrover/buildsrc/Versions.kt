@@ -17,6 +17,9 @@ object Versions {
     const val dagger = "2.56.2"
     const val hiltNavigation = "1.1.0"
 
+    //room
+    const val room = "2.7.2"
+
     // work
     const val workRuntime = "2.8.1"
 

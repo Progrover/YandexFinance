@@ -54,6 +54,7 @@ dependencies {
     coil()
     work()
     securityCrypto()
+    room()
 }
 
 kapt {

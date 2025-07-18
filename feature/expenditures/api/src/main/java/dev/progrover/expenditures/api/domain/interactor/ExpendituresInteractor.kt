@@ -9,4 +9,10 @@ interface ExpendituresInteractor {
         startDate: String,
         endDate: String
     ): ApiResponse<List<ExpenditureDetailed>>
+
+    suspend fun getExpendituresDetailedFromLocalStorage(
+        accountId: Int,
+        startDate: String,
+        endDate: String
+    ): ApiResponse<List<ExpenditureDetailed>>
 }

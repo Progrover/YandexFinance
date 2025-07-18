@@ -11,4 +11,7 @@ class ArticlesInteractorImpl @Inject constructor(
 ) : ArticlesInteractor {
     override suspend fun getCategoriesByType(isIncome: Boolean): ApiResponse<List<Category>> =
         articlesRepository.getArticlesByType(isIncome)
+
+    override suspend fun getCategoriesByTypeFromLocalStorage(isIncome: Boolean): ApiResponse<List<Category>> =
+        articlesRepository.getArticlesFromLocalStorage()
 }

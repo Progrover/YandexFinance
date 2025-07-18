@@ -13,6 +13,12 @@ fun Long.dateToServerRequest(): String = Instant.ofEpochMilli(this)
     .toLocalDate()
     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
+fun String.serverRequestToMillis(): Long {
+    val localDate = LocalDate.parse(this)
+    val zone = ZoneId.systemDefault()
+    return localDate.atStartOfDay(zone).toInstant().toEpochMilli()
+}
+
 fun Long.toDatePresentation(): String = Instant.ofEpochMilli(this)
     .atZone(ZoneId.systemDefault())
     .toLocalDate()
@@ -82,4 +88,20 @@ fun combineDateAndTime(dateMillis: Long, time: String): Long {
 fun Long.formatToIsoUtc(): String {
     val instant = Instant.ofEpochMilli(this)
     return DateTimeFormatter.ISO_INSTANT.format(instant)
+}
+
+fun getStartOfToday(): Long {
+    val today = LocalDate.now()
+    val zone = ZoneId.systemDefault()
+    val startOfDay = today.atStartOfDay(zone).toInstant().toEpochMilli()
+
+    return startOfDay
+}
+
+fun getEndOfToday(): Long {
+    val today = LocalDate.now()
+    val zone = ZoneId.systemDefault()
+    val endOfDay = today.plusDays(1).atStartOfDay(zone).toInstant().toEpochMilli() - 1
+
+    return endOfDay
 }

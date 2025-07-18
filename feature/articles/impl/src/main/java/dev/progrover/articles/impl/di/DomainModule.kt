@@ -7,6 +7,7 @@ import dev.progrover.articles.impl.data.api.ArticlesApi
 import dev.progrover.articles.impl.data.repository.ArticlesRepositoryImpl
 import dev.progrover.articles.impl.domain.repository.ArticlesRepository
 import dev.progrover.articles.impl.domain.repository.interactor.ArticlesInteractorImpl
+import dev.progrover.core.base.data.local.provider.LocalArticleProvider
 import dev.progrover.core.base.di.CoroutineQualifiers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -23,11 +24,13 @@ class DomainModule {
         @CoroutineQualifiers.IoDispatcher
         dispatcher: CoroutineDispatcher,
         articlesApi: ArticlesApi,
+        localArticleProvider: LocalArticleProvider
     ): ArticlesRepository =
         ArticlesRepositoryImpl(
             coroutineExceptionHandler = coroutineExceptionHandler,
             dispatcher = dispatcher,
             articlesApi = articlesApi,
+            localArticleProvider = localArticleProvider,
         )
 
     @Provides

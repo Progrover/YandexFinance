@@ -3,10 +3,12 @@ package dev.progrover.account.impl.data.repository
 import dev.progrover.account.impl.data.api.AccountApi
 import dev.progrover.account.impl.data.model.ManageAccountRequest
 import dev.progrover.account.impl.domain.repository.AccountRepository
+import dev.progrover.core.base.data.local.provider.LocalAccountProvider
 import dev.progrover.core.base.data.repository.BaseRepository
 import dev.progrover.core.base.di.CoroutineQualifiers
 import dev.progrover.core.base.model.AccountDetailed
 import dev.progrover.core.base.model.ApiResponse
+import dev.progrover.core.base.model.ServerError
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import timber.log.Timber
@@ -18,6 +20,7 @@ class AccountRepositoryImpl @Inject constructor(
     @CoroutineQualifiers.IoDispatcher
     dispatcher: CoroutineDispatcher,
     private val accountApi: AccountApi,
+    private val localAccountProvider: LocalAccountProvider,
 ) : AccountRepository, BaseRepository(
     dispatcher = dispatcher,
     coroutineExceptionHandler = coroutineExceptionHandler,
@@ -41,6 +44,22 @@ class AccountRepositoryImpl @Inject constructor(
             }
         }
 
+    override suspend fun getAccountsFromLocalStorage(): ApiResponse<List<AccountDetailed>> =
+        executeOnIO {
+            try {
+                if (tokenAvaliable) {
+                    val response = localAccountProvider.getAllAccounts()
+
+                    ApiResponse(value = response)
+                } else {
+                    ApiResponse()
+                }
+            } catch (e: Exception) {
+                Timber.e("GetAccounts locally error", e)
+                ApiResponse(error = getErrorMessage(e))
+            }
+        }
+
     override suspend fun getAccountById(accountId: Int): ApiResponse<AccountDetailed> =
         executeOnIO {
             try {
@@ -56,6 +75,22 @@ class AccountRepositoryImpl @Inject constructor(
                 }
             } catch (e: Exception) {
                 Timber.e("GetAccountById error", e)
+                ApiResponse(error = getErrorMessage(e))
+            }
+        }
+
+    override suspend fun getAccountByIdFromLocalStorage(accountId: Int): ApiResponse<AccountDetailed> =
+        executeOnIO {
+            try {
+                if (tokenAvaliable) {
+                    val response = localAccountProvider.getAccountById(accountId)
+
+                    ApiResponse(value = response)
+                } else {
+                    ApiResponse()
+                }
+            } catch (e: Exception) {
+                Timber.e("GetAccountById locally error", e)
                 ApiResponse(error = getErrorMessage(e))
             }
         }
@@ -111,6 +146,29 @@ class AccountRepositoryImpl @Inject constructor(
                 }
             } catch (e: Exception) {
                 Timber.e("UpdateAccountById error", e)
+                ApiResponse(error = getErrorMessage(e))
+            }
+        }
+
+    override suspend fun updateAccountByIdFromLocalStorage(
+        account: AccountDetailed,
+        synced: Boolean
+    ): ApiResponse<AccountDetailed> =
+        executeOnIO {
+            try {
+                if (tokenAvaliable) {
+                    val response = localAccountProvider.updateAccount(
+                        account = account,
+                        synced = synced
+                    )
+
+                    if (response) ApiResponse(value = account)
+                    else ApiResponse(error = ServerError.UnknownError)
+                } else {
+                    ApiResponse()
+                }
+            } catch (e: Exception) {
+                Timber.e("UpdateAccountById locally error", e)
                 ApiResponse(error = getErrorMessage(e))
             }
         }

@@ -73,4 +73,54 @@ class HistoryRepositoryImpl(
                 }
             }
         }
+
+    override suspend fun getHistoryFromLocalStorage(
+        accountId: Int,
+        start: String,
+        end: String,
+        type: RouteDesc
+    ): ApiResponse<List<HistoryElement>> =
+        executeOnIO {
+            when (type) {
+                RouteDesc.Incomes -> {
+                    val response = incomesInteractor.getIncomesDetailedFromLocalStorage(
+                        accountId,
+                        start,
+                        end,
+                    )
+
+                    if (response.value != null) {
+                        ApiResponse(
+                            value =
+                                historyDTOMapper.mapIncomesToHistory(response.value!!),
+                        )
+                    } else {
+                        ApiResponse(
+                            code = response.code,
+                            error = response.error,
+                        )
+                    }
+                }
+
+                RouteDesc.Expenditures -> {
+                    val response = expendituresInteractor.getExpendituresDetailedFromLocalStorage(
+                        accountId,
+                        start,
+                        end,
+                    )
+
+                    if (response.value != null) {
+                        ApiResponse(
+                            value =
+                                historyDTOMapper.mapExpendituresToHistory(response.value!!),
+                        )
+                    } else {
+                        ApiResponse(
+                            code = response.code,
+                            error = response.error,
+                        )
+                    }
+                }
+            }
+        }
 }

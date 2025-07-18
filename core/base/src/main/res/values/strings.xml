@@ -10,4 +10,5 @@
     <string name="error_429">Ошибка 429. Что-то на непонятном =)</string>
     <string name="error_500">Ошибка 500. Внутренняя ошибка сервера!</string>
     <string name="multiple_loads_error">Запрос безуспешно выполнился 4 раза.</string>
+    <string name="no_data_error">Ошибочка в локальном хранилище...</string>
 </resources>

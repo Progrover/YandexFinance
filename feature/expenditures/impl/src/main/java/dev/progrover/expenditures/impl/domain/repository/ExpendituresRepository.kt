@@ -10,7 +10,17 @@ interface ExpendituresRepository {
         accountId: Int
     ): ApiResponse<List<Expenditure>>
 
+    suspend fun getExpendituresFromLocalStorage(
+        accountId: Int
+    ): ApiResponse<List<Expenditure>>
+
     suspend fun getExpendituresDetailed(
+        accountId: Int,
+        start: String,
+        end: String,
+    ): ApiResponse<List<ExpenditureDetailed>>
+
+    suspend fun getExpendituresDetailedFromLocalStorage(
         accountId: Int,
         start: String,
         end: String,

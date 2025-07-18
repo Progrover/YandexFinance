@@ -14,6 +14,7 @@ import javax.inject.Singleton
         DataModule::class,
         DispatcherModule::class,
         NetworkModule::class,
+        LocalDataModule::class,
     ]
 )
 interface BaseComponent : BaseDependencies {

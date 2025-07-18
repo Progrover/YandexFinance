@@ -3,6 +3,7 @@ package dev.progrover.expenditures.impl.di
 import dagger.Module
 import dagger.Provides
 import dev.progrover.core.base.data.api.TransactionsApi
+import dev.progrover.core.base.data.local.provider.LocalTransactionProvider
 import dev.progrover.core.base.di.CoroutineQualifiers
 import dev.progrover.expenditures.api.domain.interactor.ExpendituresInteractor
 import dev.progrover.expenditures.impl.data.mapper.ExpendituresDTOMapper
@@ -24,12 +25,14 @@ class DomainModule {
         dispatcher: CoroutineDispatcher,
         transactionsApi: TransactionsApi,
         expendituresDTOMapper: ExpendituresDTOMapper,
+        localTransactionProvider: LocalTransactionProvider,
     ): ExpendituresRepository =
         ExpendituresRepositoryImpl(
             coroutineExceptionHandler = coroutineExceptionHandler,
             dispatcher = dispatcher,
             transactionsApi = transactionsApi,
             expendituresDTOMapper = expendituresDTOMapper,
+            localTransactionProvider = localTransactionProvider,
         )
 
     @Provides

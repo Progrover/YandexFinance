@@ -21,4 +21,19 @@ interface EditRepository {
     suspend fun deleteTransaction(
         transactionId: Int
     ): ApiResponse<Boolean>
+
+    suspend fun getEditTransactionFromLocalStorage(
+        accountId: Int,
+        transactionId: Int,
+    ): ApiResponse<EditTransaction>
+
+    suspend fun updateTransactionInfoInLocalStorage(
+        transaction: EditTransaction,
+        synced: Boolean,
+    ): ApiResponse<Boolean>
+
+    suspend fun addTransactionToLocalStorage(
+        transaction: EditTransaction,
+        synced: Boolean,
+    ): ApiResponse<Boolean>
 }

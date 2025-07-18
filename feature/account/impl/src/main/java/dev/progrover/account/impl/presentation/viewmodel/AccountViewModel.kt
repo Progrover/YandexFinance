@@ -11,6 +11,7 @@ import dev.progrover.account.impl.presentation.navigation.BalanceAndNameUpdater
 import dev.progrover.account.impl.presentation.navigation.CurrencyUpdater
 import dev.progrover.core.base.model.AccountDetailed
 import dev.progrover.core.base.model.Alert
+import dev.progrover.core.base.model.LocalStorageError
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.JsonConverter
 import dev.progrover.shmr_finance.core.uicommon.R
@@ -66,6 +67,7 @@ class AccountViewModel @Inject constructor(
         }
 
     private fun loadInfo() {
+        var localLoadingNeeded = false
         tryMultipleLoad(
             function = {
                 accountRepository.getAccounts()
@@ -86,6 +88,7 @@ class AccountViewModel @Inject constructor(
                 )
             },
             onFailure = { message ->
+                localLoadingNeeded = true
                 setState(
                     currentState.copy(
                         alert = message,
@@ -93,13 +96,72 @@ class AccountViewModel @Inject constructor(
                 )
             }
         )
+        if (localLoadingNeeded)
+            tryMultipleLoad(
+                function = {
+                    accountRepository.getAccountsFromLocalStorage()
+                },
+                onSuccess = { result ->
+                    result.firstOrNull()?.let {
+                        setState(
+                            currentState.copy(
+                                isLoading = false,
+                                account = it,
+                            )
+                        )
+                    } ?: setState(
+                        currentState.copy(
+                            isLoading = false,
+                            alert = AccountAlert.NoAccountError,
+                        )
+                    )
+                },
+                onFailure = {
+                    setState(
+                        currentState.copy(
+                            alert = LocalStorageError.LocalError,
+                        )
+                    )
+                }
+            )
     }
 
     private fun updateCurrency(newCurrency: String) {
         setState(currentState.copy(isLoading = true))
         currentState.account?.let { currentAccount ->
+            var synced = true
             tryMultipleLoad(
                 function = { accountRepository.updateAccountById(currentAccount.copy(currency = newCurrency)) },
+                onSuccess = { newAccount ->
+                    accountProvider.setCurrency(newAccount.currency)
+                    setState(
+                        currentState.copy(
+                            isLoading = false,
+                            account = newAccount,
+                            alert = AccountAlert.CurrencySuccess,
+                        )
+                    )
+                },
+                onFailure = { throwable ->
+                    synced = false
+                    setState(
+                        currentState.copy(
+                            isLoading = false,
+                            alert = throwable as Alert,
+                        )
+                    )
+                }
+            )
+
+            tryMultipleLoad(
+                function = {
+                    accountRepository.updateAccountByIdFromLocalStorage(
+                        currentAccount.copy(
+                            currency = newCurrency
+                        ),
+                        synced
+                    )
+                },
                 onSuccess = { newAccount ->
                     accountProvider.setCurrency(newAccount.currency)
                     setState(

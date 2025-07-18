@@ -4,6 +4,9 @@ import android.content.ContentResolver
 import com.squareup.moshi.Moshi
 import dev.progrover.core.base.data.api.TransactionsApi
 import dev.progrover.core.base.data.interceptor.BaseInterceptor
+import dev.progrover.core.base.data.local.AccountDao
+import dev.progrover.core.base.data.local.ArticleDao
+import dev.progrover.core.base.data.local.TransactionDao
 import dev.progrover.core.base.data.storage.Prefs
 import dev.progrover.core.base.model.TransactionsUpdater
 import dev.progrover.core.base.utils.JsonConverter
@@ -52,4 +55,11 @@ interface BaseDependencies {
     fun baseInterceptor(): BaseInterceptor
 
     fun transactionsApi(): TransactionsApi
+
+    fun transactionDao(): TransactionDao
+
+    fun accountDao(): AccountDao
+
+    fun ArticleDao(): ArticleDao
+
 }

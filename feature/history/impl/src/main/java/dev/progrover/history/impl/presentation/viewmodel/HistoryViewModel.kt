@@ -6,6 +6,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import dev.progrover.account.api.domain.AccountPropertiesProvider
 import dev.progrover.core.base.model.Alert
+import dev.progrover.core.base.model.LocalStorageError
 import dev.progrover.core.base.model.TransactionsUpdater
 import dev.progrover.core.base.navigation.RouteDesc
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
@@ -132,6 +133,7 @@ class HistoryViewModel @AssistedInject constructor(
     }
 
     private fun getHistory(accountId: Int) {
+        var localLoadingNeeded = false
         tryMultipleLoad(
             function = {
                 historyRepository.getHistory(
@@ -142,7 +144,6 @@ class HistoryViewModel @AssistedInject constructor(
                 )
             },
             onSuccess = { result ->
-
                 setState(
                     currentState.copy(
                         isLoading = false,
@@ -153,6 +154,7 @@ class HistoryViewModel @AssistedInject constructor(
                 )
             },
             onFailure = { message ->
+                localLoadingNeeded = true
                 setState(
                     currentState.copy(
                         alert = message,
@@ -160,6 +162,34 @@ class HistoryViewModel @AssistedInject constructor(
                 )
             }
         )
+        if (localLoadingNeeded)
+            tryMultipleLoad(
+                function = {
+                    historyRepository.getHistoryFromLocalStorage(
+                        accountId,
+                        type = itemType,
+                        start = currentState.start.dateToServerRequest(),
+                        end = currentState.end.dateToServerRequest()
+                    )
+                },
+                onSuccess = { result ->
+                    setState(
+                        currentState.copy(
+                            isLoading = false,
+                            history = result,
+                            currency = idProvider.getCurrency(),
+                            total = countTotalAmount(result, idProvider.getCurrency()),
+                        )
+                    )
+                },
+                onFailure = {
+                    setState(
+                        currentState.copy(
+                            alert = LocalStorageError.LocalError,
+                        )
+                    )
+                }
+            )
     }
 
     private fun countTotalAmount(historyItems: List<HistoryElement>, currency: String): String {

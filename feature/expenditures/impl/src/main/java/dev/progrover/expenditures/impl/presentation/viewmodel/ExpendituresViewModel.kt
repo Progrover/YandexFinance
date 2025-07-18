@@ -85,6 +85,7 @@ class ExpendituresViewModel @Inject constructor(
     }
 
     private fun getExpends(accountId: Int) {
+        var localLoadingNeeded = false
         tryMultipleLoad(
             function = {
                 expendituresRepository.getExpenditures(
@@ -103,6 +104,7 @@ class ExpendituresViewModel @Inject constructor(
                 )
             },
             onFailure = { message ->
+                localLoadingNeeded = true
                 setState(
                     currentState.copy(
                         alert = message,
@@ -110,6 +112,32 @@ class ExpendituresViewModel @Inject constructor(
                 )
             }
         )
+        if (localLoadingNeeded)
+            tryMultipleLoad(
+                function = {
+                    expendituresRepository.getExpendituresFromLocalStorage(
+                        accountId
+                    )
+                },
+                onSuccess = { result ->
+
+                    setState(
+                        currentState.copy(
+                            isLoading = false,
+                            currency = idProvider.getCurrency(),
+                            expenditures = result,
+                            totalExpenditures = countTotalAmount(result, idProvider.getCurrency()),
+                        )
+                    )
+                },
+                onFailure = { message ->
+                    setState(
+                        currentState.copy(
+                            alert = message,
+                        )
+                    )
+                }
+            )
     }
 
     private fun subscribeOnTransactionsChanges() {

@@ -101,6 +101,7 @@ dependencies {
     dagger()
     coil()
     work()
+    room()
     coroutinesPlayServices()
     implementation(libs.androidx.core.splashscreen)
 

@@ -15,4 +15,11 @@ class ExpendituresInteractorImpl @Inject constructor(
         endDate: String
     ): ApiResponse<List<ExpenditureDetailed>> =
         repository.getExpendituresDetailed(accountId, startDate, endDate)
+
+    override suspend fun getExpendituresDetailedFromLocalStorage(
+        accountId: Int,
+        startDate: String,
+        endDate: String
+    ): ApiResponse<List<ExpenditureDetailed>> =
+        repository.getExpendituresDetailedFromLocalStorage(accountId, startDate, endDate)
 }

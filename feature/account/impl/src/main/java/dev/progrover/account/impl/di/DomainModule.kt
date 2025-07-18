@@ -11,6 +11,7 @@ import dev.progrover.account.impl.domain.provider.AccountPropertiesImpl
 import dev.progrover.account.impl.domain.repository.AccountRepository
 import dev.progrover.account.impl.presentation.navigation.BalanceAndNameUpdater
 import dev.progrover.account.impl.presentation.navigation.CurrencyUpdater
+import dev.progrover.core.base.data.local.provider.LocalAccountProvider
 import dev.progrover.core.base.di.CoroutineQualifiers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -27,11 +28,13 @@ class DomainModule {
         @CoroutineQualifiers.IoDispatcher
         dispatcher: CoroutineDispatcher,
         accountApi: AccountApi,
+        localAccountProvider: LocalAccountProvider,
     ): AccountRepository =
         AccountRepositoryImpl(
             accountApi = accountApi,
             coroutineExceptionHandler = coroutineExceptionHandler,
             dispatcher = dispatcher,
+            localAccountProvider = localAccountProvider,
         )
 
     @Provides

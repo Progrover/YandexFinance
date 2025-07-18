@@ -2,9 +2,13 @@ package dev.progrover.incomes.impl.data.repository
 
 import android.annotation.SuppressLint
 import dev.progrover.core.base.data.api.TransactionsApi
+import dev.progrover.core.base.data.local.provider.LocalTransactionProvider
 import dev.progrover.core.base.data.repository.BaseRepository
 import dev.progrover.core.base.di.CoroutineQualifiers
 import dev.progrover.core.base.model.ApiResponse
+import dev.progrover.core.base.utils.getEndOfToday
+import dev.progrover.core.base.utils.getStartOfToday
+import dev.progrover.core.base.utils.serverRequestToMillis
 import dev.progrover.incomes.api.domain.model.IncomeDetailed
 import dev.progrover.incomes.impl.data.mapper.IncomesDTOMapper
 import dev.progrover.incomes.impl.domain.model.Income
@@ -23,6 +27,7 @@ class IncomesRepositoryImpl @Inject constructor(
     dispatcher: CoroutineDispatcher,
     private val transactionsApi: TransactionsApi,
     private val incomesDTOMapper: IncomesDTOMapper,
+    private val localTransactionProvider: LocalTransactionProvider,
 ) : IncomesRepository, BaseRepository(
     dispatcher = dispatcher,
     coroutineExceptionHandler = coroutineExceptionHandler,
@@ -62,7 +67,57 @@ class IncomesRepositoryImpl @Inject constructor(
             }
         }
 
+    override suspend fun getIncomesFromLocalStorage(accountId: Int): ApiResponse<List<Income>> =
+        executeOnIO {
+            try {
+                val startDate = getStartOfToday()
+                val endDate = getEndOfToday()
+                if (tokenAvaliable) {
+                    val response = localTransactionProvider.getTransactionsByAccountAndPeriod(
+                        accountId = accountId,
+                        startDate = startDate,
+                        endDate = endDate
+                    )
+
+                    ApiResponse(value = incomesDTOMapper.mapTransactionsToIncomes(response))
+                } else {
+                    ApiResponse()
+                }
+            } catch (e: Exception) {
+                Timber.e("GetIncomes locally error", e)
+                ApiResponse(error = getErrorMessage(e))
+            }
+        }
+
     override suspend fun getIncomesDetailed(
+        accountId: Int,
+        start: String,
+        end: String
+    ): ApiResponse<List<IncomeDetailed>> =
+        executeOnIO {
+            try {
+                if (tokenAvaliable) {
+                    val response = localTransactionProvider.getTransactionsByAccountAndPeriod(
+                        accountId = accountId,
+                        startDate = start.serverRequestToMillis(),
+                        endDate = end.serverRequestToMillis(),
+                    )
+
+                    ApiResponse(
+                        value = incomesDTOMapper.mapTransactionsToIncomesDetailed(
+                            response
+                        )
+                    )
+                } else {
+                    ApiResponse()
+                }
+            } catch (e: Exception) {
+                Timber.e("GetIncomesDetailed error", e)
+                ApiResponse(error = getErrorMessage(e))
+            }
+        }
+
+    override suspend fun getIncomesDetailedFromLocalStorage(
         accountId: Int,
         start: String,
         end: String
@@ -90,7 +145,7 @@ class IncomesRepositoryImpl @Inject constructor(
                     ApiResponse()
                 }
             } catch (e: Exception) {
-                Timber.e("GetIncomesDetailed error", e)
+                Timber.e("GetIncomesDetailed locally error", e)
                 ApiResponse(error = getErrorMessage(e))
             }
         }

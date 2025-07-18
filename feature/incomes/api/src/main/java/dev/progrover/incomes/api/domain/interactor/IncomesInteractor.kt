@@ -9,4 +9,10 @@ interface IncomesInteractor {
         start: String,
         end: String,
     ): ApiResponse<List<IncomeDetailed>>
+
+    suspend fun getIncomesDetailedFromLocalStorage(
+        accountId: Int,
+        start: String,
+        end: String,
+    ): ApiResponse<List<IncomeDetailed>>
 }
