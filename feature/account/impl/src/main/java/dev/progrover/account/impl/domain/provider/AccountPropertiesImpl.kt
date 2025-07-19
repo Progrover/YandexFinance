@@ -32,6 +32,7 @@ class AccountPropertiesImpl @Inject constructor(
 
             if (!list.isNullOrEmpty()) {
                 account = list.first()
+                accountInteractor.updateAccount(account!!)
                 withResponse(Result.success(account!!.id))
             } else {
                 val localResponse = accountInteractor.getAccountsFromLocalStorage()

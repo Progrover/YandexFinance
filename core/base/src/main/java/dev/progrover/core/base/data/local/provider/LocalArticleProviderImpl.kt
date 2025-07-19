@@ -33,4 +33,12 @@ internal class LocalArticleProviderImpl @Inject constructor(
             Timber.e("GetCategoryById error: ${e.message}")
             null
         }
+
+    override suspend fun createCategory(category: Category) {
+        try {
+            categoryDao.createCategory(categoryEntityMapper.toCategoryEntity(category))
+        } catch (e: Exception) {
+            Timber.e("CreateCategory error: ${e.message}")
+        }
+    }
 }

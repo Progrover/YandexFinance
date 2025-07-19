@@ -79,7 +79,11 @@ class IncomesRepositoryImpl @Inject constructor(
                         endDate = endDate
                     )
 
-                    ApiResponse(value = incomesDTOMapper.mapTransactionsToIncomes(response))
+                    val result = response.filter { transaction ->
+                        transaction.category.isIncome
+                    }
+
+                    ApiResponse(value = incomesDTOMapper.mapTransactionsToIncomes(result))
                 } else {
                     ApiResponse()
                 }
@@ -90,34 +94,6 @@ class IncomesRepositoryImpl @Inject constructor(
         }
 
     override suspend fun getIncomesDetailed(
-        accountId: Int,
-        start: String,
-        end: String
-    ): ApiResponse<List<IncomeDetailed>> =
-        executeOnIO {
-            try {
-                if (tokenAvaliable) {
-                    val response = localTransactionProvider.getTransactionsByAccountAndPeriod(
-                        accountId = accountId,
-                        startDate = start.serverRequestToMillis(),
-                        endDate = end.serverRequestToMillis(),
-                    )
-
-                    ApiResponse(
-                        value = incomesDTOMapper.mapTransactionsToIncomesDetailed(
-                            response
-                        )
-                    )
-                } else {
-                    ApiResponse()
-                }
-            } catch (e: Exception) {
-                Timber.e("GetIncomesDetailed error", e)
-                ApiResponse(error = getErrorMessage(e))
-            }
-        }
-
-    override suspend fun getIncomesDetailedFromLocalStorage(
         accountId: Int,
         start: String,
         end: String
@@ -146,6 +122,38 @@ class IncomesRepositoryImpl @Inject constructor(
                 }
             } catch (e: Exception) {
                 Timber.e("GetIncomesDetailed locally error", e)
+                ApiResponse(error = getErrorMessage(e))
+            }
+        }
+
+    override suspend fun getIncomesDetailedFromLocalStorage(
+        accountId: Int,
+        start: String,
+        end: String
+    ): ApiResponse<List<IncomeDetailed>> =
+        executeOnIO {
+            try {
+                if (tokenAvaliable) {
+                    val response = localTransactionProvider.getTransactionsByAccountAndPeriod(
+                        accountId = accountId,
+                        startDate = start.serverRequestToMillis(),
+                        endDate = end.serverRequestToMillis(),
+                    )
+
+                    val result = response.filter { transaction ->
+                        transaction.category.isIncome
+                    }
+
+                    ApiResponse(
+                        value = incomesDTOMapper.mapTransactionsToIncomesDetailed(
+                            result
+                        )
+                    )
+                } else {
+                    ApiResponse()
+                }
+            } catch (e: Exception) {
+                Timber.e("GetIncomesDetailed error", e)
                 ApiResponse(error = getErrorMessage(e))
             }
         }

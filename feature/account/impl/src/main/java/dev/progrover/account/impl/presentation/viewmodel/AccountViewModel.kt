@@ -67,7 +67,6 @@ class AccountViewModel @Inject constructor(
         }
 
     private fun loadInfo() {
-        var localLoadingNeeded = false
         tryMultipleLoad(
             function = {
                 accountRepository.getAccounts()
@@ -88,48 +87,46 @@ class AccountViewModel @Inject constructor(
                 )
             },
             onFailure = { message ->
-                localLoadingNeeded = true
                 setState(
                     currentState.copy(
                         alert = message,
                     )
                 )
-            }
-        )
-        if (localLoadingNeeded)
-            tryMultipleLoad(
-                function = {
-                    accountRepository.getAccountsFromLocalStorage()
-                },
-                onSuccess = { result ->
-                    result.firstOrNull()?.let {
-                        setState(
+
+                tryMultipleLoad(
+                    function = {
+                        accountRepository.getAccountsFromLocalStorage()
+                    },
+                    onSuccess = { result ->
+                        result.firstOrNull()?.let {
+                            setState(
+                                currentState.copy(
+                                    isLoading = false,
+                                    account = it,
+                                )
+                            )
+                        } ?: setState(
                             currentState.copy(
                                 isLoading = false,
-                                account = it,
+                                alert = AccountAlert.NoAccountError,
                             )
                         )
-                    } ?: setState(
-                        currentState.copy(
-                            isLoading = false,
-                            alert = AccountAlert.NoAccountError,
+                    },
+                    onFailure = {
+                        setState(
+                            currentState.copy(
+                                alert = LocalStorageError.LocalError,
+                            )
                         )
-                    )
-                },
-                onFailure = {
-                    setState(
-                        currentState.copy(
-                            alert = LocalStorageError.LocalError,
-                        )
-                    )
-                }
-            )
+                    }
+                )
+            }
+        )
     }
 
     private fun updateCurrency(newCurrency: String) {
         setState(currentState.copy(isLoading = true))
         currentState.account?.let { currentAccount ->
-            var synced = true
             tryMultipleLoad(
                 function = { accountRepository.updateAccountById(currentAccount.copy(currency = newCurrency)) },
                 onSuccess = { newAccount ->
@@ -141,38 +138,64 @@ class AccountViewModel @Inject constructor(
                             alert = AccountAlert.CurrencySuccess,
                         )
                     )
-                },
-                onFailure = { throwable ->
-                    synced = false
-                    setState(
-                        currentState.copy(
-                            isLoading = false,
-                            alert = throwable as Alert,
-                        )
-                    )
-                }
-            )
-
-            tryMultipleLoad(
-                function = {
-                    accountRepository.updateAccountByIdFromLocalStorage(
-                        currentAccount.copy(
-                            currency = newCurrency
-                        ),
-                        synced
-                    )
-                },
-                onSuccess = { newAccount ->
-                    accountProvider.setCurrency(newAccount.currency)
-                    setState(
-                        currentState.copy(
-                            isLoading = false,
-                            account = newAccount,
-                            alert = AccountAlert.CurrencySuccess,
-                        )
+                    tryMultipleLoad(
+                        function = {
+                            accountRepository.updateAccountByIdFromLocalStorage(
+                                currentAccount.copy(
+                                    currency = newCurrency
+                                ),
+                                true
+                            )
+                        },
+                        onSuccess = { newAccount ->
+                            accountProvider.setCurrency(newAccount.currency)
+                            setState(
+                                currentState.copy(
+                                    isLoading = false,
+                                    account = newAccount,
+                                    alert = AccountAlert.CurrencySuccess,
+                                )
+                            )
+                        },
+                        onFailure = { throwable ->
+                            setState(
+                                currentState.copy(
+                                    isLoading = false,
+                                    alert = throwable as Alert,
+                                )
+                            )
+                        }
                     )
                 },
                 onFailure = { throwable ->
+                    tryMultipleLoad(
+                        function = {
+                            accountRepository.updateAccountByIdFromLocalStorage(
+                                currentAccount.copy(
+                                    currency = newCurrency
+                                ),
+                                false
+                            )
+                        },
+                        onSuccess = { newAccount ->
+                            accountProvider.setCurrency(newAccount.currency)
+                            setState(
+                                currentState.copy(
+                                    isLoading = false,
+                                    account = newAccount,
+                                    alert = AccountAlert.CurrencySuccess,
+                                )
+                            )
+                        },
+                        onFailure = { throwable ->
+                            setState(
+                                currentState.copy(
+                                    isLoading = false,
+                                    alert = throwable as Alert,
+                                )
+                            )
+                        }
+                    )
                     setState(
                         currentState.copy(
                             isLoading = false,

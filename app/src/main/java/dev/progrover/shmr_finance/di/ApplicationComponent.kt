@@ -7,7 +7,7 @@ import dev.progrover.account.api.di.AccountDependencies
 import dev.progrover.account.impl.di.AccountNavigationModule
 import dev.progrover.articles.api.di.ArticlesDependencies
 import dev.progrover.articles.impl.di.ArticlesNavigationModule
-import dev.progrover.core.base.di.BaseComponent
+import dev.progrover.core.base.di.BaseDependencies
 import dev.progrover.expenditures.api.di.ExpendituresDependencies
 import dev.progrover.expenditures.impl.di.ExpendituresNavigationModule
 import dev.progrover.feature.edit.impl.di.EditNavigationModule
@@ -17,11 +17,14 @@ import dev.progrover.incomes.impl.di.IncomesNavigationModule
 import dev.progrover.settings.impl.di.SettingsNavigationModule
 import dev.progrover.shmr_finance.MainApplication
 import dev.progrover.shmr_finance.activity.MainActivity
+import dev.progrover.shmr_finance.workmanager.StartupWorker
+import dev.progrover.shmr_finance.workmanager.SyncWorker
 import javax.inject.Singleton
 
 @Singleton
 @Component(
     modules = [
+        BaseDependenciesModule::class,
         WorkerModule::class,
         MainActivityViewModelModule::class,
         ExpendituresDependenciesModule::class,
@@ -41,6 +44,10 @@ interface ApplicationComponent {
 
     fun inject(activity: MainActivity)
 
+    fun syncWorkerFactory(): SyncWorker.Factory
+
+    fun startupWorkerFactory(): StartupWorker.Factory
+
     fun inject(application: MainApplication)
 
     fun getAccountDependencies(): AccountDependencies
@@ -56,7 +63,7 @@ interface ApplicationComponent {
     interface Factory {
         fun create(
             @BindsInstance context: Context,
-            @BindsInstance baseComponent: BaseComponent
+            @BindsInstance baseDependencies: BaseDependencies
         ): ApplicationComponent
     }
 

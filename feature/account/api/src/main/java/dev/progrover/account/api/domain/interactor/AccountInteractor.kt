@@ -11,4 +11,6 @@ interface AccountInteractor {
     suspend fun getAccountsFromLocalStorage(): ApiResponse<List<AccountDetailed>>
 
     suspend fun getAccountByIdFromLocalStorage(id: Int): ApiResponse<AccountDetailed>
+
+    suspend fun updateAccount(account: AccountDetailed)
 }

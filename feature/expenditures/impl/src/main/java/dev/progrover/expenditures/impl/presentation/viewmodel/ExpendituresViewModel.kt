@@ -3,6 +3,7 @@ package dev.progrover.expenditures.impl.presentation.viewmodel
 import androidx.lifecycle.viewModelScope
 import dev.progrover.account.api.domain.AccountPropertiesProvider
 import dev.progrover.core.base.model.Alert
+import dev.progrover.core.base.model.LocalStorageError
 import dev.progrover.core.base.model.TransactionsUpdater
 import dev.progrover.core.base.navigation.RouteDesc
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
@@ -85,7 +86,6 @@ class ExpendituresViewModel @Inject constructor(
     }
 
     private fun getExpends(accountId: Int) {
-        var localLoadingNeeded = false
         tryMultipleLoad(
             function = {
                 expendituresRepository.getExpenditures(
@@ -103,41 +103,36 @@ class ExpendituresViewModel @Inject constructor(
                     )
                 )
             },
-            onFailure = { message ->
-                localLoadingNeeded = true
-                setState(
-                    currentState.copy(
-                        alert = message,
-                    )
+            onFailure = {
+                tryMultipleLoad(
+                    function = {
+                        expendituresRepository.getExpendituresFromLocalStorage(
+                            accountId
+                        )
+                    },
+                    onSuccess = { result ->
+                        setState(
+                            currentState.copy(
+                                isLoading = false,
+                                currency = idProvider.getCurrency(),
+                                expenditures = result,
+                                totalExpenditures = countTotalAmount(
+                                    result,
+                                    idProvider.getCurrency()
+                                ),
+                            )
+                        )
+                    },
+                    onFailure = {
+                        setState(
+                            currentState.copy(
+                                alert = LocalStorageError.LocalError,
+                            )
+                        )
+                    }
                 )
             }
         )
-        if (localLoadingNeeded)
-            tryMultipleLoad(
-                function = {
-                    expendituresRepository.getExpendituresFromLocalStorage(
-                        accountId
-                    )
-                },
-                onSuccess = { result ->
-
-                    setState(
-                        currentState.copy(
-                            isLoading = false,
-                            currency = idProvider.getCurrency(),
-                            expenditures = result,
-                            totalExpenditures = countTotalAmount(result, idProvider.getCurrency()),
-                        )
-                    )
-                },
-                onFailure = { message ->
-                    setState(
-                        currentState.copy(
-                            alert = message,
-                        )
-                    )
-                }
-            )
     }
 
     private fun subscribeOnTransactionsChanges() {

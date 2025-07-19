@@ -1,6 +1,8 @@
 package dev.progrover.core.base.data.local
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import dev.progrover.core.base.data.local.entity.CategoryEntity
 
@@ -15,4 +17,7 @@ interface ArticleDao {
 
     @Query("SELECT * FROM categories WHERE id = :categoryId LIMIT 1")
     suspend fun getCategoryById(categoryId: Int): CategoryEntity
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun createCategory(category: CategoryEntity)
 }

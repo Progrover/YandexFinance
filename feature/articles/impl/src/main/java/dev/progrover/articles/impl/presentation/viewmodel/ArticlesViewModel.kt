@@ -50,7 +50,6 @@ class ArticlesViewModel @Inject constructor(
     private fun loadInfo() {
         viewModelScope.launch {
             setState(currentState.copy(isLoading = true))
-            var localLoadingNeeded = false
             tryMultipleLoad(
                 function = { articlesRepository.getArticles() },
                 onSuccess = { result ->
@@ -63,28 +62,40 @@ class ArticlesViewModel @Inject constructor(
                     )
                 },
                 onFailure = { message ->
-                    localLoadingNeeded = true
+                    tryMultipleLoad(
+                        function = { articlesRepository.getArticlesFromLocalStorage() },
+                        onSuccess = { result ->
+                            setState(
+                                currentState.copy(
+                                    isLoading = false,
+                                    allArticles = result,
+                                    articlesForPresentation = result,
+                                )
+                            )
+                        },
+                        onFailure = {
+                            setState(currentState.copy(alert = LocalStorageError.LocalError))
+                        },
+                    )
                     setState(currentState.copy(alert = message))
                 },
             )
 
-            if (localLoadingNeeded)
-                tryMultipleLoad(
-                    function = { articlesRepository.getArticlesFromLocalStorage() },
-                    onSuccess = { result ->
-                        setState(
-                            currentState.copy(
-                                isLoading = false,
-                                allArticles = result,
-                                articlesForPresentation = result,
-                            )
+            tryMultipleLoad(
+                function = { articlesRepository.getArticlesFromLocalStorage() },
+                onSuccess = { result ->
+                    setState(
+                        currentState.copy(
+                            isLoading = false,
+                            allArticles = result,
+                            articlesForPresentation = result,
                         )
-                    },
-                    onFailure = {
-                        localLoadingNeeded = true
-                        setState(currentState.copy(alert = LocalStorageError.LocalError))
-                    },
-                )
+                    )
+                },
+                onFailure = {
+                    setState(currentState.copy(alert = LocalStorageError.LocalError))
+                },
+            )
         }
     }
 

@@ -83,7 +83,6 @@ class IncomesViewModel @Inject constructor(
     }
 
     private fun getIncomes(accountId: Int) {
-        var localLoadingNeeded = false
         tryMultipleLoad(
             function = {
                 incomesRepository.getIncomes(accountId)
@@ -100,7 +99,29 @@ class IncomesViewModel @Inject constructor(
                 )
             },
             onFailure = { message ->
-                localLoadingNeeded = true
+                tryMultipleLoad(
+                    function = {
+                        incomesRepository.getIncomesFromLocalStorage(accountId)
+                    },
+                    onSuccess = { result ->
+
+                        setState(
+                            currentState.copy(
+                                isLoading = false,
+                                incomes = result,
+                                currency = idProvider.getCurrency(),
+                                totalIncomes = countTotalAmount(result, idProvider.getCurrency()),
+                            )
+                        )
+                    },
+                    onFailure = {
+                        setState(
+                            currentState.copy(
+                                alert = LocalStorageError.LocalError,
+                            )
+                        )
+                    }
+                )
                 setState(
                     currentState.copy(
                         alert = message,
@@ -108,30 +129,6 @@ class IncomesViewModel @Inject constructor(
                 )
             }
         )
-        if (localLoadingNeeded)
-            tryMultipleLoad(
-                function = {
-                    incomesRepository.getIncomesFromLocalStorage(accountId)
-                },
-                onSuccess = { result ->
-
-                    setState(
-                        currentState.copy(
-                            isLoading = false,
-                            incomes = result,
-                            currency = idProvider.getCurrency(),
-                            totalIncomes = countTotalAmount(result, idProvider.getCurrency()),
-                        )
-                    )
-                },
-                onFailure = {
-                    setState(
-                        currentState.copy(
-                            alert = LocalStorageError.LocalError,
-                        )
-                    )
-                }
-            )
     }
 
     private fun subscribeOnTransactionsChanges() {

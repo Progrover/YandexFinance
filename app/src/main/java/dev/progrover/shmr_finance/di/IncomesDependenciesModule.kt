@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dev.progrover.account.api.di.AccountDependencies
 import dev.progrover.core.base.di.BaseComponent
+import dev.progrover.core.base.di.BaseDependencies
 import dev.progrover.incomes.api.di.IncomesDependencies
 import dev.progrover.incomes.impl.di.DaggerIncomesComponent
 
@@ -12,7 +13,7 @@ class IncomesDependenciesModule {
 
     @Provides
     fun provideIncomesDependencies(
-        baseComponent: BaseComponent,
+        baseComponent: BaseDependencies,
         accountDependencies: AccountDependencies,
     ): IncomesDependencies {
         return DaggerIncomesComponent.factory().create(baseComponent, accountDependencies)

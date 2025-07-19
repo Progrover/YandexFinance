@@ -68,19 +68,22 @@ class BalanceNameViewModel @AssistedInject constructor(
     }
 
     private fun sendChanges() {
-        var synced = true
         tryMultipleLoad(
             function = { accountRepository.updateAccountById(currentState.account!!) },
             onSuccess = {
+                saveChangesLocally(true)
                 balanceAndNameUpdater.setBalance(currentState.account!!.balance)
                 balanceAndNameUpdater.setName(currentState.account!!.name)
                 setEffect(BalanceUIEffect.NavigateBack)
             },
             onFailure = {
                 setState(currentState.copy(alert = AccountAlert.BalanceOrNameError))
+                saveChangesLocally(false)
             }
         )
+    }
 
+    private fun saveChangesLocally(synced: Boolean) {
         tryMultipleLoad(
             function = {
                 accountRepository.updateAccountByIdFromLocalStorage(

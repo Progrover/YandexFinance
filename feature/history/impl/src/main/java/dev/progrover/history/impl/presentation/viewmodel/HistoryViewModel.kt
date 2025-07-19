@@ -133,7 +133,6 @@ class HistoryViewModel @AssistedInject constructor(
     }
 
     private fun getHistory(accountId: Int) {
-        var localLoadingNeeded = false
         tryMultipleLoad(
             function = {
                 historyRepository.getHistory(
@@ -153,43 +152,36 @@ class HistoryViewModel @AssistedInject constructor(
                     )
                 )
             },
-            onFailure = { message ->
-                localLoadingNeeded = true
-                setState(
-                    currentState.copy(
-                        alert = message,
-                    )
+            onFailure = {
+                tryMultipleLoad(
+                    function = {
+                        historyRepository.getHistoryFromLocalStorage(
+                            accountId,
+                            type = itemType,
+                            start = currentState.start.dateToServerRequest(),
+                            end = currentState.end.dateToServerRequest()
+                        )
+                    },
+                    onSuccess = { result ->
+                        setState(
+                            currentState.copy(
+                                isLoading = false,
+                                history = result,
+                                currency = idProvider.getCurrency(),
+                                total = countTotalAmount(result, idProvider.getCurrency()),
+                            )
+                        )
+                    },
+                    onFailure = {
+                        setState(
+                            currentState.copy(
+                                alert = LocalStorageError.LocalError,
+                            )
+                        )
+                    }
                 )
             }
         )
-        if (localLoadingNeeded)
-            tryMultipleLoad(
-                function = {
-                    historyRepository.getHistoryFromLocalStorage(
-                        accountId,
-                        type = itemType,
-                        start = currentState.start.dateToServerRequest(),
-                        end = currentState.end.dateToServerRequest()
-                    )
-                },
-                onSuccess = { result ->
-                    setState(
-                        currentState.copy(
-                            isLoading = false,
-                            history = result,
-                            currency = idProvider.getCurrency(),
-                            total = countTotalAmount(result, idProvider.getCurrency()),
-                        )
-                    )
-                },
-                onFailure = {
-                    setState(
-                        currentState.copy(
-                            alert = LocalStorageError.LocalError,
-                        )
-                    )
-                }
-            )
     }
 
     private fun countTotalAmount(historyItems: List<HistoryElement>, currency: String): String {

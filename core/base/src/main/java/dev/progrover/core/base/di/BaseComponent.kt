@@ -27,5 +27,3 @@ interface BaseComponent : BaseDependencies {
         ): BaseComponent
     }
 }
-
-

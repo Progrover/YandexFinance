@@ -11,4 +11,6 @@ interface LocalArticleProvider {
     suspend fun getCategoriesByType(isIncome: Boolean): List<Category>
 
     suspend fun getCategoryById(categoryId: Int): Category?
+
+    suspend fun createCategory(category: Category)
 }

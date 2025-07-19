@@ -78,7 +78,11 @@ class ExpendituresRepositoryImpl @Inject constructor(
                         endDate = endDate
                     )
 
-                    ApiResponse(value = expendituresDTOMapper.mapTransactionsToExpenditures(response))
+                    val result = response.filter { transaction ->
+                        !transaction.category.isIncome
+                    }
+
+                    ApiResponse(value = expendituresDTOMapper.mapTransactionsToExpenditures(result))
                 } else {
                     ApiResponse()
                 }
@@ -135,10 +139,12 @@ class ExpendituresRepositoryImpl @Inject constructor(
                         startDate = start.serverRequestToMillis(),
                         endDate = end.serverRequestToMillis(),
                     )
-
+                    val result = response.filter { transaction ->
+                        !transaction.category.isIncome
+                    }
                     ApiResponse(
                         value = expendituresDTOMapper.mapTransactionsToExpendituresDetailed(
-                            response
+                            result
                         )
                     )
                 } else {

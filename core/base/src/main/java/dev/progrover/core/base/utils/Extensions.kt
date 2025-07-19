@@ -1,9 +1,6 @@
 package dev.progrover.core.base.utils
 
 import androidx.navigation.NavController
-import java.net.URLDecoder
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 import java.text.NumberFormat
 import java.util.Locale
 

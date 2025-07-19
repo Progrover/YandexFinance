@@ -148,7 +148,6 @@ class EditViewModel @AssistedInject constructor(
                     delay(2000)
                     setEffect(EditUIEffect.NavigateBack)
                 }
-
             },
             onFailure = { throwable ->
                 setState(currentState.copy(alert = throwable as Alert))
@@ -178,7 +177,6 @@ class EditViewModel @AssistedInject constructor(
                             )
 
                         EditVatiant.Edit -> {
-                            var localLoadingNeeded = false
                             tryMultipleLoad(
                                 function = {
                                     editRepository.getEditTransaction(
@@ -197,7 +195,31 @@ class EditViewModel @AssistedInject constructor(
                                     )
                                 },
                                 onFailure = { throwable ->
-                                    localLoadingNeeded = true
+                                    tryMultipleLoad(
+                                        function = {
+                                            editRepository.getEditTransactionFromLocalStorage(
+                                                accountId,
+                                                transactionId
+                                            )
+                                        },
+                                        onSuccess = { result ->
+                                            setState(
+                                                currentState.copy(
+                                                    isLoading = false,
+                                                    transactionTime = result.dateTime.extractTimeFromIsoString(),
+                                                    transaction = result,
+                                                    currency = idProvider.getCurrency()
+                                                )
+                                            )
+                                        },
+                                        onFailure = {
+                                            setState(
+                                                currentState.copy(
+                                                    alert = LocalStorageError.LocalError
+                                                )
+                                            )
+                                        }
+                                    )
                                     setState(
                                         currentState.copy(
                                             alert = throwable as Alert
@@ -205,33 +227,6 @@ class EditViewModel @AssistedInject constructor(
                                     )
                                 }
                             )
-                            if (localLoadingNeeded)
-                                tryMultipleLoad(
-                                    function = {
-                                        editRepository.getEditTransactionFromLocalStorage(
-                                            accountId,
-                                            transactionId
-                                        )
-                                    },
-                                    onSuccess = { result ->
-                                        setState(
-                                            currentState.copy(
-                                                isLoading = false,
-                                                transactionTime = result.dateTime.extractTimeFromIsoString(),
-                                                transaction = result,
-                                                currency = idProvider.getCurrency()
-                                            )
-                                        )
-                                    },
-                                    onFailure = {
-                                        localLoadingNeeded = true
-                                        setState(
-                                            currentState.copy(
-                                                alert = LocalStorageError.LocalError
-                                            )
-                                        )
-                                    }
-                                )
                         }
                     }
                 },
@@ -248,7 +243,6 @@ class EditViewModel @AssistedInject constructor(
 
     private fun getArticles() {
         if (currentState.categories.isEmpty()) {
-            var localLoadingNeeded = false
             tryMultipleLoad(
                 function = {
                     articlesInteractor.getCategoriesByType(
@@ -265,33 +259,30 @@ class EditViewModel @AssistedInject constructor(
                         )
                     )
                 },
-                onFailure = { throwable ->
-                    localLoadingNeeded = true
-                    setState(currentState.copy(alert = throwable as Alert))
+                onFailure = {
+                    tryMultipleLoad(
+                        function = {
+                            articlesInteractor.getCategoriesByTypeFromLocalStorage(
+                                when (currentState.transactionType) {
+                                    RouteDesc.Incomes -> true
+                                    RouteDesc.Expenditures -> false
+                                }
+                            )
+                        },
+                        onSuccess = { result ->
+                            setState(
+                                currentState.copy(
+                                    categories = result
+                                )
+                            )
+                        },
+                        onFailure = {
+                            setState(currentState.copy(alert = LocalStorageError.LocalError))
+                        }
+                    )
                 }
             )
-            if (localLoadingNeeded)
-                tryMultipleLoad(
-                    function = {
-                        articlesInteractor.getCategoriesByTypeFromLocalStorage(
-                            when (currentState.transactionType) {
-                                RouteDesc.Incomes -> true
-                                RouteDesc.Expenditures -> false
-                            }
-                        )
-                    },
-                    onSuccess = { result ->
-                        setState(
-                            currentState.copy(
-                                categories = result
-                            )
-                        )
-                    },
-                    onFailure = { throwable ->
-                        localLoadingNeeded = true
-                        setState(currentState.copy(alert = throwable as Alert))
-                    }
-                )
+
         }
     }
 
