@@ -9,6 +9,7 @@ import dev.progrover.shmr_finance.feature.settings.impl.R
  */
 data class SettingsUIState(
     val isLoading: Boolean = false,
+    val lastTimeUpdate: String = "",
     val chapters: List<Chapter> = listOf(
         Chapter(
             ChapterRoute.MainColor,

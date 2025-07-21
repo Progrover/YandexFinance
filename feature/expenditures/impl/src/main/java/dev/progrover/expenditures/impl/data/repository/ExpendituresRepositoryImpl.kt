@@ -8,7 +8,9 @@ import dev.progrover.core.base.di.CoroutineQualifiers
 import dev.progrover.core.base.model.ApiResponse
 import dev.progrover.core.base.utils.getEndOfToday
 import dev.progrover.core.base.utils.getStartOfToday
-import dev.progrover.core.base.utils.serverRequestToMillis
+import dev.progrover.core.base.utils.serverRequestToMillisEndOfDay
+import dev.progrover.core.base.utils.serverRequestToMillisStartOfDay
+import dev.progrover.core.base.utils.toMillis
 import dev.progrover.expenditures.api.domain.model.ExpenditureDetailed
 import dev.progrover.expenditures.impl.data.mapper.ExpendituresDTOMapper
 import dev.progrover.expenditures.impl.domain.model.Expenditure
@@ -48,7 +50,7 @@ class ExpendituresRepositoryImpl @Inject constructor(
                     if (response.isSuccessful) {
                         val result = response.body()!!.filter { transaction ->
                             !transaction.category.isIncome
-                        }
+                        }.sortedBy { it.transactionDate.toMillis() }
                         ApiResponse(
                             value = expendituresDTOMapper.mapTransactionsToExpenditures(
                                 result
@@ -80,7 +82,7 @@ class ExpendituresRepositoryImpl @Inject constructor(
 
                     val result = response.filter { transaction ->
                         !transaction.category.isIncome
-                    }
+                    }.sortedBy { it.transactionDate.toMillis() }
 
                     ApiResponse(value = expendituresDTOMapper.mapTransactionsToExpenditures(result))
                 } else {
@@ -109,7 +111,14 @@ class ExpendituresRepositoryImpl @Inject constructor(
                     if (response.isSuccessful) {
                         val result = response.body()!!.filter { transaction ->
                             !transaction.category.isIncome
-                        }
+                        }.sortedBy { it.transactionDate.toMillis() }
+                        Timber.d(
+                            "EXD size: ${result.size} mapped size: ${
+                                expendituresDTOMapper.mapTransactionsToExpendituresDetailed(
+                                    result
+                                ).size
+                            }"
+                        )
                         ApiResponse(
                             value =
                                 expendituresDTOMapper.mapTransactionsToExpendituresDetailed(result)
@@ -136,12 +145,19 @@ class ExpendituresRepositoryImpl @Inject constructor(
                 if (tokenAvaliable) {
                     val response = localTransactionProvider.getTransactionsByAccountAndPeriod(
                         accountId = accountId,
-                        startDate = start.serverRequestToMillis(),
-                        endDate = end.serverRequestToMillis(),
+                        startDate = start.serverRequestToMillisStartOfDay(),
+                        endDate = end.serverRequestToMillisEndOfDay(),
                     )
                     val result = response.filter { transaction ->
                         !transaction.category.isIncome
-                    }
+                    }.sortedBy { it.transactionDate.toMillis() }
+                    Timber.d(
+                        "EXD_L_S size: ${result.size} mapped size: ${
+                            expendituresDTOMapper.mapTransactionsToExpendituresDetailed(
+                                result
+                            ).size
+                        }"
+                    )
                     ApiResponse(
                         value = expendituresDTOMapper.mapTransactionsToExpendituresDetailed(
                             result

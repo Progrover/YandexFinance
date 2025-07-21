@@ -62,7 +62,7 @@ class HistoryRepositoryImpl(
                     if (response.value != null) {
                         ApiResponse(
                             value =
-                                historyDTOMapper.mapExpendituresToHistory(response.value!!),
+                                historyDTOMapper.mapExpendituresToHistory(response.value!!.sortedBy { it.dateTime }),
                         )
                     } else {
                         ApiResponse(
@@ -92,7 +92,7 @@ class HistoryRepositoryImpl(
                     if (response.value != null) {
                         ApiResponse(
                             value =
-                                historyDTOMapper.mapIncomesToHistory(response.value!!),
+                                historyDTOMapper.mapIncomesToHistory(response.value!!.sortedBy { it.dateTime }),
                         )
                     } else {
                         ApiResponse(
@@ -112,7 +112,7 @@ class HistoryRepositoryImpl(
                     if (response.value != null) {
                         ApiResponse(
                             value =
-                                historyDTOMapper.mapExpendituresToHistory(response.value!!),
+                                historyDTOMapper.mapExpendituresToHistory(response.value!!.sortedBy { it.dateTime }),
                         )
                     } else {
                         ApiResponse(

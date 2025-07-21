@@ -8,12 +8,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import dev.progrover.core.base.navigation.RouteDesc
 import dev.progrover.core.base.utils.toDatePresentation
@@ -42,6 +47,7 @@ internal fun EditScreenContent(
     val commentFocusRequester = remember { FocusRequester() }
     val timeFocusRequester = remember { FocusRequester() }
     val amountFocusRequester = remember { FocusRequester() }
+
 
     val focusManager = LocalFocusManager.current
 
@@ -88,6 +94,7 @@ internal fun EditScreenContent(
             },
         ) {
             if (!uiState.isLoading && uiState.transaction != null) {
+
                 DefaultListItem(
                     modifier = Modifier,
                     title = stringResource(R.string.account),
@@ -110,19 +117,6 @@ internal fun EditScreenContent(
 // сделал так, потому что нужно вводить текст при нажатии на область item
                 // потом хорошо бы переделать
                 Box {
-                    DefaultTextField(
-                        modifier = Modifier,
-                        text = uiState.transaction.amount,
-                        dividerVisible = false,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        focusRequester = amountFocusRequester,
-                        hintResId = R.string.point_out,
-                        onTextChange = { newAmount ->
-                            onEvent(
-                                EditUIEvent.OnAmountChange(newAmount)
-                            )
-                        }
-                    )
 
                     DefaultListItem(
                         modifier = Modifier,
@@ -132,6 +126,20 @@ internal fun EditScreenContent(
                         onClick = { amountFocusRequester.requestFocus() },
                     )
                 }
+
+                DefaultTextField(
+                    modifier = Modifier,
+                    text = uiState.transaction.amount,
+                    dividerVisible = false,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    focusRequester = amountFocusRequester,
+                    hintResId = R.string.point_out,
+                    onTextChange = { newAmount ->
+                        onEvent(
+                            EditUIEvent.OnAmountChange(newAmount)
+                        )
+                    }
+                )
 
                 DefaultListItem(
                     modifier = Modifier,

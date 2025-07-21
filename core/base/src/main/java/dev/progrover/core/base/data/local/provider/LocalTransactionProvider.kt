@@ -19,4 +19,6 @@ interface LocalTransactionProvider {
     suspend fun updateTransaction(transaction: Transaction, synced: Boolean): Boolean
 
     suspend fun deleteTransactionById(transactionId: Int): Boolean
+
+    suspend fun clearTransactions()
 }

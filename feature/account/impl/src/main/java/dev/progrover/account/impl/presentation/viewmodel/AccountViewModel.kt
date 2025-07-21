@@ -1,5 +1,6 @@
 package dev.progrover.account.impl.presentation.viewmodel
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.lifecycle.viewModelScope
 import dev.progrover.account.api.domain.AccountPropertiesProvider
 import dev.progrover.account.impl.domain.model.AccountAlert
@@ -17,6 +18,8 @@ import dev.progrover.core.base.utils.JsonConverter
 import dev.progrover.shmr_finance.core.uicommon.R
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.processNextEventInCurrentThread
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -36,6 +39,7 @@ class AccountViewModel @Inject constructor(
         startNameUpdater()
         startCurrencyUpdater()
         loadInfo()
+        Timber.d("AccountPropertiesProvider hash: ${accountProvider.hashCode()}")
     }
 
     override fun handleUIEvent(event: AccountUIEvent) =
@@ -130,14 +134,7 @@ class AccountViewModel @Inject constructor(
             tryMultipleLoad(
                 function = { accountRepository.updateAccountById(currentAccount.copy(currency = newCurrency)) },
                 onSuccess = { newAccount ->
-                    accountProvider.setCurrency(newAccount.currency)
-                    setState(
-                        currentState.copy(
-                            isLoading = false,
-                            account = newAccount,
-                            alert = AccountAlert.CurrencySuccess,
-                        )
-                    )
+                    accountProvider.setUpdatedAccount(newAccount)
                     tryMultipleLoad(
                         function = {
                             accountRepository.updateAccountByIdFromLocalStorage(
@@ -147,7 +144,7 @@ class AccountViewModel @Inject constructor(
                                 true
                             )
                         },
-                        onSuccess = { newAccount ->
+                        onSuccess = {
                             accountProvider.setCurrency(newAccount.currency)
                             setState(
                                 currentState.copy(
@@ -157,11 +154,11 @@ class AccountViewModel @Inject constructor(
                                 )
                             )
                         },
-                        onFailure = { throwable ->
+                        onFailure = {
                             setState(
                                 currentState.copy(
                                     isLoading = false,
-                                    alert = throwable as Alert,
+                                    alert = LocalStorageError.LocalError,
                                 )
                             )
                         }
@@ -178,7 +175,7 @@ class AccountViewModel @Inject constructor(
                             )
                         },
                         onSuccess = { newAccount ->
-                            accountProvider.setCurrency(newAccount.currency)
+                            accountProvider.setUpdatedAccount(newAccount)
                             setState(
                                 currentState.copy(
                                     isLoading = false,
@@ -229,6 +226,7 @@ class AccountViewModel @Inject constructor(
                         alert = AccountAlert.BalanceOrNameSuccess
                     )
                 )
+                accountProvider.setUpdatedAccount(currentState.account!!.copy(balance = newBalance))
             }
         }
     }
@@ -242,6 +240,7 @@ class AccountViewModel @Inject constructor(
                         alert = AccountAlert.BalanceOrNameSuccess
                     )
                 )
+                accountProvider.setUpdatedAccount(currentState.account!!.copy(balance = newName))
             }
         }
     }

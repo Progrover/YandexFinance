@@ -56,4 +56,8 @@ class AccountPropertiesImpl @Inject constructor(
 
     override fun getName(): String =
         account?.name ?: ""
+
+    override fun setUpdatedAccount(newAccount: AccountDetailed) {
+        account = newAccount
+    }
 }

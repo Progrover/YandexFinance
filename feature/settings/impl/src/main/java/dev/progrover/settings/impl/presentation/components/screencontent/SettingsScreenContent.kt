@@ -1,6 +1,7 @@
 package dev.progrover.settings.impl.presentation.components.screencontent
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Text
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
@@ -17,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dev.progrover.core.theme.AppTheme
 import dev.progrover.core.uicommon.utils.bottomNavigationPadding
@@ -92,6 +95,22 @@ internal fun SettingsScreenContent(
                 )
             }
         }
+
+        if (uiState.lastTimeUpdate.isNotBlank())
+            Text(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(AppTheme.paddings.padding8)
+                    .border(width = 0.5.dp, AppTheme.colors.textSecondary)
+                    .padding(
+                        horizontal = AppTheme.paddings.padding4,
+                        vertical = AppTheme.paddings.padding6
+                    ),
+                text = uiState.lastTimeUpdate,
+                textAlign = TextAlign.Center,
+                style = AppTheme.typography.bodyLarge,
+                color = AppTheme.colors.textMain,
+            )
 
         SnackbarHost(
             modifier = Modifier

@@ -18,6 +18,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -25,7 +30,9 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dev.progrover.core.theme.AppTheme
@@ -40,6 +47,7 @@ fun DefaultTextField(
     text: String,
     innerVerticalPadding: Dp = 0.dp,
     focusRequester: FocusRequester? = null,
+    cursorAlwaysInEnd: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
     @StringRes hintResId: Int,
     @DrawableRes startIconId: Int? = null,
@@ -48,6 +56,25 @@ fun DefaultTextField(
     onTextChange: (String) -> Unit,
 ) {
 
+    var textFieldValue by remember {
+        mutableStateOf(
+            TextFieldValue(
+                text = text,
+                selection = TextRange(text.length)
+            )
+        )
+    }
+
+    LaunchedEffect(text, cursorAlwaysInEnd) {
+        if (text != textFieldValue.text) {
+            textFieldValue = if (cursorAlwaysInEnd) {
+                TextFieldValue(text, selection = TextRange(text.length))
+            } else {
+                TextFieldValue(text)
+            }
+        }
+    }
+
     BasicTextField(
         modifier = modifier
             .conditionally(
@@ -55,12 +82,18 @@ fun DefaultTextField(
                 trueExtension = {
                     focusRequester(focusRequester!!)
                 }),
-        value = text,
+        value = textFieldValue,
         enabled = enabled,
         singleLine = true,
         textStyle = AppTheme.typography.bodyLarge.copy(color = AppTheme.colors.textSecondary),
         keyboardOptions = keyboardOptions,
-        onValueChange = { newText -> onTextChange(newText) },
+        onValueChange = {
+            textFieldValue = if (cursorAlwaysInEnd) {
+                it.copy(selection = TextRange(it.text.length))
+            } else {
+                it
+            }
+            onTextChange(it.text) },
     )
     {
         Column {

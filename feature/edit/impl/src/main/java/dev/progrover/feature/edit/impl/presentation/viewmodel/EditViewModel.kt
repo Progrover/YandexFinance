@@ -27,6 +27,7 @@ import dev.progrover.feature.edit.impl.presentation.navigation.EditNavigationFac
 import dev.progrover.feature.edit.impl.presentation.navigation.EditNavigationFactory.Companion.ARG_KEY_TYPE_TRANSACTION
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 /**
  * ViewModel, привязанная к edit feature
@@ -189,10 +190,11 @@ class EditViewModel @AssistedInject constructor(
                                         currentState.copy(
                                             isLoading = false,
                                             transactionTime = result.dateTime.extractTimeFromIsoString(),
-                                            transaction = result,
+                                            transaction = result.copy(amount = result.amount.toDouble().toInt().toString()),
                                             currency = idProvider.getCurrency()
                                         )
                                     )
+                                    Timber.d("Amount: ${currentState.transaction!!.amount}")
                                 },
                                 onFailure = { throwable ->
                                     tryMultipleLoad(
@@ -207,7 +209,7 @@ class EditViewModel @AssistedInject constructor(
                                                 currentState.copy(
                                                     isLoading = false,
                                                     transactionTime = result.dateTime.extractTimeFromIsoString(),
-                                                    transaction = result,
+                                                    transaction = result.copy(amount = result.amount.toDouble().toInt().toString()),
                                                     currency = idProvider.getCurrency()
                                                 )
                                             )
@@ -288,7 +290,7 @@ class EditViewModel @AssistedInject constructor(
 
     private fun handleOnTickClick() {
         if (currentState.transactionTime.inputTimeCorrect()) {
-            if (currentState.transaction!!.categoryId != -1) {
+            if (currentState.transaction!!.categoryId != -1 && currentState.transaction!!.amount.isNotEmpty()) {
                 val commonDate = combineDateAndTime(
                     currentState.transaction!!.dateTime,
                     currentState.transactionTime.formatInputAsTime()
@@ -301,7 +303,6 @@ class EditViewModel @AssistedInject constructor(
                     )
                 )
 
-                var synced = true
                 tryMultipleLoad(
                     function = {
                         when (currentState.actionType) {
@@ -324,50 +325,82 @@ class EditViewModel @AssistedInject constructor(
                                     }
                                 )
                             )
-                            transactionsUpdater.updateTransactions(currentState.transactionType)
-                            delay(2000)
-                            setEffect(EditUIEffect.NavigateBack)
+                            tryMultipleLoad(
+                                function = {
+                                    when (currentState.actionType) {
+                                        EditVatiant.Add -> editRepository.addTransactionToLocalStorage(
+                                            currentState.transaction!!.copy(id = (100_000_000..999_999_999).random()),
+                                            true
+                                        )
+
+                                        EditVatiant.Edit -> editRepository.updateTransactionInfoInLocalStorage(
+                                            currentState.transaction!!,
+                                            true
+                                        )
+                                    }
+                                },
+                                onSuccess = {
+                                    viewModelScope.launch {
+                                        setState(
+                                            currentState.copy(
+                                                alert = when (currentState.actionType) {
+                                                    EditVatiant.Add ->
+                                                        EditAlert.AddSuccess
+
+                                                    EditVatiant.Edit ->
+                                                        EditAlert.UpdateSuccess
+                                                }
+                                            )
+                                        )
+                                        transactionsUpdater.updateTransactions(currentState.transactionType)
+                                        delay(2000)
+                                        setEffect(EditUIEffect.NavigateBack)
+                                    }
+                                },
+                                onFailure = {
+                                    setState(currentState.copy(alert = LocalStorageError.LocalError))
+                                }
+                            )
                         }
                     },
                     onFailure = { throwable ->
-                        synced = false
+                        tryMultipleLoad(
+                            function = {
+                                when (currentState.actionType) {
+                                    EditVatiant.Add -> editRepository.addTransactionToLocalStorage(
+                                        currentState.transaction!!.copy(id = (100_000_000..999_999_999).random()),
+                                        false
+                                    )
+
+                                    EditVatiant.Edit -> editRepository.updateTransactionInfoInLocalStorage(
+                                        currentState.transaction!!,
+                                        false
+                                    )
+                                }
+                            },
+                            onSuccess = {
+                                viewModelScope.launch {
+                                    setState(
+                                        currentState.copy(
+                                            alert = when (currentState.actionType) {
+                                                EditVatiant.Add ->
+                                                    EditAlert.AddSuccess
+
+                                                EditVatiant.Edit ->
+                                                    EditAlert.UpdateSuccess
+                                            }
+                                        )
+                                    )
+                                    transactionsUpdater.updateTransactions(currentState.transactionType)
+                                    delay(2000)
+                                    setEffect(EditUIEffect.NavigateBack)
+                                }
+                            },
+                            onFailure = {
+                                setState(currentState.copy(alert = LocalStorageError.LocalError))
+                            }
+                        )
                         setState(currentState.copy(alert = throwable as Alert))
-                    }
-                )
-                tryMultipleLoad(
-                    function = {
-                        when (currentState.actionType) {
-                            EditVatiant.Add -> editRepository.addTransactionToLocalStorage(
-                                currentState.transaction!!.copy(id = (100_000_000..999_999_999).random()),
-                                synced
-                            )
-
-                            EditVatiant.Edit -> editRepository.updateTransactionInfoInLocalStorage(
-                                currentState.transaction!!,
-                                synced
-                            )
-                        }
-                    },
-                    onSuccess = {
-                        viewModelScope.launch {
-                            setState(
-                                currentState.copy(
-                                    alert = when (currentState.actionType) {
-                                        EditVatiant.Add ->
-                                            EditAlert.AddSuccess
-
-                                        EditVatiant.Edit ->
-                                            EditAlert.UpdateSuccess
-                                    }
-                                )
-                            )
-                            transactionsUpdater.updateTransactions(currentState.transactionType)
-                            delay(2000)
-                            setEffect(EditUIEffect.NavigateBack)
-                        }
-                    },
-                    onFailure = {
-                        setState(currentState.copy(alert = LocalStorageError.LocalError))
                     }
                 )
             } else {

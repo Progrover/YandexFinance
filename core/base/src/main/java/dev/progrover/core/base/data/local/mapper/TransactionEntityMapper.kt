@@ -42,6 +42,7 @@ internal class TransactionEntityMapperImpl : TransactionEntityMapper {
             transactionDate = transactionEntity.transactionDate.formatToIsoUtc(),
             comment = transactionEntity.comment,
             createdAt = transactionEntity.createdAt.formatToIsoUtc(),
-            updatedAt = transactionEntity.updatedAt.formatToIsoUtc()
+            updatedAt = transactionEntity.updatedAt.formatToIsoUtc(),
+            synced = transactionEntity.synced,
         )
 }

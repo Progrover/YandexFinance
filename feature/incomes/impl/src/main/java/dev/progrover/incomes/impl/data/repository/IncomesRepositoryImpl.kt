@@ -8,7 +8,9 @@ import dev.progrover.core.base.di.CoroutineQualifiers
 import dev.progrover.core.base.model.ApiResponse
 import dev.progrover.core.base.utils.getEndOfToday
 import dev.progrover.core.base.utils.getStartOfToday
-import dev.progrover.core.base.utils.serverRequestToMillis
+import dev.progrover.core.base.utils.serverRequestToMillisEndOfDay
+import dev.progrover.core.base.utils.serverRequestToMillisStartOfDay
+import dev.progrover.core.base.utils.toMillis
 import dev.progrover.incomes.api.domain.model.IncomeDetailed
 import dev.progrover.incomes.impl.data.mapper.IncomesDTOMapper
 import dev.progrover.incomes.impl.domain.model.Income
@@ -50,7 +52,7 @@ class IncomesRepositoryImpl @Inject constructor(
                     if (response.isSuccessful) {
                         val result = response.body()!!.filter { transaction ->
                             transaction.category.isIncome
-                        }
+                        }.sortedBy { it.transactionDate.toMillis() }
                         ApiResponse(
                             value =
                                 incomesDTOMapper.mapTransactionsToIncomes(result)
@@ -81,7 +83,7 @@ class IncomesRepositoryImpl @Inject constructor(
 
                     val result = response.filter { transaction ->
                         transaction.category.isIncome
-                    }
+                    }.sortedBy { it.transactionDate.toMillis() }
 
                     ApiResponse(value = incomesDTOMapper.mapTransactionsToIncomes(result))
                 } else {
@@ -109,7 +111,7 @@ class IncomesRepositoryImpl @Inject constructor(
                     if (response.isSuccessful) {
                         val result = response.body()!!.filter { transaction ->
                             transaction.category.isIncome
-                        }
+                        }.sortedBy { it.transactionDate.toMillis() }
                         ApiResponse(
                             value =
                                 incomesDTOMapper.mapTransactionsToIncomesDetailed(result)
@@ -136,13 +138,13 @@ class IncomesRepositoryImpl @Inject constructor(
                 if (tokenAvaliable) {
                     val response = localTransactionProvider.getTransactionsByAccountAndPeriod(
                         accountId = accountId,
-                        startDate = start.serverRequestToMillis(),
-                        endDate = end.serverRequestToMillis(),
+                        startDate = start.serverRequestToMillisStartOfDay(),
+                        endDate = end.serverRequestToMillisEndOfDay(),
                     )
 
                     val result = response.filter { transaction ->
                         transaction.category.isIncome
-                    }
+                    }.sortedBy { it.transactionDate.toMillis() }
 
                     ApiResponse(
                         value = incomesDTOMapper.mapTransactionsToIncomesDetailed(

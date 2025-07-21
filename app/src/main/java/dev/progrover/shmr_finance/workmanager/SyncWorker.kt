@@ -62,6 +62,7 @@ class SyncWorker @AssistedInject constructor(
         try {
             val localAccount = localAccountProvider.getAllAccounts().first()
             accountInteractor.updateAccount(localAccount)
+            Timber.d("SyncWorker: account update completed")
         } catch (e: Exception) {
             Timber.e("UpdateAccount Worker error: ${e.message}")
         }
@@ -89,7 +90,7 @@ class SyncWorker @AssistedInject constructor(
                                 val serverTransactions = serverTransactionResponse.body()
                                 val unsyncedLocalTransactions =
                                     localTransactions.mapNotNull { if (it.synced == false) it else null }
-
+                                Timber.d("SyncWorker: local to sync: $unsyncedLocalTransactions")
                                 val serverToUpdate = mutableListOf<Transaction>()
                                 val serverToCreate = mutableListOf<Transaction>()
 
@@ -97,8 +98,8 @@ class SyncWorker @AssistedInject constructor(
                                     //Заполнение транзакций для обновления и создания на сервере
                                     unsyncedLocalTransactions.forEach { localTransaction ->
                                         serverTransactions.find { it.id == localTransaction.id }
-                                            ?.let { trWithSameId ->
-                                                serverToUpdate.add(trWithSameId)
+                                            ?.let {
+                                                serverToUpdate.add(localTransaction)
                                             } ?: serverToCreate.add(localTransaction)
                                     }
 
@@ -133,6 +134,7 @@ class SyncWorker @AssistedInject constructor(
                                         startDate = leftBorder().dateToServerRequest(),
                                         endDate = rightBorder().dateToServerRequest(),
                                     ).body()
+                                    Timber.d("SyncWorker: updated version: $updatedVersion")
 
                                     if (!updatedVersion.isNullOrEmpty()) {
                                         localTransactionProvider.clearTransactions()
@@ -156,6 +158,7 @@ class SyncWorker @AssistedInject constructor(
                     }
                 )
             }
+            Timber.d("SyncWorker: transactions update completed")
         } catch (e: Exception) {
             Timber.e("UpdateTransactions Worker error: ${e.message}")
         }
@@ -179,6 +182,7 @@ class SyncWorker @AssistedInject constructor(
                         article
                     )
             }
+            Timber.d("SyncWorker: articles update completed")
         } catch (e: Exception) {
             Timber.e("UpdateArticles Worker error: ${e.message}")
         }

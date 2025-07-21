@@ -13,10 +13,16 @@ fun Long.dateToServerRequest(): String = Instant.ofEpochMilli(this)
     .toLocalDate()
     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
-fun String.serverRequestToMillis(): Long {
+fun String.serverRequestToMillisStartOfDay(): Long {
     val localDate = LocalDate.parse(this)
     val zone = ZoneId.systemDefault()
     return localDate.atStartOfDay(zone).toInstant().toEpochMilli()
+}
+
+fun String.serverRequestToMillisEndOfDay(): Long {
+    val localDate = LocalDate.parse(this)
+    val zone = ZoneId.systemDefault()
+    return localDate.plusDays(1).atStartOfDay(zone).toInstant().toEpochMilli() - 1
 }
 
 fun Long.toDatePresentation(): String = Instant.ofEpochMilli(this)

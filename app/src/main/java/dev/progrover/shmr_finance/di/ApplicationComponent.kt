@@ -4,6 +4,7 @@ import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
 import dev.progrover.account.api.di.AccountDependencies
+import dev.progrover.account.impl.di.AccountComponent
 import dev.progrover.account.impl.di.AccountNavigationModule
 import dev.progrover.articles.api.di.ArticlesDependencies
 import dev.progrover.articles.impl.di.ArticlesNavigationModule
@@ -43,6 +44,8 @@ import javax.inject.Singleton
 interface ApplicationComponent {
 
     fun inject(activity: MainActivity)
+
+    fun getAccountComponent(): AccountComponent
 
     fun syncWorkerFactory(): SyncWorker.Factory
 

@@ -72,7 +72,7 @@ class IncomesViewModel @Inject constructor(
         try {
             var total = 0.0
             expenditures.forEach { item ->
-                total += item.amount.toDouble()
+                total += if(item.amount.isNotEmpty()) item.amount.toDouble() else 0.0
             }
 
             return total.formatToAmount().addCurrency(currency)

@@ -1,7 +1,9 @@
 package dev.progrover.shmr_finance
 
+import dev.progrover.shmr_finance.network.NetworkMonitor
 import TimberReleaseTree
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.work.Configuration
@@ -11,6 +13,8 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import coil.ImageLoader
 import coil.ImageLoaderFactory
+import dev.progrover.account.impl.di.AccountComponent
+import dev.progrover.account.impl.di.AccountComponentProvider
 import dev.progrover.core.base.data.storage.Prefs
 import dev.progrover.core.base.di.BaseComponent
 import dev.progrover.core.base.di.BaseComponentProvider
@@ -20,7 +24,6 @@ import dev.progrover.shmr_finance.di.ApplicationComponent
 import dev.progrover.shmr_finance.di.ApplicationComponentProvider
 import dev.progrover.shmr_finance.di.CustomWorkerFactory
 import dev.progrover.shmr_finance.di.DaggerApplicationComponent
-import dev.progrover.shmr_finance.network.NetworkMonitor
 import dev.progrover.shmr_finance.workmanager.StartupWorker
 import dev.progrover.shmr_finance.workmanager.SyncWorker
 import timber.log.Timber
@@ -33,6 +36,7 @@ class MainApplication :
     Configuration.Provider,
     ImageLoaderFactory,
     BaseComponentProvider,
+    AccountComponentProvider,
     ApplicationComponentProvider {
 
     private lateinit var appComponent: ApplicationComponent
@@ -63,7 +67,7 @@ class MainApplication :
         if (isFirstLaunch) onceRequest()
 
         networkMonitor = NetworkMonitor(this) {
-            Timber.d("NetworkMonitor toggle")
+            Timber.d("dev.progrover.shmr_finance.network.NetworkMonitor toggle")
             WorkManager.getInstance(this)
                 .enqueue(OneTimeWorkRequestBuilder<SyncWorker>().build())
         }
@@ -124,4 +128,7 @@ class MainApplication :
         ).enqueue(workRequest)
         prefs.putBool("is_first_launch", false)
     }
+
+    override fun getAccountComponent(): AccountComponent =
+        appComponent.getAccountComponent()
 }

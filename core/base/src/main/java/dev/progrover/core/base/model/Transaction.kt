@@ -9,4 +9,5 @@ data class Transaction(
     val comment: String?,
     val createdAt: String,
     val updatedAt: String,
+    val synced: Boolean? = null,
 )

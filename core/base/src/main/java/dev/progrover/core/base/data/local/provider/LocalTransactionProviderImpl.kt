@@ -110,4 +110,8 @@ internal class LocalTransactionProviderImpl @Inject constructor(
             Timber.e("DeleteTransaction locally error: ${e.message}")
             false
         }
+
+    override suspend fun clearTransactions() {
+        transactionDao.clearTransactions()
+    }
 }

@@ -35,6 +35,7 @@ class ExpendituresViewModel @Inject constructor(
     init {
         subscribeOnTransactionsChanges()
         loadInfo()
+        Timber.d("AccountPropertiesProvider hash: ${idProvider.hashCode()}")
     }
 
     override fun handleUIEvent(event: ExpendituresUIEvent) =
@@ -75,7 +76,7 @@ class ExpendituresViewModel @Inject constructor(
         try {
             var total = 0.0
             expenditures.forEach { item ->
-                total += item.amount.toDouble()
+                total += if(item.amount.isNotEmpty()) item.amount.toDouble() else 0.0
             }
 
             return total.formatToAmount().addCurrency(currency)
