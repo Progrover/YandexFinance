@@ -14,4 +14,14 @@ class AccountInteractorImpl @Inject constructor(
 
     override suspend fun getAccountById(id: Int): ApiResponse<AccountDetailed> =
         repository.getAccountById(id)
+
+    override suspend fun getAccountsFromLocalStorage(): ApiResponse<List<AccountDetailed>> =
+        repository.getAccountsFromLocalStorage()
+
+    override suspend fun getAccountByIdFromLocalStorage(id: Int): ApiResponse<AccountDetailed> =
+        repository.getAccountByIdFromLocalStorage(id)
+
+    override suspend fun updateAccount(account: AccountDetailed) {
+        repository.updateAccountById(account)
+    }
 }

@@ -12,4 +12,11 @@ interface HistoryRepository {
         end: String,
         type: RouteDesc,
     ): ApiResponse<List<HistoryElement>>
+
+    suspend fun getHistoryFromLocalStorage(
+        accountId: Int,
+        start: String,
+        end: String,
+        type: RouteDesc,
+    ): ApiResponse<List<HistoryElement>>
 }

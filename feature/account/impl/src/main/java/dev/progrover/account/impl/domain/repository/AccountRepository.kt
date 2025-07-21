@@ -6,7 +6,11 @@ import dev.progrover.core.base.model.ApiResponse
 interface AccountRepository {
     suspend fun getAccounts(): ApiResponse<List<AccountDetailed>>
 
+    suspend fun getAccountsFromLocalStorage(): ApiResponse<List<AccountDetailed>>
+
     suspend fun getAccountById(accountId: Int): ApiResponse<AccountDetailed>
+
+    suspend fun getAccountByIdFromLocalStorage(accountId: Int): ApiResponse<AccountDetailed>
 
     suspend fun createAccount(
         name: String,
@@ -16,6 +20,11 @@ interface AccountRepository {
 
     suspend fun updateAccountById(
         account: AccountDetailed,
+    ): ApiResponse<AccountDetailed>
+
+    suspend fun updateAccountByIdFromLocalStorage(
+        account: AccountDetailed,
+        synced: Boolean
     ): ApiResponse<AccountDetailed>
 
     suspend fun deleteAccountById(accountId: Int): ApiResponse<Boolean>

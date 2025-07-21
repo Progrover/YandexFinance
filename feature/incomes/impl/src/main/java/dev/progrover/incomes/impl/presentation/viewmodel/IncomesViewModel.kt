@@ -3,6 +3,7 @@ package dev.progrover.incomes.impl.presentation.viewmodel
 import androidx.lifecycle.viewModelScope
 import dev.progrover.account.api.domain.AccountPropertiesProvider
 import dev.progrover.core.base.model.Alert
+import dev.progrover.core.base.model.LocalStorageError
 import dev.progrover.core.base.model.TransactionsUpdater
 import dev.progrover.core.base.navigation.RouteDesc
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
@@ -98,6 +99,29 @@ class IncomesViewModel @Inject constructor(
                 )
             },
             onFailure = { message ->
+                tryMultipleLoad(
+                    function = {
+                        incomesRepository.getIncomesFromLocalStorage(accountId)
+                    },
+                    onSuccess = { result ->
+
+                        setState(
+                            currentState.copy(
+                                isLoading = false,
+                                incomes = result,
+                                currency = idProvider.getCurrency(),
+                                totalIncomes = countTotalAmount(result, idProvider.getCurrency()),
+                            )
+                        )
+                    },
+                    onFailure = {
+                        setState(
+                            currentState.copy(
+                                alert = LocalStorageError.LocalError,
+                            )
+                        )
+                    }
+                )
                 setState(
                     currentState.copy(
                         alert = message,

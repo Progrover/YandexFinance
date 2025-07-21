@@ -6,6 +6,7 @@ import dev.progrover.articles.impl.presentation.contract.articles.ArticlesUIEffe
 import dev.progrover.articles.impl.presentation.contract.articles.ArticlesUIEvent
 import dev.progrover.articles.impl.presentation.contract.articles.ArticlesUIState
 import dev.progrover.core.base.di.CoroutineQualifiers
+import dev.progrover.core.base.model.LocalStorageError
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.shmr_finance.core.uicommon.R
 import kotlinx.coroutines.CoroutineDispatcher
@@ -49,7 +50,6 @@ class ArticlesViewModel @Inject constructor(
     private fun loadInfo() {
         viewModelScope.launch {
             setState(currentState.copy(isLoading = true))
-
             tryMultipleLoad(
                 function = { articlesRepository.getArticles() },
                 onSuccess = { result ->
@@ -62,7 +62,38 @@ class ArticlesViewModel @Inject constructor(
                     )
                 },
                 onFailure = { message ->
+                    tryMultipleLoad(
+                        function = { articlesRepository.getArticlesFromLocalStorage() },
+                        onSuccess = { result ->
+                            setState(
+                                currentState.copy(
+                                    isLoading = false,
+                                    allArticles = result,
+                                    articlesForPresentation = result,
+                                )
+                            )
+                        },
+                        onFailure = {
+                            setState(currentState.copy(alert = LocalStorageError.LocalError))
+                        },
+                    )
                     setState(currentState.copy(alert = message))
+                },
+            )
+
+            tryMultipleLoad(
+                function = { articlesRepository.getArticlesFromLocalStorage() },
+                onSuccess = { result ->
+                    setState(
+                        currentState.copy(
+                            isLoading = false,
+                            allArticles = result,
+                            articlesForPresentation = result,
+                        )
+                    )
+                },
+                onFailure = {
+                    setState(currentState.copy(alert = LocalStorageError.LocalError))
                 },
             )
         }

@@ -15,10 +15,12 @@ object Versions {
 
     // di
     const val dagger = "2.56.2"
-    const val hiltNavigation = "1.1.0"
+
+    //room
+    const val room = "2.7.2"
 
     // work
-    const val workRuntime = "2.8.1"
+    const val workRuntime = "2.9.0"
 
     // network
     const val okhttp = "5.0.0-alpha.16"

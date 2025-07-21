@@ -11,6 +11,7 @@ import dev.progrover.account.impl.presentation.navigation.BalanceAndNameUpdater
 import dev.progrover.account.impl.presentation.navigation.CurrencyUpdater
 import dev.progrover.core.base.model.AccountDetailed
 import dev.progrover.core.base.model.Alert
+import dev.progrover.core.base.model.LocalStorageError
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.JsonConverter
 import dev.progrover.shmr_finance.core.uicommon.R
@@ -91,6 +92,34 @@ class AccountViewModel @Inject constructor(
                         alert = message,
                     )
                 )
+
+                tryMultipleLoad(
+                    function = {
+                        accountRepository.getAccountsFromLocalStorage()
+                    },
+                    onSuccess = { result ->
+                        result.firstOrNull()?.let {
+                            setState(
+                                currentState.copy(
+                                    isLoading = false,
+                                    account = it,
+                                )
+                            )
+                        } ?: setState(
+                            currentState.copy(
+                                isLoading = false,
+                                alert = AccountAlert.NoAccountError,
+                            )
+                        )
+                    },
+                    onFailure = {
+                        setState(
+                            currentState.copy(
+                                alert = LocalStorageError.LocalError,
+                            )
+                        )
+                    }
+                )
             }
         )
     }
@@ -109,8 +138,64 @@ class AccountViewModel @Inject constructor(
                             alert = AccountAlert.CurrencySuccess,
                         )
                     )
+                    tryMultipleLoad(
+                        function = {
+                            accountRepository.updateAccountByIdFromLocalStorage(
+                                currentAccount.copy(
+                                    currency = newCurrency
+                                ),
+                                true
+                            )
+                        },
+                        onSuccess = { newAccount ->
+                            accountProvider.setCurrency(newAccount.currency)
+                            setState(
+                                currentState.copy(
+                                    isLoading = false,
+                                    account = newAccount,
+                                    alert = AccountAlert.CurrencySuccess,
+                                )
+                            )
+                        },
+                        onFailure = { throwable ->
+                            setState(
+                                currentState.copy(
+                                    isLoading = false,
+                                    alert = throwable as Alert,
+                                )
+                            )
+                        }
+                    )
                 },
                 onFailure = { throwable ->
+                    tryMultipleLoad(
+                        function = {
+                            accountRepository.updateAccountByIdFromLocalStorage(
+                                currentAccount.copy(
+                                    currency = newCurrency
+                                ),
+                                false
+                            )
+                        },
+                        onSuccess = { newAccount ->
+                            accountProvider.setCurrency(newAccount.currency)
+                            setState(
+                                currentState.copy(
+                                    isLoading = false,
+                                    account = newAccount,
+                                    alert = AccountAlert.CurrencySuccess,
+                                )
+                            )
+                        },
+                        onFailure = { throwable ->
+                            setState(
+                                currentState.copy(
+                                    isLoading = false,
+                                    alert = throwable as Alert,
+                                )
+                            )
+                        }
+                    )
                     setState(
                         currentState.copy(
                             isLoading = false,

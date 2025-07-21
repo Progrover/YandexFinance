@@ -11,6 +11,7 @@ import dev.progrover.account.impl.presentation.contract.balance.BalanceUIState
 import dev.progrover.account.impl.presentation.navigation.AccountNavigationFactory.Companion.ACCOUNT_ARG_KEY
 import dev.progrover.account.impl.presentation.navigation.BalanceAndNameUpdater
 import dev.progrover.core.base.model.AccountDetailed
+import dev.progrover.core.base.model.LocalStorageError
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.JsonConverter
 
@@ -70,12 +71,33 @@ class BalanceNameViewModel @AssistedInject constructor(
         tryMultipleLoad(
             function = { accountRepository.updateAccountById(currentState.account!!) },
             onSuccess = {
+                saveChangesLocally(true)
                 balanceAndNameUpdater.setBalance(currentState.account!!.balance)
                 balanceAndNameUpdater.setName(currentState.account!!.name)
                 setEffect(BalanceUIEffect.NavigateBack)
             },
             onFailure = {
                 setState(currentState.copy(alert = AccountAlert.BalanceOrNameError))
+                saveChangesLocally(false)
+            }
+        )
+    }
+
+    private fun saveChangesLocally(synced: Boolean) {
+        tryMultipleLoad(
+            function = {
+                accountRepository.updateAccountByIdFromLocalStorage(
+                    currentState.account!!,
+                    synced
+                )
+            },
+            onSuccess = {
+                balanceAndNameUpdater.setBalance(currentState.account!!.balance)
+                balanceAndNameUpdater.setName(currentState.account!!.name)
+                setEffect(BalanceUIEffect.NavigateBack)
+            },
+            onFailure = {
+                setState(currentState.copy(alert = LocalStorageError.LocalError))
             }
         )
     }

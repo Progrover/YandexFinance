@@ -16,4 +16,12 @@ class IncomesInteractorImpl @Inject constructor(
         end: String
     ): ApiResponse<List<IncomeDetailed>> =
         repository.getIncomesDetailed(accountId, start, end)
+
+    override suspend fun getIncomesDetailedFromLocalStorage(
+        accountId: Int,
+        start: String,
+        end: String
+    ): ApiResponse<List<IncomeDetailed>> =
+        repository.getIncomesDetailedFromLocalStorage(accountId, start, end)
+
 }

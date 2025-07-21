@@ -3,16 +3,29 @@ package dev.progrover.shmr_finance.di
 import androidx.work.WorkerFactory
 import dagger.Binds
 import dagger.Module
+import dagger.multibindings.IntoMap
+import dev.progrover.shmr_finance.workmanager.StartupWorker
+import dev.progrover.shmr_finance.workmanager.StartupWorkerFactoryImpl
+import dev.progrover.shmr_finance.workmanager.SyncWorker
+import dev.progrover.shmr_finance.workmanager.SyncWorkerFactoryImpl
 import javax.inject.Singleton
 
 @Module
-abstract class WorkerModule {
+interface WorkerModule {
 
     @Binds
     @Singleton
-    abstract fun bindWorkerFactory(
+    fun bindWorkerFactory(
         customWorkerFactory: CustomWorkerFactory
     ): WorkerFactory
 
-    //todo: предоставить реализации воркеров по необходимости
+    @Binds
+    @IntoMap
+    @WorkerKey(SyncWorker::class)
+    fun bindSyncWorkerFactory(factory: SyncWorkerFactoryImpl): ChildWorkerFactory
+
+    @Binds
+    @IntoMap
+    @WorkerKey(StartupWorker::class)
+    fun bindStartupWorkerFactory(factory: StartupWorkerFactoryImpl): ChildWorkerFactory
 }

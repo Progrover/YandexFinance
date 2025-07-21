@@ -41,6 +41,7 @@ dependencies {
     coreTheme()
     coreUiCommon()
 
+    room()
     dagger()
     compose()
     navigation()

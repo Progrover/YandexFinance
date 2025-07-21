@@ -5,8 +5,13 @@ import android.app.Application
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.work.Configuration
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import coil.ImageLoader
 import coil.ImageLoaderFactory
+import dev.progrover.core.base.data.storage.Prefs
 import dev.progrover.core.base.di.BaseComponent
 import dev.progrover.core.base.di.BaseComponentProvider
 import dev.progrover.core.base.di.DaggerBaseComponent
@@ -15,7 +20,11 @@ import dev.progrover.shmr_finance.di.ApplicationComponent
 import dev.progrover.shmr_finance.di.ApplicationComponentProvider
 import dev.progrover.shmr_finance.di.CustomWorkerFactory
 import dev.progrover.shmr_finance.di.DaggerApplicationComponent
+import dev.progrover.shmr_finance.network.NetworkMonitor
+import dev.progrover.shmr_finance.workmanager.StartupWorker
+import dev.progrover.shmr_finance.workmanager.SyncWorker
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class MainApplication :
@@ -31,6 +40,17 @@ class MainApplication :
     @Inject
     lateinit var workerFactory: CustomWorkerFactory
 
+    @Inject
+    lateinit var prefs: Prefs
+
+    lateinit var networkMonitor: NetworkMonitor
+
+
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
+
     override fun onCreate() {
         super<Application>.onCreate()
 
@@ -38,6 +58,16 @@ class MainApplication :
             .create(this, _baseComponent)
 
         appComponent.inject(this)
+
+        val isFirstLaunch = prefs.getBool("is_first_launch", true)
+        if (isFirstLaunch) onceRequest()
+
+        networkMonitor = NetworkMonitor(this) {
+            Timber.d("NetworkMonitor toggle")
+            WorkManager.getInstance(this)
+                .enqueue(OneTimeWorkRequestBuilder<SyncWorker>().build())
+        }
+        networkMonitor.start()
 
         val isDebugBuild = BuildConfig.DEBUG
         val timberTree = when (isDebugBuild) {
@@ -47,12 +77,9 @@ class MainApplication :
         Timber.plant(timberTree)
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
-    }
 
-    override fun getWorkManagerConfiguration(): Configuration =
-        Configuration.Builder()
-            .setWorkerFactory(workerFactory)
-            .build()
+        syncWorkerTimeTable()
+    }
 
     override fun newImageLoader(): ImageLoader {
         val builder = ImageLoader.Builder(this)
@@ -72,4 +99,29 @@ class MainApplication :
 
     override fun getApplicationComponent(): ApplicationComponent =
         appComponent
+
+    private fun syncWorkerTimeTable() {
+        val immediateWorkRequest = OneTimeWorkRequestBuilder<SyncWorker>().build()
+
+        val workRequest = PeriodicWorkRequestBuilder<SyncWorker>(
+            4, TimeUnit.HOURS
+        ).build()
+        val workManager = WorkManager.getInstance(this)
+
+        workManager.enqueue(immediateWorkRequest)
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "SyncWorker",
+            ExistingPeriodicWorkPolicy.KEEP,
+            workRequest
+        )
+    }
+
+    private fun onceRequest() {
+        val workRequest = OneTimeWorkRequestBuilder<StartupWorker>().build()
+        WorkManager.getInstance(
+            this
+        ).enqueue(workRequest)
+        prefs.putBool("is_first_launch", false)
+    }
 }

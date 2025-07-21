@@ -23,6 +23,11 @@ object Dependencies {
     const val daggerAndroid = "com.google.dagger:dagger:${Versions.dagger}"
     const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
 
+    //room
+    const val room = "androidx.room:room-ktx:${Versions.room}"
+    const val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
+    const val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
+
     const val workRuntime = "androidx.work:work-runtime-ktx:${Versions.workRuntime}"
 
     const val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okhttp}"
@@ -83,6 +88,12 @@ fun DependencyHandler.timber() {
 fun DependencyHandler.dagger() {
     implementation(Dependencies.daggerAndroid)
     kapt(Dependencies.daggerCompiler)
+}
+
+fun DependencyHandler.room() {
+    implementation(Dependencies.room)
+    implementation(Dependencies.roomRuntime)
+    kapt(Dependencies.roomCompiler)
 }
 
 fun DependencyHandler.work() {

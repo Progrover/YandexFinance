@@ -9,7 +9,17 @@ interface IncomesRepository {
         accountId: Int,
     ): ApiResponse<List<Income>>
 
+    suspend fun getIncomesFromLocalStorage(
+        accountId: Int,
+    ): ApiResponse<List<Income>>
+
     suspend fun getIncomesDetailed(
+        accountId: Int,
+        start: String,
+        end: String,
+    ): ApiResponse<List<IncomeDetailed>>
+
+    suspend fun getIncomesDetailedFromLocalStorage(
         accountId: Int,
         start: String,
         end: String,
