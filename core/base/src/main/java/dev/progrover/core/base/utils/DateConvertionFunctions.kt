@@ -6,6 +6,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.time.temporal.TemporalAdjusters
 import java.util.Locale
 
 fun Long.dateToServerRequest(): String = Instant.ofEpochMilli(this)
@@ -110,4 +111,50 @@ fun getEndOfToday(): Long {
     val endOfDay = today.plusDays(1).atStartOfDay(zone).toInstant().toEpochMilli() - 1
 
     return endOfDay
+}
+
+fun Long.monthAndYear(): String {
+    val monthMap = mapOf(
+        "JANUARY" to "Январь",
+        "FEBRUARY" to "Февраль",
+        "MARCH" to "Март",
+        "APRIL" to "Апрель",
+        "MAY" to "Май",
+        "JUNE" to "Июнь",
+        "JULY" to "Июль",
+        "AUGUST" to "Август",
+        "SEPTEMBER" to "Сентябрь",
+        "OCTOBER" to "Октябрь",
+        "NOVEMBER" to "Ноябрь",
+        "DECEMBER" to "Декабрь"
+    )
+
+    val date =
+    Instant.ofEpochMilli(this)
+        .atZone(ZoneId.systemDefault())
+        .toLocalDate()
+
+    return "${monthMap[date.month.name]} ${date.year}"
+}
+
+fun getStartOfMonth(timeMillis: Long): Long {
+    val zone = ZoneId.systemDefault()
+    val dateTime = Instant.ofEpochMilli(timeMillis).atZone(zone)
+    val startOfMonth = dateTime.with(TemporalAdjusters.firstDayOfMonth())
+        .withHour(0)
+        .withMinute(0)
+        .withSecond(0)
+        .withNano(0)
+    return startOfMonth.toInstant().toEpochMilli()
+}
+
+fun getEndOfMonth(timeMillis: Long): Long {
+    val zone = ZoneId.systemDefault()
+    val dateTime = Instant.ofEpochMilli(timeMillis).atZone(zone)
+    val endOfMonth = dateTime.with(TemporalAdjusters.lastDayOfMonth())
+        .withHour(23)
+        .withMinute(59)
+        .withSecond(59)
+        .withNano(999_000_000)
+    return endOfMonth.toInstant().toEpochMilli()
 }

@@ -1,9 +1,10 @@
 package dev.progrover.history.impl.presentation.contract.history
 
 import dev.progrover.core.base.presentation.mvi.UIEvent
+import dev.progrover.history.impl.domain.model.DatePickerState
 
 /**
- * Класс, хранящий все события history feature
+ * Класс, хранящий все события history screen
  */
 sealed class HistoryUIEvent : UIEvent {
     data object OnStartClick : HistoryUIEvent()

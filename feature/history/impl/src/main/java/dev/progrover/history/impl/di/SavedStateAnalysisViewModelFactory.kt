@@ -6,8 +6,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 
-class SavedStateViewModelFactory(
-    private val assistedFactory: HistoryViewModelAssistedFactory,
+class SavedStateAnalysisViewModelFactory(
+    private val assistedFactory: AnalysisViewModelAssistedFactory,
     owner: SavedStateRegistryOwner,
     defaultArgs: Bundle? = null
 ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {

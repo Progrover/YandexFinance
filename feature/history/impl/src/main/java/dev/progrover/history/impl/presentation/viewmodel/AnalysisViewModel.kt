@@ -13,64 +13,67 @@ import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.addCurrency
 import dev.progrover.core.base.utils.dateToServerRequest
 import dev.progrover.core.base.utils.formatToAmount
+import dev.progrover.core.base.utils.getEndOfMonth
+import dev.progrover.core.base.utils.getStartOfMonth
+import dev.progrover.history.impl.domain.model.AnalysisElement
 import dev.progrover.history.impl.domain.model.DatePickerState
 import dev.progrover.history.impl.domain.model.HistoryAlert
-import dev.progrover.history.impl.domain.model.HistoryElement
 import dev.progrover.history.impl.domain.repository.HistoryRepository
-import dev.progrover.history.impl.presentation.contract.history.HistoryUIEffect
-import dev.progrover.history.impl.presentation.contract.history.HistoryUIEvent
-import dev.progrover.history.impl.presentation.contract.history.HistoryUIState
+import dev.progrover.history.impl.presentation.contract.analysis.AnalysisUIEffect
+import dev.progrover.history.impl.presentation.contract.analysis.AnalysisUIEvent
+import dev.progrover.history.impl.presentation.contract.analysis.AnalysisUIState
 import dev.progrover.history.impl.presentation.navigation.HistoryNavigationFactory.Companion.ARG_KEY_ROUTE
+import dev.progrover.shmr_finance.core.uicommon.R
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
- * ViewModel, привязанная к history screen
+ * ViewModel, привязанная к analysis screen
  */
-class HistoryViewModel @AssistedInject constructor(
+class AnalysisViewModel @AssistedInject constructor(
     @Assisted savedStateHandle: SavedStateHandle,
     private val historyRepository: HistoryRepository,
     private val idProvider: AccountPropertiesProvider,
     private val transactionsUpdater: TransactionsUpdater,
 ) :
-    BaseViewModel<HistoryUIEvent, HistoryUIState, HistoryUIEffect>(
-        HistoryUIState()
+    BaseViewModel<AnalysisUIEvent, AnalysisUIState, AnalysisUIEffect>(
+        AnalysisUIState()
     ) {
 
     private val itemType: RouteDesc = savedStateHandle[ARG_KEY_ROUTE]!!
 
     init {
         subscribeOnTransactionsChanges()
-        loadHistory()
+        loadAnalysis()
     }
 
-    override fun handleUIEvent(event: HistoryUIEvent) =
+    override fun handleUIEvent(event: AnalysisUIEvent) =
         when (event) {
-            HistoryUIEvent.OnErrorDialogDone ->
+            AnalysisUIEvent.OnErrorDialogDone ->
                 setState(currentState.copy(alert = null))
 
-            HistoryUIEvent.OnBackClick ->
-                setEffect(HistoryUIEffect.NavigateBack)
+            AnalysisUIEvent.OnBackClick ->
+                setEffect(AnalysisUIEffect.NavigateBack)
 
-            HistoryUIEvent.OnAnalyseClick ->
-                setEffect(HistoryUIEffect.NavigateToAnalyseScreen(route = itemType))
+            AnalysisUIEvent.OnAnalyseClick ->
+                setEffect(AnalysisUIEffect.ShowError(R.string.in_develop))
 
-            HistoryUIEvent.OnEndClick ->
+            AnalysisUIEvent.OnEndClick ->
                 setState(
                     currentState.copy(
                         showDatePicker = DatePickerState.EndPick
                     )
                 )
 
-            HistoryUIEvent.OnStartClick ->
+            AnalysisUIEvent.OnStartClick ->
                 setState(
                     currentState.copy(
                         showDatePicker = DatePickerState.StartPick
                     )
                 )
 
-            is HistoryUIEvent.OnNewDateSelected -> {
+            is AnalysisUIEvent.OnNewDateSelected -> {
                 when (event.type) {
                     DatePickerState.StartPick -> {
                         startLaterThanEndCheck(
@@ -83,7 +86,7 @@ class HistoryViewModel @AssistedInject constructor(
                                     showDatePicker = DatePickerState.None
                                 )
                             )
-                            loadHistory()
+                            loadAnalysis()
                         }
                     }
 
@@ -95,7 +98,7 @@ class HistoryViewModel @AssistedInject constructor(
                                     showDatePicker = DatePickerState.None
                                 )
                             )
-                            loadHistory()
+                            loadAnalysis()
                         }
                     }
 
@@ -103,23 +106,23 @@ class HistoryViewModel @AssistedInject constructor(
                 }
             }
 
-            HistoryUIEvent.OnDatePickerClose ->
+            AnalysisUIEvent.OnDatePickerClose ->
                 setState(currentState.copy(showDatePicker = DatePickerState.None))
 
-            is HistoryUIEvent.OnHistoryItemClick ->
+            is AnalysisUIEvent.OnAnalysisItemClick ->
                 setEffect(
-                    HistoryUIEffect.NavigateToEditTransactionScreen(
+                    AnalysisUIEffect.NavigateToEditTransactionScreen(
                         id = event.id,
                         transactionType = itemType
                     )
                 )
         }
 
-    private fun loadHistory() {
+    private fun loadAnalysis() {
         setState(currentState.copy(isLoading = true))
         idProvider.getId(viewModelScope) { result ->
             result.fold(
-                onSuccess = { getHistory(it) },
+                onSuccess = { getAnalysis(it) },
                 onFailure = {
                     setState(
                         currentState.copy(
@@ -131,21 +134,21 @@ class HistoryViewModel @AssistedInject constructor(
         }
     }
 
-    private fun getHistory(accountId: Int) {
+    private fun getAnalysis(accountId: Int) {
         tryMultipleLoad(
             function = {
-                historyRepository.getHistory(
+                historyRepository.getAnalysis(
                     accountId,
                     type = itemType,
-                    start = currentState.start.dateToServerRequest(),
-                    end = currentState.end.dateToServerRequest()
+                    start = getStartOfMonth(currentState.start).dateToServerRequest(),
+                    end = getEndOfMonth(currentState.end).dateToServerRequest()
                 )
             },
             onSuccess = { result ->
                 setState(
                     currentState.copy(
                         isLoading = false,
-                        history = result,
+                        analysis = result,
                         currency = idProvider.getCurrency(),
                         total = countTotalAmount(result, idProvider.getCurrency()),
                     )
@@ -154,18 +157,18 @@ class HistoryViewModel @AssistedInject constructor(
             onFailure = {
                 tryMultipleLoad(
                     function = {
-                        historyRepository.getHistoryFromLocalStorage(
+                        historyRepository.getAnalysisFromLocalStorage(
                             accountId,
                             type = itemType,
-                            start = currentState.start.dateToServerRequest(),
-                            end = currentState.end.dateToServerRequest()
+                            start = getStartOfMonth(currentState.start).dateToServerRequest(),
+                            end = getEndOfMonth(currentState.end).dateToServerRequest()
                         )
                     },
                     onSuccess = { result ->
                         setState(
                             currentState.copy(
                                 isLoading = false,
-                                history = result,
+                                analysis = result,
                                 currency = idProvider.getCurrency(),
                                 total = countTotalAmount(result, idProvider.getCurrency()),
                             )
@@ -183,7 +186,7 @@ class HistoryViewModel @AssistedInject constructor(
         )
     }
 
-    private fun countTotalAmount(historyItems: List<HistoryElement>, currency: String): String {
+    private fun countTotalAmount(historyItems: List<AnalysisElement>, currency: String): String {
         try {
             var total = 0.0
             historyItems.forEach { item ->
@@ -192,7 +195,7 @@ class HistoryViewModel @AssistedInject constructor(
 
             return total.formatToAmount().addCurrency(currency)
         } catch (e: NumberFormatException) {
-            Timber.e("Expenditures error in countTotalAmount")
+            Timber.e("Analysis error in countTotalAmount")
             return "???"
         }
     }
@@ -215,7 +218,7 @@ class HistoryViewModel @AssistedInject constructor(
     private fun subscribeOnTransactionsChanges() {
         viewModelScope.launch {
             transactionsUpdater.updateChannel.collectLatest { route ->
-                if (route == itemType) loadHistory()
+                if (route == itemType) loadAnalysis()
             }
         }
     }

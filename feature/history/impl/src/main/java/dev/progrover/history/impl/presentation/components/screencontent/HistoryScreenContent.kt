@@ -25,7 +25,7 @@ import dev.progrover.core.uicommon.views.CustomAlertDialog
 import dev.progrover.core.uicommon.views.DefaultListItem
 import dev.progrover.core.uicommon.views.DefaultToolbar
 import dev.progrover.core.uicommon.views.ProgressIndicator
-import dev.progrover.history.impl.presentation.contract.history.DatePickerState
+import dev.progrover.history.impl.domain.model.DatePickerState
 import dev.progrover.history.impl.presentation.contract.history.HistoryUIEvent
 import dev.progrover.history.impl.presentation.contract.history.HistoryUIState
 import dev.progrover.shmr_finance.feature.history.impl.R

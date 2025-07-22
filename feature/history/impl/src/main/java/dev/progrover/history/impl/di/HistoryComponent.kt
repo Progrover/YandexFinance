@@ -32,6 +32,8 @@ internal interface HistoryComponent {
     }
 
     fun getHistoryViewModelFactory(): HistoryViewModelAssistedFactory
+
+    fun getAnalysisViewModelFactory(): AnalysisViewModelAssistedFactory
 }
 
 

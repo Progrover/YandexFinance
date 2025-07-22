@@ -143,6 +143,7 @@ fun DefaultListItem(
                 Column(
                     modifier = Modifier
                         .align(Alignment.CenterVertically),
+                    horizontalAlignment = Alignment.End
                 ) {
                     Text(
                         modifier = Modifier,

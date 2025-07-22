@@ -1,21 +1,22 @@
-package dev.progrover.history.impl.presentation.contract.history
+package dev.progrover.history.impl.presentation.contract.analysis
 
 import dev.progrover.core.base.model.Alert
 import dev.progrover.core.base.presentation.mvi.UIState
 import dev.progrover.core.base.utils.getFirstDayOfCurrentMonthForPresentation
 import dev.progrover.core.base.utils.getRealFirstDayOfCurrentMonth
+import dev.progrover.history.impl.domain.model.AnalysisElement
 import dev.progrover.history.impl.domain.model.DatePickerState
-import dev.progrover.history.impl.domain.model.HistoryElement
+
 /**
- * Класс, необходимый для отслеживания состояния history screen
+ * Класс, необходимый для отслеживания состояния analysis screen
  */
-data class HistoryUIState(
+data class AnalysisUIState(
     val isLoading: Boolean = false,
     val total: String = "",
     val start: Long = getRealFirstDayOfCurrentMonth(),
-    val end: Long = System.currentTimeMillis(),
+    val end: Long = getRealFirstDayOfCurrentMonth(),
     val alert: Alert? = null,
-    val history: List<HistoryElement> = emptyList(),
+    val analysis: List<AnalysisElement> = emptyList(),
     val currency: String = "",
     val showDatePicker: DatePickerState = DatePickerState.None
 ) : UIState {
@@ -26,5 +27,11 @@ data class HistoryUIState(
             getFirstDayOfCurrentMonthForPresentation()
         } else {
             start
+        }
+    val endForPresentation =
+        if (end == getRealFirstDayOfCurrentMonth()) {
+            getFirstDayOfCurrentMonthForPresentation()
+        } else {
+            end
         }
 }

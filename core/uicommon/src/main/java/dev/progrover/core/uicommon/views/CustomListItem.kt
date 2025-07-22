@@ -90,7 +90,7 @@ fun CustomListItem(
 
             Text(
                 modifier = Modifier
-                    .weight(1f),
+                    .padding(end = AppTheme.paddings.padding16),
                 text = title,
                 color = titleColor,
                 style = AppTheme.typography.bodyLarge,
@@ -98,7 +98,7 @@ fun CustomListItem(
                 overflow = TextOverflow.Ellipsis,
             )
 
-            Box(modifier = Modifier.weight(2f)) { customElement() }
+            Box(modifier = Modifier.weight(1f)) { customElement() }
 
         }
 
