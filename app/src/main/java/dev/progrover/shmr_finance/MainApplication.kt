@@ -1,9 +1,7 @@
 package dev.progrover.shmr_finance
 
-import dev.progrover.shmr_finance.network.NetworkMonitor
 import TimberReleaseTree
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.work.Configuration
@@ -19,11 +17,15 @@ import dev.progrover.core.base.data.storage.Prefs
 import dev.progrover.core.base.di.BaseComponent
 import dev.progrover.core.base.di.BaseComponentProvider
 import dev.progrover.core.base.di.DaggerBaseComponent
+import dev.progrover.core.base.utils.LANGUAGE
+import dev.progrover.core.base.utils.LocaleVariant
+import dev.progrover.core.base.utils.SettingsOptions
 import dev.progrover.core.uicommon.utils.ImageRequestDefaults
 import dev.progrover.shmr_finance.di.ApplicationComponent
 import dev.progrover.shmr_finance.di.ApplicationComponentProvider
 import dev.progrover.shmr_finance.di.CustomWorkerFactory
 import dev.progrover.shmr_finance.di.DaggerApplicationComponent
+import dev.progrover.shmr_finance.network.NetworkMonitor
 import dev.progrover.shmr_finance.workmanager.StartupWorker
 import dev.progrover.shmr_finance.workmanager.SyncWorker
 import timber.log.Timber
@@ -49,6 +51,7 @@ class MainApplication :
 
     lateinit var networkMonitor: NetworkMonitor
 
+    var splashAnimationEnd = false
 
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
@@ -63,11 +66,15 @@ class MainApplication :
 
         appComponent.inject(this)
 
+        if (prefs.getString(LANGUAGE, null) == null) {
+            prefs.putString(LANGUAGE, SettingsOptions.localeVariants[LocaleVariant.Russian])
+        }
+
         val isFirstLaunch = prefs.getBool("is_first_launch", true)
         if (isFirstLaunch) onceRequest()
 
         networkMonitor = NetworkMonitor(this) {
-            Timber.d("dev.progrover.shmr_finance.network.NetworkMonitor toggle")
+            Timber.d("NetworkMonitor toggle")
             WorkManager.getInstance(this)
                 .enqueue(OneTimeWorkRequestBuilder<SyncWorker>().build())
         }
@@ -131,4 +138,8 @@ class MainApplication :
 
     override fun getAccountComponent(): AccountComponent =
         appComponent.getAccountComponent()
+
+    internal fun setAnimationEnd() {
+        splashAnimationEnd = true
+    }
 }

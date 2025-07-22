@@ -36,7 +36,7 @@ fun CustomListItem(
     customElement: @Composable () -> Unit,
     startIcon: String? = null,
     dividerVisible: Boolean = true,
-    iconBackgroundColor: Color = AppTheme.colors.paleGreen,
+    iconBackgroundColor: Color = AppTheme.colors.secondary,
     onClick: (() -> Unit)? = null,
 ) {
     val density = LocalDensity.current

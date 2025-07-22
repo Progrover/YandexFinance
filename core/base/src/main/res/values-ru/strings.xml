@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="internet_error">Плохое соединение с Интернетом!</string>
+    <string name="token_error">Ошибка авторизации! Проверьте наличие TOKEN в local.properties</string>
+    <string name="unknown_error">Неизвестная ошибка!</string>
+    <string name="error_400">Ошибка 400. Некорректные данные!</string>
+    <string name="error_401">Ошибка 401. Неавторизованный доступ!</string>
+    <string name="error_404">Ошибка 404. Данные не найдены!</string>
+    <string name="error_409">Ошибка 409. Конфликт - у счета есть транзакции!</string>
+    <string name="error_429">Ошибка 429. Что-то на непонятном =)</string>
+    <string name="error_500">Ошибка 500. Внутренняя ошибка сервера!</string>
+    <string name="multiple_loads_error">Запрос безуспешно выполнился 4 раза.</string>
+    <string name="no_data_error">Ошибочка в локальном хранилище...</string>
+</resources>

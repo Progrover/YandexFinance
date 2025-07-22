@@ -35,7 +35,7 @@ fun DefaultListItem(
     title: String,
     titleColor: Color = AppTheme.colors.textMain,
     backgroundColor: Color = AppTheme.colors.surface,
-    iconBackgroundColor: Color = AppTheme.colors.paleGreen,
+    iconBackgroundColor: Color = AppTheme.colors.secondary,
     captionTitle: String? = null,
     captionAdditional: String? = null,
     additionalText: String? = null,

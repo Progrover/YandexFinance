@@ -7,6 +7,8 @@ import dev.progrover.core.base.presentation.mvi.UIEffect
  * Класс, хранящий все эффекты settings feature
  */
 sealed class SettingsUIEffect : UIEffect {
+    data object NavigateToColorsScreen : SettingsUIEffect()
+    data object NavigateToLanguageScreen : SettingsUIEffect()
 
     class ShowError(@StringRes val messageResId: Int) : SettingsUIEffect()
 }

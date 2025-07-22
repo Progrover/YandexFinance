@@ -8,11 +8,13 @@ import dev.progrover.core.base.di.BaseDependencies
     modules = [
         SettingsViewModelModule::class,
         SettingsNavigationModule::class,
+        ColorViewModelModule::class,
+        LanguageViewModelModule::class,
     ],
     dependencies = [BaseDependencies::class]
 )
 internal interface SettingsComponent {
-    fun getSettingsViewModelFactory(): ViewModelFactory
+    fun getViewModelFactory(): ViewModelFactory
 }
 
 

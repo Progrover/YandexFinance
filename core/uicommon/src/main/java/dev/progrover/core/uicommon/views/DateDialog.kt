@@ -40,7 +40,7 @@ fun DateDialog(
     var clearFlag by remember { mutableStateOf(false) }
 
     val pickerColors = DatePickerDefaults.colors(
-        containerColor = AppTheme.colors.paleGreen,
+        containerColor = AppTheme.colors.secondary,
         titleContentColor = AppTheme.colors.textMain,
         headlineContentColor = AppTheme.colors.textMain,
         weekdayContentColor = AppTheme.colors.textMain,
@@ -48,13 +48,13 @@ fun DateDialog(
         yearContentColor = AppTheme.colors.textSecondary,
         disabledYearContentColor = AppTheme.colors.textSecondary,
         selectedYearContentColor = AppTheme.colors.textMain,
-        selectedYearContainerColor = AppTheme.colors.brightGreen,
-        disabledSelectedYearContainerColor = AppTheme.colors.brightGreen,
+        selectedYearContainerColor = AppTheme.colors.main,
+        disabledSelectedYearContainerColor = AppTheme.colors.main,
         currentYearContentColor = AppTheme.colors.textMain,
         dayContentColor = AppTheme.colors.textMain,
         disabledDayContentColor = AppTheme.colors.textSecondary,
         selectedDayContentColor = AppTheme.colors.textMain,
-        selectedDayContainerColor = AppTheme.colors.brightGreen,
+        selectedDayContainerColor = AppTheme.colors.main,
         todayContentColor = AppTheme.colors.textMain,
         todayDateBorderColor = Color.Transparent,
         dayInSelectionRangeContainerColor = AppTheme.colors.textMain,
@@ -67,22 +67,22 @@ fun DateDialog(
             disabledTextColor = AppTheme.colors.textSecondary,
             errorTextColor = AppTheme.colors.error,
 
-            focusedContainerColor = AppTheme.colors.paleGreen,
-            unfocusedContainerColor = AppTheme.colors.paleGreen,
-            disabledContainerColor = AppTheme.colors.paleGreen,
-            errorContainerColor = AppTheme.colors.paleGreen,
+            focusedContainerColor = AppTheme.colors.secondary,
+            unfocusedContainerColor = AppTheme.colors.secondary,
+            disabledContainerColor = AppTheme.colors.secondary,
+            errorContainerColor = AppTheme.colors.secondary,
 
-            cursorColor = AppTheme.colors.brightGreen,
+            cursorColor = AppTheme.colors.main,
             errorCursorColor = AppTheme.colors.error,
 
-            focusedIndicatorColor = AppTheme.colors.brightGreen,
+            focusedIndicatorColor = AppTheme.colors.main,
             unfocusedIndicatorColor = AppTheme.colors.textSecondary,
             disabledIndicatorColor = AppTheme.colors.textSecondary,
             errorIndicatorColor = AppTheme.colors.error,
 
             selectionColors = TextSelectionColors(
-                handleColor = AppTheme.colors.brightGreen,
-                backgroundColor = AppTheme.colors.brightGreen.copy(alpha = 0.4f)
+                handleColor = AppTheme.colors.main,
+                backgroundColor = AppTheme.colors.main.copy(alpha = 0.4f)
             )
         )
     )

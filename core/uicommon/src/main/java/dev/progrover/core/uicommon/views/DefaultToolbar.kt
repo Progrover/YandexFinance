@@ -25,7 +25,7 @@ import dev.progrover.core.uicommon.utils.noRippleClickable
 fun DefaultToolbar(
     modifier: Modifier,
     title: String,
-    backgroundColor: Color = AppTheme.colors.brightGreen,
+    backgroundColor: Color = AppTheme.colors.main,
     @DrawableRes leftIconId: Int? = null,
     @DrawableRes rightIconId: Int? = null,
     onLeftIconClick: (() -> Unit)? = null,

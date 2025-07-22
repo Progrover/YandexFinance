@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="greeting_title">Stay happy with YandexFinance</string>
+    <string name="expenditures_title">Expends for today</string>
+    <string name="total">Total</string>
+</resources>

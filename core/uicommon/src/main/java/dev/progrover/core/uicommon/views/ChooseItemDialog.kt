@@ -78,7 +78,7 @@ fun ChooseItemDialog(
                     DefaultListItem(
                         modifier = Modifier,
                         title = item.name,
-                        iconBackgroundColor = AppTheme.colors.paleGreen,
+                        iconBackgroundColor = AppTheme.colors.secondary,
                         verticalTextPadding = AppTheme.paddings.padding16,
                         startIcon = item.caption,
                         onClick = { onItemClick(item) }

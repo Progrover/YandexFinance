@@ -60,7 +60,7 @@ fun CustomAlertDialog(
     var visible by remember { mutableStateOf(false) }
     val backgroundColor = when (alert.type) {
         AlertType.Error -> AppTheme.colors.error
-        AlertType.Success -> AppTheme.colors.brightGreen
+        AlertType.Success -> AppTheme.colors.main
     }
 
     LaunchedEffect(Unit) {

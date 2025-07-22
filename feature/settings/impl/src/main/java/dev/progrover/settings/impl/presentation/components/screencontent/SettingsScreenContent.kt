@@ -73,10 +73,10 @@ internal fun SettingsScreenContent(
                                 onEvent(SettingsUIEvent.OnThemeClick(newStatus))
                             },
                             colors = SwitchDefaults.colors(
-                                checkedBorderColor = AppTheme.colors.brightGreen,
+                                checkedBorderColor = AppTheme.colors.main,
                                 uncheckedBorderColor = AppTheme.colors.outline,
-                                checkedThumbColor = AppTheme.colors.brightGreen,
-                                checkedTrackColor = AppTheme.colors.paleGreen,
+                                checkedThumbColor = AppTheme.colors.main,
+                                checkedTrackColor = AppTheme.colors.secondary,
                                 uncheckedThumbColor = AppTheme.colors.outline,
                                 uncheckedTrackColor = AppTheme.colors.surfaceContainerHigh,
                             )

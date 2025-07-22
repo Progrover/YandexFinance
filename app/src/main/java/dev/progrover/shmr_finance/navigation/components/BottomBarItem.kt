@@ -30,7 +30,7 @@ fun RowScope.BottomBarItem(
     item: BottomNavigationItem,
     isSelected: Boolean,
     onClick: (BottomNavigationItem) -> Unit,
-    selectedColor: Color = AppTheme.colors.brightGreen,
+    selectedColor: Color = AppTheme.colors.main,
     unselectedColor: Color = AppTheme.colors.textSecondary,
 ) {
     NavigationBarItem(
@@ -43,7 +43,7 @@ fun RowScope.BottomBarItem(
                     )
                     .background(
                         when (isSelected) {
-                            true -> AppTheme.colors.paleGreen
+                            true -> AppTheme.colors.secondary
                             false -> Color.Transparent
                         }
                     ),

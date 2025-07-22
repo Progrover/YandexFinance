@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import dev.progrover.settings.api.SettingsFeature
 import dev.progrover.settings.impl.presentation.components.screencontent.SettingsScreenContent
 import dev.progrover.settings.impl.presentation.contract.settings.SettingsUIEffect
 import dev.progrover.settings.impl.presentation.viewmodel.SettingsViewModel
@@ -33,6 +34,12 @@ internal fun SettingsScreen(
                         withDismissAction = true,
                         duration = SnackbarDuration.Short,
                     )
+
+                SettingsUIEffect.NavigateToColorsScreen ->
+                    SettingsFeature.openColorsScreen(navController)
+
+                SettingsUIEffect.NavigateToLanguageScreen ->
+                    SettingsFeature.openLanguageScreen(navController)
             }
         }
     }

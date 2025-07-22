@@ -51,7 +51,7 @@ internal fun AccountScreenContent(
 
                 DefaultListItem(
                     modifier = Modifier,
-                    backgroundColor = AppTheme.colors.paleGreen,
+                    backgroundColor = AppTheme.colors.secondary,
                     iconBackgroundColor = AppTheme.colors.white,
                     startIcon = "\uD83D\uDCB0",
                     title = uiState.account?.name?.let { it.ifEmpty { stringResource(R.string.total_amount) } }
@@ -66,7 +66,7 @@ internal fun AccountScreenContent(
 
                 DefaultListItem(
                     modifier = Modifier,
-                    backgroundColor = AppTheme.colors.paleGreen,
+                    backgroundColor = AppTheme.colors.secondary,
                     title = stringResource(R.string.currency),
                     additionalText = uiState.account?.currency?.getCurrency() ?: "???",
                     dividerVisible = false,

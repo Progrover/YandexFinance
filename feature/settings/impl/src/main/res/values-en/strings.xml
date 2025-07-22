@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Settings</string>
+    <string name="theme">Dark mode</string>
+    <string name="color">Main color</string>
+    <string name="sounds">Sounds</string>
+    <string name="haptics">Haptics</string>
+    <string name="password">Pin code</string>
+    <string name="sync">Synchronization</string>
+    <string name="language">Language</string>
+    <string name="about">About app</string>
+    <string name="green">Green</string>
+    <string name="blue">Blue</string>
+    <string name="orange">Orange</string>
+    <string name="purple">Purple</string>
+    <string name="yellow">Yellow</string>
+    <string name="confirm">Save</string>
+    <string name="russian">Русский</string>
+    <string name="english">English</string>
+</resources>

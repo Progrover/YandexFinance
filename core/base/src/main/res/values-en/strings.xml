@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="internet_error">Bad connection error!</string>
+    <string name="token_error">Authorization error! Check TOKEN value in local.properties</string>
+    <string name="unknown_error">Unknown error!</string>
+    <string name="error_400">Error 400. Incorrect data!</string>
+    <string name="error_401">Error 401. Unauthorized!</string>
+    <string name="error_404">Error 404. Data was not found!</string>
+    <string name="error_409">Error 409. Conflict: account has transactions!</string>
+    <string name="error_429">Error 429. Something unclear =)</string>
+    <string name="error_500">Error 500. Internal server error!</string>
+    <string name="multiple_loads_error">Request failed after 4 tries.</string>
+    <string name="no_data_error">Local storage error!</string>
+</resources>

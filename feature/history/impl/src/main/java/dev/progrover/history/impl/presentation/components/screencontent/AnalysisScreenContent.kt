@@ -88,7 +88,7 @@ internal fun AnalysisScreenContent(
                             cornerRadius = 100.dp,
                             innerVerticalPadding = AppTheme.paddings.padding6,
                             innerHorizontalPadding = AppTheme.paddings.padding10,
-                            backgroundColor = AppTheme.colors.brightGreen,
+                            backgroundColor = AppTheme.colors.main,
                             onClick = { onEvent(AnalysisUIEvent.OnStartClick) },
                         )
 
@@ -112,7 +112,7 @@ internal fun AnalysisScreenContent(
                             cornerRadius = 100.dp,
                             innerVerticalPadding = AppTheme.paddings.padding6,
                             innerHorizontalPadding = AppTheme.paddings.padding10,
-                            backgroundColor = AppTheme.colors.brightGreen,
+                            backgroundColor = AppTheme.colors.main,
                             onClick = { onEvent(AnalysisUIEvent.OnEndClick) },
                         )
                     }

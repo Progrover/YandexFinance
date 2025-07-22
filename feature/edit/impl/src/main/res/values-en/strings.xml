@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="delete_success">Transaction is deleted!</string>
+    <string name="add_success">Transaction is added!</string>
+    <string name="change_success">Transaction is changed!</string>
+    <string name="incorrect_time_error">Please, check if time interval is correct
+    </string>
+    <string name="incorrect_data_error">Check data and try again!
+    </string>
+    <string name="account">Account</string>
+    <string name="category">Article</string>
+    <string name="ammount">Amount</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="delete_transaction">Delete transaction</string>
+    <string name="add_income">Add income</string>
+    <string name="add_expenditure">Add expense</string>
+    <string name="edit_income">Edit income</string>
+    <string name="edit_expenditure">Edit expense</string>
+    <string name="point_out">Put</string>
+    <string name="comment">Comment</string>
+</resources>

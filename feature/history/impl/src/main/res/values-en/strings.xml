@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history">My history</string>
+    <string name="analysis">Analysis</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="sum">Sum</string>
+    <string name="analysis_start">Period: start</string>
+    <string name="analysis_end">Period: end</string>
+    <string name="nothing_to_analyse">Nothing to analyse...</string>
+    <string name="data_error">Incorrect period set, changes canceled!</string>
+</resources>
