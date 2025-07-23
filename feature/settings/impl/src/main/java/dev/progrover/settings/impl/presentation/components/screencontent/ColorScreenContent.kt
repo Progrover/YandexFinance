@@ -16,9 +16,9 @@ import androidx.compose.ui.res.stringResource
 import dev.progrover.core.base.utils.ColorVariant
 import dev.progrover.core.theme.AppTheme
 import dev.progrover.core.uicommon.views.BasicColumn
-import dev.progrover.core.uicommon.views.CustomListItem
 import dev.progrover.core.uicommon.views.DefaultFloatingButton
 import dev.progrover.core.uicommon.views.DefaultToolbar
+import dev.progrover.settings.impl.presentation.components.ColorItem
 import dev.progrover.settings.impl.presentation.contract.color.ColorUIEvent
 import dev.progrover.settings.impl.presentation.contract.color.ColorUIState
 import dev.progrover.shmr_finance.feature.settings.impl.R
@@ -49,54 +49,45 @@ internal fun ColorScreenContent(
                 )
             },
         ) {
-            CustomListItem(
-                modifier = Modifier,
-                title = stringResource(R.string.green),
-                backgroundColor = if (uiState.currentChoice == ColorVariant.Green)
-                    Color(0xFF2AE881).copy(alpha = 0.3f) else AppTheme.colors.surface,
-                titleColor = AppTheme.colors.textSecondary,
-                customElement = {},
-                onClick = { onEvent(ColorUIEvent.OnColorClick(ColorVariant.Green)) }
+
+            ColorItem(
+                uiState = uiState,
+                colorVariant = ColorVariant.Green,
+                title = R.string.green,
+                color = Color(0xFF2AE881),
+                onClick = { color -> onEvent(ColorUIEvent.OnColorClick(color)) }
             )
 
-            CustomListItem(
-                modifier = Modifier,
-                title = stringResource(R.string.blue),
-                backgroundColor = if (uiState.currentChoice == ColorVariant.Blue)
-                    Color(0xFF2AC2E8).copy(alpha = 0.3f) else AppTheme.colors.surface,
-                titleColor = AppTheme.colors.textSecondary,
-                customElement = {},
-                onClick = { onEvent(ColorUIEvent.OnColorClick(ColorVariant.Blue)) }
+            ColorItem(
+                uiState = uiState,
+                colorVariant = ColorVariant.Blue,
+                title = R.string.blue,
+                color = Color(0xFF2AC2E8),
+                onClick = { color -> onEvent(ColorUIEvent.OnColorClick(color)) }
             )
 
-            CustomListItem(
-                modifier = Modifier,
-                title = stringResource(R.string.purple),
-                backgroundColor = if (uiState.currentChoice == ColorVariant.Purple)
-                    Color(0xFFDB2AE8).copy(alpha = 0.3f) else AppTheme.colors.surface,
-                titleColor = AppTheme.colors.textSecondary,
-                customElement = { },
-                onClick = { onEvent(ColorUIEvent.OnColorClick(ColorVariant.Purple)) }
+            ColorItem(
+                uiState = uiState,
+                colorVariant = ColorVariant.Purple,
+                title = R.string.purple,
+                color = Color(0xFFDB2AE8),
+                onClick = { color -> onEvent(ColorUIEvent.OnColorClick(color)) }
             )
 
-            CustomListItem(
-                modifier = Modifier,
-                title = stringResource(R.string.orange),
-                backgroundColor = if (uiState.currentChoice == ColorVariant.Orange)
-                    Color(0xFFE87C2A).copy(alpha = 0.3f) else AppTheme.colors.surface,
-                titleColor = AppTheme.colors.textSecondary,
-                customElement = { },
-                onClick = { onEvent(ColorUIEvent.OnColorClick(ColorVariant.Orange)) }
+            ColorItem(
+                uiState = uiState,
+                colorVariant = ColorVariant.Orange,
+                title = R.string.orange,
+                color = Color(0xFFE87C2A),
+                onClick = { color -> onEvent(ColorUIEvent.OnColorClick(color)) }
             )
 
-            CustomListItem(
-                modifier = Modifier,
-                title = stringResource(R.string.yellow),
-                backgroundColor = if (uiState.currentChoice == ColorVariant.Yellow)
-                    Color(0xFFDBE82A).copy(alpha = 0.3f) else AppTheme.colors.surface,
-                titleColor = AppTheme.colors.textSecondary,
-                customElement = { },
-                onClick = { onEvent(ColorUIEvent.OnColorClick(ColorVariant.Yellow)) }
+            ColorItem(
+                uiState = uiState,
+                colorVariant = ColorVariant.Yellow,
+                title = R.string.yellow,
+                color = Color(0xFFDBE82A),
+                onClick = { color -> onEvent(ColorUIEvent.OnColorClick(color)) }
             )
         }
 

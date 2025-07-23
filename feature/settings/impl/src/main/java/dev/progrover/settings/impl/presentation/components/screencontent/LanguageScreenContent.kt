@@ -47,14 +47,18 @@ internal fun LanguageScreenContent(
             DefaultListItem(
                 modifier = Modifier,
                 title = stringResource(R.string.russian),
+                verticalTextPadding = AppTheme.paddings.padding12,
                 titleColor = AppTheme.colors.textMain,
+                dividerVisible = false,
                 onClick = { onEvent(LanguageUIEvent.OnLanguageClick(LocaleVariant.Russian)) }
             )
 
             DefaultListItem(
                 modifier = Modifier,
                 title = stringResource(R.string.english),
+                verticalTextPadding = AppTheme.paddings.padding12,
                 titleColor = AppTheme.colors.textMain,
+                dividerVisible = false,
                 onClick = { onEvent(LanguageUIEvent.OnLanguageClick(LocaleVariant.English)) }
             )
         }
