@@ -57,10 +57,13 @@ class SettingsViewModel @Inject constructor(
             ChapterRoute.MainColor ->
                 setEffect(SettingsUIEffect.NavigateToColorsScreen)
 
-            ChapterRoute.Sounds -> Unit
-            ChapterRoute.Haptics -> Unit
+            ChapterRoute.Haptics ->
+                setEffect(SettingsUIEffect.NavigateToHapticsScreen)
+
             ChapterRoute.PasswordCode -> Unit
+
             ChapterRoute.Sync -> Unit
+
             ChapterRoute.Language ->
                 setEffect(SettingsUIEffect.NavigateToLanguageScreen)
 

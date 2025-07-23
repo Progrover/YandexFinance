@@ -29,7 +29,7 @@ fun DefaultFloatingButton(
 ) {
     Text(
         modifier = modifier
-            .noRippleClickable { onClick() }
+            .noRippleClickable ({ onClick() })
             .clip(RoundedCornerShape(cornerRadius))
             .background(backgroundColor)
             .padding(

@@ -17,4 +17,8 @@
     <string name="confirm">Save</string>
     <string name="russian">Русский</string>
     <string name="english">English</string>
+    <string name="no_vibration">No vibration</string>
+    <string name="vibration_low">Short vibration</string>
+    <string name="vibration_medium">Medium vibration</string>
+    <string name="vibration_high">Long vibration</string>
 </resources>

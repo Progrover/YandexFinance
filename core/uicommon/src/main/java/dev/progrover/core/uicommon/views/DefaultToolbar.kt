@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import dev.progrover.core.base.utils.LocalVibrationType
 import dev.progrover.core.theme.AppTheme
 import dev.progrover.core.uicommon.utils.conditionally
 import dev.progrover.core.uicommon.utils.noRippleClickable
@@ -31,6 +32,8 @@ fun DefaultToolbar(
     onLeftIconClick: (() -> Unit)? = null,
     onRightIconClick: (() -> Unit)? = null,
 ) {
+    val vibrationMode = LocalVibrationType.current
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -48,7 +51,10 @@ fun DefaultToolbar(
                         condition =
                             onLeftIconClick != null,
                         trueExtension = {
-                            noRippleClickable { onLeftIconClick?.invoke() }
+                            noRippleClickable(
+                                { onLeftIconClick?.invoke() },
+                                vibrationMode
+                            )
                         }
                     )
                     .align(Alignment.CenterVertically)
@@ -80,7 +86,10 @@ fun DefaultToolbar(
                         condition =
                             onRightIconClick != null,
                         trueExtension = {
-                            noRippleClickable { onRightIconClick?.invoke() }
+                            noRippleClickable(
+                                { onRightIconClick?.invoke() },
+                                vibrationMode
+                            )
                         }
                     )
                     .align(Alignment.CenterVertically)

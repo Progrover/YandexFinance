@@ -35,9 +35,9 @@ fun ChooseItemDialog(
     Box(
         modifier = Modifier
             .background(Color.Black.copy(alpha = 0.4f))
-            .noRippleClickable {
+            .noRippleClickable({
                 onCloseClick()
-            },
+            }),
         contentAlignment = Alignment.Center,
     ) {
         Column(
@@ -61,9 +61,9 @@ fun ChooseItemDialog(
                         .align(Alignment.CenterEnd)
                         .padding(AppTheme.paddings.padding12)
                         .size(AppTheme.sizes.size24)
-                        .noRippleClickable {
+                        .noRippleClickable ({
                             onCloseClick()
-                        },
+                        }),
                     imageVector = ImageVector.vectorResource(R.drawable.cross),
                     contentDescription = null,
                 )

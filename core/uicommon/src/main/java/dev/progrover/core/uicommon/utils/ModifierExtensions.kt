@@ -9,6 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.platform.LocalContext
+import dev.progrover.core.base.utils.HapticsVariant
+import dev.progrover.core.base.utils.performAppHaptic
 import dev.progrover.core.theme.AppTheme
 
 @Composable
@@ -18,12 +21,17 @@ fun Modifier.bottomNavigationPadding() =
         .navigationBarsPadding()
 
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
-fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier =
+fun Modifier.noRippleClickable(
+    onClick: () -> Unit,
+    vibration: HapticsVariant = HapticsVariant.Silent
+): Modifier =
     composed {
+        val context = LocalContext.current
         clickable(
             indication = null,
             interactionSource = remember { MutableInteractionSource() },
         ) {
+            performAppHaptic(vibration, context)
             onClick()
         }
     }

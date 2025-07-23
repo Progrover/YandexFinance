@@ -18,9 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import dev.progrover.core.base.utils.HapticsVariant
+import dev.progrover.core.base.utils.performAppHaptic
 import dev.progrover.core.theme.AppTheme
 import dev.progrover.shmr_finance.navigation.model.BottomNavigationItem
 
@@ -32,7 +35,11 @@ fun RowScope.BottomBarItem(
     onClick: (BottomNavigationItem) -> Unit,
     selectedColor: Color = AppTheme.colors.main,
     unselectedColor: Color = AppTheme.colors.textSecondary,
+    vibrationType: HapticsVariant,
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val context = LocalContext.current
+
     NavigationBarItem(
         modifier = modifier,
         icon = {
@@ -79,13 +86,16 @@ fun RowScope.BottomBarItem(
                 },
             )
         },
-        interactionSource = remember { MutableInteractionSource() },
+        interactionSource = interactionSource,
         colors = NavigationBarItemDefaults.colors(
             selectedIconColor = selectedColor,
             unselectedIconColor = unselectedColor,
             indicatorColor = Color.Transparent,
         ),
         selected = isSelected,
-        onClick = { onClick(item) },
+        onClick = {
+            performAppHaptic(vibrationType, context)
+            onClick(item)
+        },
     )
 }

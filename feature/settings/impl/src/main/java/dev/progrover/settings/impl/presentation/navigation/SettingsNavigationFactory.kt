@@ -8,14 +8,17 @@ import androidx.navigation.navigation
 import dev.progrover.core.base.di.BaseDependencies
 import dev.progrover.core.base.navigation.NavigationFactory
 import dev.progrover.settings.api.SettingsFeature.COLORS_SCREEN
+import dev.progrover.settings.api.SettingsFeature.HAPTICS_SCREEN
 import dev.progrover.settings.api.SettingsFeature.LANGUAGE_SCREEN
 import dev.progrover.settings.api.SettingsFeature.ROUTE_NAME
 import dev.progrover.settings.api.SettingsFeature.SETTINGS_SCREEN
 import dev.progrover.settings.impl.di.DaggerSettingsComponent
 import dev.progrover.settings.impl.presentation.screen.ColorScreen
+import dev.progrover.settings.impl.presentation.screen.HapticsScreen
 import dev.progrover.settings.impl.presentation.screen.LanguageScreen
 import dev.progrover.settings.impl.presentation.screen.SettingsScreen
 import dev.progrover.settings.impl.presentation.viewmodel.ColorViewModel
+import dev.progrover.settings.impl.presentation.viewmodel.HapticsViewModel
 import dev.progrover.settings.impl.presentation.viewmodel.LanguageViewModel
 import dev.progrover.settings.impl.presentation.viewmodel.SettingsViewModel
 import javax.inject.Inject
@@ -56,6 +59,13 @@ class SettingsNavigationFactory @Inject constructor(
                     factory = component.getViewModelFactory()
                 )
                 LanguageScreen(viewModel = viewModel, navController = navController)
+            }
+
+            composable(route = HAPTICS_SCREEN) {
+                val viewModel: HapticsViewModel = viewModel<HapticsViewModel>(
+                    factory = component.getViewModelFactory()
+                )
+                HapticsScreen(viewModel = viewModel, navController = navController)
             }
         }
     }

@@ -40,6 +40,9 @@ internal fun SettingsScreen(
 
                 SettingsUIEffect.NavigateToLanguageScreen ->
                     SettingsFeature.openLanguageScreen(navController)
+
+                SettingsUIEffect.NavigateToHapticsScreen ->
+                    SettingsFeature.openHapticsScreen(navController)
             }
         }
     }

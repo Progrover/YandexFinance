@@ -12,6 +12,7 @@ object SettingsFeature {
     const val SETTINGS_SCREEN = "settingsScreenRoute"
     const val COLORS_SCREEN = "colorsScreenRoute"
     const val LANGUAGE_SCREEN = "languageScreenRoute"
+    const val HAPTICS_SCREEN = "hapticsScreenRoute"
 
     fun openSettingsScreen(navController: NavController) =
         navController.customNavigate(SETTINGS_SCREEN)
@@ -21,4 +22,7 @@ object SettingsFeature {
 
     fun openLanguageScreen(navController: NavController) =
         navController.customNavigate(LANGUAGE_SCREEN)
+
+    fun openHapticsScreen(navController: NavController) =
+        navController.customNavigate(HAPTICS_SCREEN)
 }

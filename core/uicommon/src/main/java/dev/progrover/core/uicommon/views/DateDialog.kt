@@ -120,7 +120,7 @@ fun DateDialog(
                 ) {
                     Text(
                         modifier = Modifier
-                            .noRippleClickable { clearFlag = !clearFlag }
+                            .noRippleClickable ({ clearFlag = !clearFlag })
                             .padding(
                                 horizontal = AppTheme.paddings.padding12,
                                 vertical = AppTheme.paddings.padding10
@@ -134,7 +134,7 @@ fun DateDialog(
 
                     Text(
                         modifier = Modifier
-                            .noRippleClickable { onCancelClick() }
+                            .noRippleClickable ({ onCancelClick() })
                             .padding(
                                 horizontal = AppTheme.paddings.padding12,
                                 vertical = AppTheme.paddings.padding10,
@@ -146,7 +146,7 @@ fun DateDialog(
 
                     Text(
                         modifier = Modifier
-                            .noRippleClickable { onOkClick(datePickerState.selectedDateMillis!!) }
+                            .noRippleClickable ({ onOkClick(datePickerState.selectedDateMillis!!) })
                             .padding(
                                 horizontal = AppTheme.paddings.padding12,
                                 vertical = AppTheme.paddings.padding10

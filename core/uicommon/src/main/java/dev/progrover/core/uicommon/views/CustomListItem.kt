@@ -45,7 +45,7 @@ fun CustomListItem(
         modifier = modifier
             .conditionally(
                 onClick != null,
-                trueExtension = { noRippleClickable { onClick!!.invoke() } }
+                trueExtension = { noRippleClickable ({ onClick!!.invoke() }) }
             )
             .fillMaxWidth()
             .background(backgroundColor),

@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import dev.progrover.core.base.navigation.RouteDesc
+import dev.progrover.core.base.utils.HapticsVariant
 import dev.progrover.core.theme.AppTheme
 import dev.progrover.shmr_finance.navigation.model.BottomNavigationItem
 
@@ -27,6 +28,7 @@ fun BottomNavigationBarContent(
     isBottomBarVisible: Boolean,
     currentDestination: NavDestination?,
     navArguments: Bundle?,
+    vibrationMode: HapticsVariant,
     onClick: (BottomNavigationItem) -> Unit,
 ) {
     AnimatedVisibility(
@@ -60,10 +62,11 @@ fun BottomNavigationBarContent(
                         currentDestination?.hierarchy
                             ?.any { it.route == BottomNavigationItem.ExpendituresScreen.route } == true ||
                                 (
-                                    navArguments?.keySet()?.any { key ->
-                            navArguments.get(key) == RouteDesc.Expenditures
-                        } ?: false
-                                ),
+                                        navArguments?.keySet()?.any { key ->
+                                            navArguments.get(key) == RouteDesc.Expenditures
+                                        } ?: false
+                                        ),
+                    vibrationType = vibrationMode,
                     onClick = onClick,
                 )
 
@@ -77,11 +80,12 @@ fun BottomNavigationBarContent(
                     isSelected = currentDestination?.hierarchy
                         ?.any { it.route == BottomNavigationItem.IncomesScreen.route } == true ||
                             (
-                                navArguments?.keySet()
-                                ?.any { key ->
-                                    navArguments.get(key) == RouteDesc.Incomes
-                                } ?: false
-                            ),
+                                    navArguments?.keySet()
+                                        ?.any { key ->
+                                            navArguments.get(key) == RouteDesc.Incomes
+                                        } ?: false
+                                    ),
+                    vibrationType = vibrationMode,
                     onClick = onClick,
                 )
 
@@ -94,6 +98,7 @@ fun BottomNavigationBarContent(
                     item = BottomNavigationItem.AccountScreen,
                     isSelected = currentDestination?.hierarchy
                         ?.any { it.route == BottomNavigationItem.AccountScreen.route } == true,
+                    vibrationType = vibrationMode,
                     onClick = onClick,
                 )
 
@@ -106,6 +111,7 @@ fun BottomNavigationBarContent(
                     item = BottomNavigationItem.ArticlesScreen,
                     isSelected = currentDestination?.hierarchy
                         ?.any { it.route == BottomNavigationItem.ArticlesScreen.route } == true,
+                    vibrationType = vibrationMode,
                     onClick = onClick,
                 )
 
@@ -118,6 +124,7 @@ fun BottomNavigationBarContent(
                     item = BottomNavigationItem.SettingsScreen,
                     isSelected = currentDestination?.hierarchy
                         ?.any { it.route == BottomNavigationItem.SettingsScreen.route } == true,
+                    vibrationType = vibrationMode,
                     onClick = onClick,
                 )
             }

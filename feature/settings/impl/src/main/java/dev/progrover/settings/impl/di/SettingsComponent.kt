@@ -10,6 +10,7 @@ import dev.progrover.core.base.di.BaseDependencies
         SettingsNavigationModule::class,
         ColorViewModelModule::class,
         LanguageViewModelModule::class,
+        HapticsViewModelModule::class,
     ],
     dependencies = [BaseDependencies::class]
 )
