@@ -1,5 +1,6 @@
 package dev.progrover.core.base.utils
 
+import android.content.Context
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -113,8 +114,10 @@ fun getEndOfToday(): Long {
     return endOfDay
 }
 
-fun Long.monthAndYear(): String {
-    val monthMap = mapOf(
+fun Long.monthAndYear(context: Context): String {
+    val locale = context.resources.configuration.locales.get(0)
+
+    val monthMapRu = mapOf(
         "JANUARY" to "Январь",
         "FEBRUARY" to "Февраль",
         "MARCH" to "Март",
@@ -129,12 +132,29 @@ fun Long.monthAndYear(): String {
         "DECEMBER" to "Декабрь"
     )
 
-    val date =
-    Instant.ofEpochMilli(this)
-        .atZone(ZoneId.systemDefault())
-        .toLocalDate()
+    val monthMapEn = mapOf(
+        "JANUARY" to "January",
+        "FEBRUARY" to "February",
+        "MARCH" to "March",
+        "APRIL" to "April",
+        "MAY" to "May",
+        "JUNE" to "June",
+        "JULY" to "July",
+        "AUGUST" to "August",
+        "SEPTEMBER" to "September",
+        "OCTOBER" to "October",
+        "NOVEMBER" to "November",
+        "DECEMBER" to "December"
+    )
 
-    return "${monthMap[date.month.name]} ${date.year}"
+    val date =
+        Instant.ofEpochMilli(this)
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate()
+
+    val month = if (locale.language == SettingsOptions.localeVariants[LocaleVariant.English])
+        monthMapEn[date.month.name] else monthMapRu[date.month.name]
+    return "$month ${date.year}"
 }
 
 fun getStartOfMonth(timeMillis: Long): Long {
