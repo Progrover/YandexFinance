@@ -43,6 +43,9 @@ internal fun SettingsScreen(
 
                 SettingsUIEffect.NavigateToHapticsScreen ->
                     SettingsFeature.openHapticsScreen(navController)
+
+                SettingsUIEffect.NavigateToPinScreen ->
+                    SettingsFeature.openPinScreen(navController)
             }
         }
     }

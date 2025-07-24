@@ -183,3 +183,7 @@ fun DependencyHandler.historyApi() {
 fun DependencyHandler.editApi() {
     implementation(project(Feature.Edit.api))
 }
+
+fun DependencyHandler.authApi() {
+    implementation(project(Feature.Auth.api))
+}

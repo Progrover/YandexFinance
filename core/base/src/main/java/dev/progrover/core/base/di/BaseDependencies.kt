@@ -9,6 +9,7 @@ import dev.progrover.core.base.data.local.provider.LocalAccountProvider
 import dev.progrover.core.base.data.local.provider.LocalArticleProvider
 import dev.progrover.core.base.data.local.provider.LocalTransactionProvider
 import dev.progrover.core.base.data.storage.Prefs
+import dev.progrover.core.base.data.storage.SecurePrefs
 import dev.progrover.core.base.model.TransactionsUpdater
 import dev.progrover.core.base.utils.JsonConverter
 import kotlinx.coroutines.CoroutineDispatcher
@@ -65,4 +66,5 @@ interface BaseDependencies {
 
     fun localAccountProvider(): LocalAccountProvider
 
+    fun securePrefs() : SecurePrefs
 }

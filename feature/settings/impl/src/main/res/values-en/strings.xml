@@ -3,7 +3,6 @@
     <string name="settings_title">Settings</string>
     <string name="theme">Dark mode</string>
     <string name="color">Main color</string>
-    <string name="sounds">Sounds</string>
     <string name="haptics">Haptics</string>
     <string name="password">Pin code</string>
     <string name="sync">Synchronization</string>
@@ -21,4 +20,9 @@
     <string name="vibration_low">Short vibration</string>
     <string name="vibration_medium">Medium vibration</string>
     <string name="vibration_high">Long vibration</string>
+    <string name="change_pin">Change pincode</string>
+    <string name="pincode_mode_on">Use pincode protection</string>
+    <string name="pincode_mode_off">Not to use pincode protection</string>
+    <string name="current_sync_time">We will synchronize data with server every: </string>
+    <string name="hours">hours</string>
 </resources>

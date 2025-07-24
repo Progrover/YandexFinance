@@ -18,6 +18,7 @@ import dev.progrover.core.base.navigation.NavigationFactory
 import dev.progrover.core.base.utils.LocalVibrationType
 import dev.progrover.core.theme.AppTheme
 import dev.progrover.expenditures.api.ExpendituresFeature
+import dev.progrover.feature.auth.api.AuthFeature
 import dev.progrover.shmr_finance.navigation.components.BottomNavigationBar
 import dev.progrover.shmr_finance.viewmodel.MainActivityViewModel
 
@@ -29,6 +30,7 @@ internal fun FinanceNavigation(
     bottomSheetNavigator: BottomSheetNavigator,
     scaffoldState: ScaffoldState,
     navController: NavHostController,
+    pincodeShown: Boolean,
     navigationFactories: @JvmSuppressWildcards Set<NavigationFactory>,
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -53,7 +55,10 @@ internal fun FinanceNavigation(
             ) {
                 NavHost(
                     navController = navController,
-                    startDestination = ExpendituresFeature.ROUTE_NAME
+                    startDestination = if (pincodeShown)
+                        ExpendituresFeature.ROUTE_NAME
+                    else
+                        AuthFeature.ROUTE_NAME
                 ) {
                     navigationFactories.forEach { factory ->
                         factory.create(this, navController = navController)

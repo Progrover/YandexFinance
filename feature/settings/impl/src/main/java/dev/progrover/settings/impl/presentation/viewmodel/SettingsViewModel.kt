@@ -60,7 +60,8 @@ class SettingsViewModel @Inject constructor(
             ChapterRoute.Haptics ->
                 setEffect(SettingsUIEffect.NavigateToHapticsScreen)
 
-            ChapterRoute.PasswordCode -> Unit
+            ChapterRoute.PasswordCode ->
+                setEffect(SettingsUIEffect.NavigateToPinScreen)
 
             ChapterRoute.Sync -> Unit
 

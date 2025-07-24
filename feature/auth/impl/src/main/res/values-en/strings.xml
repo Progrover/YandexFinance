@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome">Welcome, set pincode, please!</string>
+    <string name="incorrect_pin_error">Pincode is incorrect</string>
+    <string name="incorrect_second_pin_error">First and second pins are not equal</string>
+    <string name="set_pin">Set pincode</string>
+    <string name="set_second_pin">Set pincode again</string>
+    <string name="one_from_two">1 / 2</string>
+    <string name="two_from_two">2 / 2</string>
+</resources>

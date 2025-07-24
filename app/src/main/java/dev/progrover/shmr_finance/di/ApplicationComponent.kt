@@ -11,6 +11,7 @@ import dev.progrover.articles.impl.di.ArticlesNavigationModule
 import dev.progrover.core.base.di.BaseDependencies
 import dev.progrover.expenditures.api.di.ExpendituresDependencies
 import dev.progrover.expenditures.impl.di.ExpendituresNavigationModule
+import dev.progrover.feature.auth.impl.di.AuthNavigationModule
 import dev.progrover.feature.edit.impl.di.EditNavigationModule
 import dev.progrover.history.impl.di.HistoryNavigationModule
 import dev.progrover.incomes.api.di.IncomesDependencies
@@ -39,6 +40,7 @@ import javax.inject.Singleton
         ExpendituresNavigationModule::class,
         EditNavigationModule::class,
         HistoryNavigationModule::class,
+        AuthNavigationModule::class,
     ],
 )
 interface ApplicationComponent {

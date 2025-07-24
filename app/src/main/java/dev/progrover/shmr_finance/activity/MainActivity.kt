@@ -70,6 +70,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         var animationEnd = (applicationContext as MainApplication).splashAnimationEnd
+        val pinCodeShown = (applicationContext as MainApplication).pinCodeShown
 
         installSplashScreen().apply {
             setKeepOnScreenCondition {
@@ -109,10 +110,13 @@ class MainActivity : ComponentActivity() {
                     bottomSheetNavigator = bottomSheetNavigator,
                     scaffoldState = scaffoldState,
                     navController = navController,
+                    pincodeShown = pinCodeShown,
                     navigationFactories = navigationFactories,
                 )
             }
         }
+
+        if (!pinCodeShown) (applicationContext as MainApplication).setPinCodeShown()
     }
 
     //Обновление локали при изменении в настройках

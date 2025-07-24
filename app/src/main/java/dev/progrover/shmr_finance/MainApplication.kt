@@ -53,6 +53,8 @@ class MainApplication :
 
     var splashAnimationEnd = false
 
+    var pinCodeShown = false
+
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
             .setWorkerFactory(workerFactory)
@@ -141,5 +143,9 @@ class MainApplication :
 
     internal fun setAnimationEnd() {
         splashAnimationEnd = true
+    }
+
+    internal fun setPinCodeShown() {
+        pinCodeShown = true
     }
 }
