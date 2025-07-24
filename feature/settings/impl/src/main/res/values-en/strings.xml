@@ -23,6 +23,8 @@
     <string name="change_pin">Change pincode</string>
     <string name="pincode_mode_on">Use pincode protection</string>
     <string name="pincode_mode_off">Not to use pincode protection</string>
-    <string name="current_sync_time">We will synchronize data with server every: </string>
+    <string name="current_sync_time">We will synchronize data with server every:</string>
     <string name="hours">hours</string>
+    <string name="app_version">Version</string>
+    <string name="last_update">Last update date</string>
 </resources>

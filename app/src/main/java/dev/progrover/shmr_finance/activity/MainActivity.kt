@@ -133,18 +133,6 @@ class MainActivity : ComponentActivity() {
         super.attachBaseContext(context)
     }
 
-    private fun applySelectedAppLanguage(context: Context): Context {
-        val default = SettingsOptions.localeVariants[LocaleVariant.Russian]!!
-        val locale = Locale(
-            prefs.getString(LANGUAGE, default)
-                ?: default
-        )
-        val newConfig = Configuration(context.resources.configuration)
-        Locale.setDefault(locale)
-        newConfig.setLocale(locale)
-        return context.createConfigurationContext(newConfig)
-    }
-
     @OptIn(ExperimentalMaterialNavigationApi::class)
     @Composable
     fun rememberBottomSheetNavigator(

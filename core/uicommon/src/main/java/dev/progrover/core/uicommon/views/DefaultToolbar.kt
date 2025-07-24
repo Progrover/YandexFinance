@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import dev.progrover.core.base.utils.LocalVibrationType
@@ -62,6 +63,7 @@ fun DefaultToolbar(
                     .size(AppTheme.sizes.size24),
                 imageVector = ImageVector.vectorResource(leftIconId),
                 contentDescription = null,
+                colorFilter = ColorFilter.tint(AppTheme.colors.textMain)
             )
         } else {
             Box(Modifier.size(AppTheme.sizes.size48))
@@ -97,6 +99,7 @@ fun DefaultToolbar(
                     .size(AppTheme.sizes.size24),
                 imageVector = ImageVector.vectorResource(rightIconId),
                 contentDescription = null,
+                colorFilter = ColorFilter.tint(AppTheme.colors.textMain)
             )
         } else {
             Box(Modifier.size(AppTheme.sizes.size48))

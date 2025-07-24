@@ -12,6 +12,8 @@ import dev.progrover.core.base.di.BaseDependencies
         LanguageViewModelModule::class,
         HapticsViewModelModule::class,
         PinViewModelModule::class,
+        AboutViewModelModule::class,
+        SyncViewModelModule::class,
     ],
     dependencies = [BaseDependencies::class]
 )

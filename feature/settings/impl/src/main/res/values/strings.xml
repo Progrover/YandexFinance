@@ -23,6 +23,8 @@
     <string name="change_pin">Изменить пин-код</string>
     <string name="pincode_mode_on">Использовать защиту пин-кодом</string>
     <string name="pincode_mode_off">Отключить защиту пин-кодом</string>
-    <string name="current_sync_time">Синхронизация с сервером будет осуществляться каждые: </string>
-    <string name="hours">часа</string>
+    <string name="current_sync_time">Синхронизация с сервером будет осуществляться каждые:</string>
+    <string name="hours">ч.</string>
+    <string name="app_version">Версия приложения</string>
+    <string name="last_update">Дата обновления</string>
 </resources>

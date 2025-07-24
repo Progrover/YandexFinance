@@ -14,6 +14,8 @@ object SettingsFeature {
     const val LANGUAGE_SCREEN = "languageScreenRoute"
     const val HAPTICS_SCREEN = "hapticsScreenRoute"
     const val PIN_SCREEN = "pinScreenRoute"
+    const val ABOUT_SCREEN = "aboutScreenRoute"
+    const val SYNC_SCREEN = "syncScreenRoute"
 
     fun openSettingsScreen(navController: NavController) =
         navController.customNavigate(SETTINGS_SCREEN)
@@ -29,4 +31,10 @@ object SettingsFeature {
 
     fun openPinScreen(navController: NavController) =
         navController.customNavigate(PIN_SCREEN)
+
+    fun openAboutScreen(navController: NavController) =
+        navController.customNavigate(ABOUT_SCREEN)
+
+    fun openSyncScreen(navController: NavController) =
+        navController.customNavigate(SYNC_SCREEN)
 }

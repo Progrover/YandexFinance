@@ -1,0 +1,35 @@
+package dev.progrover.settings.impl.presentation.screen
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
+import dev.progrover.settings.impl.presentation.components.screencontent.AboutScreenContent
+import dev.progrover.settings.impl.presentation.contract.about.AboutUIEffect
+import dev.progrover.settings.impl.presentation.viewmodel.AboutViewModel
+import kotlinx.coroutines.flow.collectLatest
+
+@Composable
+internal fun AboutScreen(
+    navController: NavController,
+    viewModel: AboutViewModel,
+) {
+    val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(key1 = viewModel.effect) {
+        viewModel.effect.collectLatest { effect ->
+            when (effect) {
+                AboutUIEffect.NavigateBack ->
+                    navController.popBackStack()
+            }
+        }
+    }
+
+    AboutScreenContent(
+        modifier = Modifier,
+        uiState = uiState,
+        onEvent = viewModel::setEvent,
+    )
+}

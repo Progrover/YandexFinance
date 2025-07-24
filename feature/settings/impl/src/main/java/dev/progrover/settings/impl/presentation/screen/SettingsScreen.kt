@@ -46,6 +46,12 @@ internal fun SettingsScreen(
 
                 SettingsUIEffect.NavigateToPinScreen ->
                     SettingsFeature.openPinScreen(navController)
+
+                SettingsUIEffect.NavigateToAboutScreen ->
+                    SettingsFeature.openAboutScreen(navController)
+
+                SettingsUIEffect.NavigateToSyncScreen ->
+                    SettingsFeature.openSyncScreen(navController)
             }
         }
     }

@@ -63,12 +63,14 @@ class SettingsViewModel @Inject constructor(
             ChapterRoute.PasswordCode ->
                 setEffect(SettingsUIEffect.NavigateToPinScreen)
 
-            ChapterRoute.Sync -> Unit
+            ChapterRoute.Sync ->
+                setEffect(SettingsUIEffect.NavigateToSyncScreen)
 
             ChapterRoute.Language ->
                 setEffect(SettingsUIEffect.NavigateToLanguageScreen)
 
-            ChapterRoute.About -> Unit
+            ChapterRoute.About ->
+                setEffect(SettingsUIEffect.NavigateToAboutScreen)
         }
     }
 
