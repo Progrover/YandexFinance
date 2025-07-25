@@ -3,6 +3,8 @@ object Versions {
     // kotlin
     const val kotlin = "2.1.21"
 
+    const val truth = "1.4.0"
+
     // compose
     const val compose = "1.8.2"
     const val composeMaterial3 = "1.3.2"

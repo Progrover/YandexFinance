@@ -18,6 +18,7 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -67,7 +68,8 @@ internal fun SettingsScreenContent(
                         Switch(
                             modifier = Modifier
                                 .padding(vertical = AppTheme.paddings.padding4)
-                                .height(32.dp),
+                                .height(32.dp)
+                                .testTag("themeSwitchTag"),
                             checked = uiState.themeModeOn,
                             onCheckedChange = { newStatus ->
                                 onEvent(SettingsUIEvent.OnThemeClick(newStatus))

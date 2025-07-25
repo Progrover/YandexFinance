@@ -37,7 +37,7 @@ internal fun AuthScreenContent(
         modifier = Modifier
             .fillMaxSize()
             .background(AppTheme.colors.surface)
-            .noRippleClickable({focusManager.clearFocus()})
+            .noRippleClickable({ focusManager.clearFocus() })
     ) {
         BasicColumn(
             modifier = modifier

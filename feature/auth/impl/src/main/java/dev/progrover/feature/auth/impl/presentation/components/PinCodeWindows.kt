@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import dev.progrover.core.theme.AppTheme
@@ -55,7 +56,8 @@ internal fun PinCodeWindows(
 
         Row(
             modifier = Modifier
-                .noRippleClickable({ focusRequester.requestFocus() }),
+                .noRippleClickable({ focusRequester.requestFocus() })
+                .testTag("PinCodeInput"),
             horizontalArrangement = Arrangement.spacedBy(AppTheme.paddings.padding12)
         ) {
             PinCodeWindow(
