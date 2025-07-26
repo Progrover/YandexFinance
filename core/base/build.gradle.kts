@@ -20,6 +20,10 @@ android {
         testInstrumentationRunner = ProjectConfig.TEST_INSTRUMENTATION_RUNNER
 
         buildConfigField("String", "TOKEN", token)
+        buildConfigField(
+            "String",
+            "VERSION_NAME",
+            "\"${ProjectConfig.versionName} ${ProjectConfig.versionCode}\""        )
     }
 
     buildFeatures {

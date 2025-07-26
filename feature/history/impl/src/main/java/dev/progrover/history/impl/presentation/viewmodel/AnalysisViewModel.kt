@@ -8,6 +8,7 @@ import dev.progrover.account.api.domain.AccountPropertiesProvider
 import dev.progrover.core.base.model.Alert
 import dev.progrover.core.base.model.LocalStorageError
 import dev.progrover.core.base.model.TransactionsUpdater
+import dev.progrover.core.base.model.diagrams.BarData
 import dev.progrover.core.base.navigation.RouteDesc
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.addCurrency
@@ -116,6 +117,9 @@ class AnalysisViewModel @AssistedInject constructor(
                         transactionType = itemType
                     )
                 )
+
+            AnalysisUIEvent.OnChangeDiagramClick ->
+                setState(currentState.copy(donutDiagramShown = !currentState.donutDiagramShown))
         }
 
     private fun loadAnalysis() {
@@ -149,6 +153,7 @@ class AnalysisViewModel @AssistedInject constructor(
                     currentState.copy(
                         isLoading = false,
                         analysis = result,
+                        barDataList = convertToBarData(result),
                         currency = idProvider.getCurrency(),
                         total = countTotalAmount(result, idProvider.getCurrency()),
                     )
@@ -169,6 +174,7 @@ class AnalysisViewModel @AssistedInject constructor(
                             currentState.copy(
                                 isLoading = false,
                                 analysis = result,
+                                barDataList = convertToBarData(result),
                                 currency = idProvider.getCurrency(),
                                 total = countTotalAmount(result, idProvider.getCurrency()),
                             )
@@ -220,6 +226,32 @@ class AnalysisViewModel @AssistedInject constructor(
             transactionsUpdater.updateChannel.collectLatest { route ->
                 if (route == itemType) loadAnalysis()
             }
+        }
+    }
+
+    private fun convertToBarData(list: List<AnalysisElement>): List<BarData> {
+        val groupedList = list.groupBy { it.name }
+            .map { (name, group) ->
+                val totalValue = group.sumOf { it.percentage }
+                BarData(
+                    value = totalValue.toFloat(),
+                    description = if (totalValue == 0) "<1%" else "$totalValue%",
+                    caption = if (totalValue == 0) "<1%" else "$totalValue%",
+                    legend = name
+                )
+            }
+
+        if (groupedList.size < 5) return groupedList.sortedByDescending { it.value }
+        else {
+            val firstFour = groupedList.sortedByDescending { it.value }.take(4)
+            val otherTotal =
+                groupedList.sortedByDescending { it.value }.drop(4).sumOf { it.value.toDouble() }
+            val lastItem = BarData(
+                value = otherTotal.toFloat(),
+                caption = if (otherTotal.toInt() == 0) "<1%" else "${otherTotal.toInt()}%",
+                description = if (otherTotal.toInt() == 0) "<1%" else "${otherTotal.toInt()}%",
+            )
+            return firstFour.plus(lastItem)
         }
     }
 }

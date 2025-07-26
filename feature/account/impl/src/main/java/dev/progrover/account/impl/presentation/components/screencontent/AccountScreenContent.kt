@@ -1,5 +1,7 @@
 package dev.progrover.account.impl.presentation.components.screencontent
 
+import AnimatedBarChart
+import BarChartCaption
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -51,7 +53,7 @@ internal fun AccountScreenContent(
 
                 DefaultListItem(
                     modifier = Modifier,
-                    backgroundColor = AppTheme.colors.paleGreen,
+                    backgroundColor = AppTheme.colors.secondary,
                     iconBackgroundColor = AppTheme.colors.white,
                     startIcon = "\uD83D\uDCB0",
                     title = uiState.account?.name?.let { it.ifEmpty { stringResource(R.string.total_amount) } }
@@ -66,7 +68,7 @@ internal fun AccountScreenContent(
 
                 DefaultListItem(
                     modifier = Modifier,
-                    backgroundColor = AppTheme.colors.paleGreen,
+                    backgroundColor = AppTheme.colors.secondary,
                     title = stringResource(R.string.currency),
                     additionalText = uiState.account?.currency?.getCurrency() ?: "???",
                     dividerVisible = false,
@@ -76,7 +78,20 @@ internal fun AccountScreenContent(
                 )
             },
         ) {
-            if (uiState.isLoading) ProgressIndicator()
+            if (!uiState.isLoading) {
+                if (uiState.diagramData != null) {
+                    AnimatedBarChart(
+                        modifier = Modifier
+                            .padding(
+                                start = AppTheme.paddings.padding16,
+                                top = AppTheme.paddings.padding32,
+                                end = AppTheme.paddings.padding16
+                            ),
+                        data = uiState.diagramData,
+                        captionsMode = BarChartCaption.FirstAndLast,
+                    )
+                }
+            } else  ProgressIndicator()
         }
 
         DefaultRoundButton(

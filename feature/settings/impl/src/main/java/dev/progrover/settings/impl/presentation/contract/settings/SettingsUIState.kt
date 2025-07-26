@@ -16,10 +16,6 @@ data class SettingsUIState(
             R.string.color,
         ),
         Chapter(
-            ChapterRoute.Sounds,
-            R.string.sounds,
-        ),
-        Chapter(
             ChapterRoute.Haptics,
             R.string.haptics,
         ),

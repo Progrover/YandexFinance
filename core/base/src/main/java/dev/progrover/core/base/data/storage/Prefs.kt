@@ -1,6 +1,7 @@
 package dev.progrover.core.base.data.storage
 
 import android.content.SharedPreferences
+import dev.progrover.core.base.utils.HapticsVariant
 import java.lang.reflect.ParameterizedType
 
 interface Prefs {
@@ -42,4 +43,8 @@ interface Prefs {
     fun clearParam(name: String)
 
     fun clearAllParams()
+
+    fun getVibrationVariant() : HapticsVariant
+
+    fun setVibrationVariant(vibrationMode: HapticsVariant)
 }

@@ -36,6 +36,9 @@ composeCompiler {
 dependencies {
 
     implementation(libs.androidx.monitor)
+    implementation(libs.androidx.junit.ktx)
+    implementation(libs.androidx.ui.test.junit4.android)
+    androidTestImplementation(libs.truth)
 
     coreBase()
     coreTheme()
@@ -46,8 +49,10 @@ dependencies {
     navigation()
     coil()
     settingsApi()
+    authApi()
     // encrypt
     implementation(libs.jbcrypt)
+    testImplementation(kotlin("test"))
 }
 
 kapt {

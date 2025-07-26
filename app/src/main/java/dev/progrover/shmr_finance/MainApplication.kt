@@ -1,9 +1,8 @@
 package dev.progrover.shmr_finance
 
-import dev.progrover.shmr_finance.network.NetworkMonitor
 import TimberReleaseTree
 import android.app.Application
-import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.work.Configuration
@@ -19,11 +18,16 @@ import dev.progrover.core.base.data.storage.Prefs
 import dev.progrover.core.base.di.BaseComponent
 import dev.progrover.core.base.di.BaseComponentProvider
 import dev.progrover.core.base.di.DaggerBaseComponent
+import dev.progrover.core.base.utils.LANGUAGE
+import dev.progrover.core.base.utils.LocaleVariant
+import dev.progrover.core.base.utils.SYNC_TIME_HOURS
+import dev.progrover.core.base.utils.SettingsOptions
 import dev.progrover.core.uicommon.utils.ImageRequestDefaults
 import dev.progrover.shmr_finance.di.ApplicationComponent
 import dev.progrover.shmr_finance.di.ApplicationComponentProvider
 import dev.progrover.shmr_finance.di.CustomWorkerFactory
 import dev.progrover.shmr_finance.di.DaggerApplicationComponent
+import dev.progrover.shmr_finance.network.NetworkMonitor
 import dev.progrover.shmr_finance.workmanager.StartupWorker
 import dev.progrover.shmr_finance.workmanager.SyncWorker
 import timber.log.Timber
@@ -49,6 +53,15 @@ class MainApplication :
 
     lateinit var networkMonitor: NetworkMonitor
 
+    var splashAnimationEnd = false
+
+    var pinCodeShown = false
+
+    private val prefsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (key == SYNC_TIME_HOURS) {
+            updatePeriodicWorker(prefs.getInt(SYNC_TIME_HOURS, 4))
+        }
+    }
 
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
@@ -63,11 +76,15 @@ class MainApplication :
 
         appComponent.inject(this)
 
+        if (prefs.getString(LANGUAGE, null) == null) {
+            prefs.putString(LANGUAGE, SettingsOptions.localeVariants[LocaleVariant.Russian])
+        }
+
         val isFirstLaunch = prefs.getBool("is_first_launch", true)
         if (isFirstLaunch) onceRequest()
 
         networkMonitor = NetworkMonitor(this) {
-            Timber.d("dev.progrover.shmr_finance.network.NetworkMonitor toggle")
+            Timber.d("NetworkMonitor toggle")
             WorkManager.getInstance(this)
                 .enqueue(OneTimeWorkRequestBuilder<SyncWorker>().build())
         }
@@ -82,7 +99,9 @@ class MainApplication :
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
 
-        syncWorkerTimeTable()
+        setPeriodicWorker()
+
+        prefs.registerOnSharedPreferenceChangeListener(prefsListener)
     }
 
     override fun newImageLoader(): ImageLoader {
@@ -104,11 +123,11 @@ class MainApplication :
     override fun getApplicationComponent(): ApplicationComponent =
         appComponent
 
-    private fun syncWorkerTimeTable() {
+    private fun setPeriodicWorker() {
         val immediateWorkRequest = OneTimeWorkRequestBuilder<SyncWorker>().build()
 
         val workRequest = PeriodicWorkRequestBuilder<SyncWorker>(
-            4, TimeUnit.HOURS
+            prefs.getInt(SYNC_TIME_HOURS, 4).toLong(), TimeUnit.HOURS
         ).build()
         val workManager = WorkManager.getInstance(this)
 
@@ -121,6 +140,19 @@ class MainApplication :
         )
     }
 
+    private fun updatePeriodicWorker(newInterval: Int) {
+        val workRequest = PeriodicWorkRequestBuilder<SyncWorker>(
+            newInterval.toLong(), TimeUnit.HOURS
+        ).build()
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "SyncWorker",
+            ExistingPeriodicWorkPolicy.UPDATE,
+            workRequest
+        )
+        Timber.d("MainApplication: SyncWorker interval updated")
+    }
+
     private fun onceRequest() {
         val workRequest = OneTimeWorkRequestBuilder<StartupWorker>().build()
         WorkManager.getInstance(
@@ -131,4 +163,12 @@ class MainApplication :
 
     override fun getAccountComponent(): AccountComponent =
         appComponent.getAccountComponent()
+
+    internal fun setAnimationEnd() {
+        splashAnimationEnd = true
+    }
+
+    internal fun setPinCodeShown() {
+        pinCodeShown = true
+    }
 }

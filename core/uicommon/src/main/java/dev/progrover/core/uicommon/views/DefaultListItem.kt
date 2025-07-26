@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.progrover.core.base.utils.isUnicode
 import dev.progrover.core.theme.AppTheme
+import dev.progrover.core.uicommon.utils.conditionally
 import dev.progrover.core.uicommon.utils.noRippleClickable
 
 @Composable
@@ -35,7 +36,7 @@ fun DefaultListItem(
     title: String,
     titleColor: Color = AppTheme.colors.textMain,
     backgroundColor: Color = AppTheme.colors.surface,
-    iconBackgroundColor: Color = AppTheme.colors.paleGreen,
+    iconBackgroundColor: Color = AppTheme.colors.secondary,
     captionTitle: String? = null,
     captionAdditional: String? = null,
     additionalText: String? = null,
@@ -46,13 +47,16 @@ fun DefaultListItem(
     horizontalPadding: Dp = AppTheme.paddings.padding16,
     verticalPadding: Dp = AppTheme.paddings.padding8,
     dividerVisible: Boolean = true,
-    onClick: () -> Unit,
+    onClick: (() -> Unit)? = null,
 ) {
     val density = LocalDensity.current
 
     Column(
         modifier = modifier
-            .noRippleClickable { onClick() }
+            .conditionally(
+                condition = onClick != null,
+                trueExtension = { noRippleClickable({ onClick!!() }) },
+            )
             .fillMaxWidth()
             .background(backgroundColor),
     ) {

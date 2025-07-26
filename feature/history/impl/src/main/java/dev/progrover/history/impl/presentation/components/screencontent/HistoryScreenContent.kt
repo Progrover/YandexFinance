@@ -66,7 +66,7 @@ internal fun HistoryScreenContent(
 
                 DefaultListItem(
                     modifier = Modifier,
-                    backgroundColor = AppTheme.colors.paleGreen,
+                    backgroundColor = AppTheme.colors.secondary,
                     title = stringResource(R.string.start),
                     verticalTextPadding = AppTheme.paddings.padding8,
                     additionalText = uiState.start.toDatePresentation(),
@@ -75,7 +75,7 @@ internal fun HistoryScreenContent(
 
                 DefaultListItem(
                     modifier = Modifier,
-                    backgroundColor = AppTheme.colors.paleGreen,
+                    backgroundColor = AppTheme.colors.secondary,
                     title = stringResource(R.string.end),
                     verticalTextPadding = AppTheme.paddings.padding8,
                     additionalText = uiState.end.toDatePresentation(),
@@ -84,7 +84,7 @@ internal fun HistoryScreenContent(
 
                 DefaultListItem(
                     modifier = Modifier,
-                    backgroundColor = AppTheme.colors.paleGreen,
+                    backgroundColor = AppTheme.colors.secondary,
                     title = stringResource(R.string.sum),
                     verticalTextPadding = AppTheme.paddings.padding8,
                     additionalText = uiState.total,

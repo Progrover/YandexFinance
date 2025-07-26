@@ -10,5 +10,5 @@ import dev.progrover.settings.impl.presentation.viewmodel.SettingsViewModel
 internal interface SettingsViewModelModule {
 
     @[Binds IntoMap ViewModelKey(SettingsViewModel::class)]
-    fun bindArticlesViewModel(viewModel: SettingsViewModel): ViewModel
+    fun bindSettingsViewModel(viewModel: SettingsViewModel): ViewModel
 }

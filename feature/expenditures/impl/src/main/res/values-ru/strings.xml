@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="greeting_title">Живи на полную с ЯФинансы</string>
+    <string name="expenditures_title">Расходы сегодня</string>
+    <string name="total">Всего</string>
+</resources>

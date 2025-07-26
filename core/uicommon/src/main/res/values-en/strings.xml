@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_develop">Still in develop</string>
+    <string name="description">Description</string>
+    <string name="close">Close</string>
+    <string name="another">Another</string>
+</resources>

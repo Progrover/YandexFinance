@@ -112,6 +112,7 @@ dependencies {
     settingsApi()
     historyApi()
     editApi()
+    authApi()
 
     implementation(project(Feature.Incomes.impl))
     implementation(project(Feature.Expenditures.impl))
@@ -120,6 +121,7 @@ dependencies {
     implementation(project(Feature.Settings.impl))
     implementation(project(Feature.History.impl))
     implementation(project(Feature.Edit.impl))
+    implementation(project(Feature.Auth.impl))
 }
 
 kapt {

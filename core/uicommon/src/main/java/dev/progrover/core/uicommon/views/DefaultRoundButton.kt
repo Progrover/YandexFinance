@@ -24,10 +24,10 @@ fun DefaultRoundButton(
 ) {
     Box(
         modifier = modifier
-            .noRippleClickable { onClick() }
+            .noRippleClickable ({ onClick() })
             .clip(CircleShape)
             .size(56.dp)
-            .background(AppTheme.colors.brightGreen),
+            .background(AppTheme.colors.main),
         contentAlignment = Alignment.Center,
     ) {
         Image(

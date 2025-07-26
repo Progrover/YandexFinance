@@ -24,12 +24,12 @@ fun DefaultFloatingButton(
     textStyle: TextStyle = AppTheme.typography.titleMedium,
     innerVerticalPadding: Dp = 0.dp,
     innerHorizontalPadding: Dp = AppTheme.paddings.padding10,
-    backgroundColor: Color = AppTheme.colors.brightGreen,
+    backgroundColor: Color = AppTheme.colors.main,
     onClick: () -> Unit = {},
 ) {
     Text(
         modifier = modifier
-            .noRippleClickable { onClick() }
+            .noRippleClickable ({ onClick() })
             .clip(RoundedCornerShape(cornerRadius))
             .background(backgroundColor)
             .padding(

@@ -13,6 +13,7 @@ import dev.progrover.core.base.data.local.provider.LocalAccountProvider
 import dev.progrover.core.base.data.local.provider.LocalArticleProvider
 import dev.progrover.core.base.data.local.provider.LocalTransactionProvider
 import dev.progrover.core.base.data.storage.Prefs
+import dev.progrover.core.base.utils.LAST_UPDATE_TIME
 import dev.progrover.core.base.utils.dateToServerRequest
 import dev.progrover.core.base.utils.formatToIsoUtc
 import kotlinx.coroutines.Dispatchers
@@ -70,7 +71,7 @@ class StartupWorker @AssistedInject constructor(
     }
 
     private fun updateDate() {
-        prefs.putString("LAST_UPDATE_TIME", Instant.now().toEpochMilli().formatToIsoUtc())
+        prefs.putString(LAST_UPDATE_TIME, Instant.now().toEpochMilli().formatToIsoUtc())
     }
 
     private suspend fun getArticles() = withContext(Dispatchers.IO) {

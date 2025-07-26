@@ -60,7 +60,7 @@ internal fun ExpendituresScreenContent(
 
                 DefaultListItem(
                     modifier = Modifier,
-                    backgroundColor = AppTheme.colors.paleGreen,
+                    backgroundColor = AppTheme.colors.secondary,
                     title = stringResource(R.string.total),
                     verticalTextPadding = AppTheme.paddings.padding8,
                     additionalText = uiState.totalExpenditures,

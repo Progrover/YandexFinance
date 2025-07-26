@@ -126,6 +126,7 @@ fun DefaultTextField(
                             text = stringResource(hintResId),
                             maxLines = 1,
                             style = AppTheme.typography.bodyLarge,
+                            color = AppTheme.colors.textMain
                         )
                     }
 

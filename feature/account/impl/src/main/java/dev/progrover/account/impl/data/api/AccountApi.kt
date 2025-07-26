@@ -1,7 +1,9 @@
 package dev.progrover.account.impl.data.api
 
-import dev.progrover.core.base.model.AccountDetailed
 import dev.progrover.account.impl.data.model.ManageAccountRequest
+import dev.progrover.core.base.model.AccountDetailed
+import dev.progrover.core.base.model.AccountHistory
+import dev.progrover.core.base.model.AccountHistoryItem
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -9,6 +11,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+
 /**
  * Необходим для получения информации с сервера о счетах
  */
@@ -37,4 +40,9 @@ interface AccountApi {
     suspend fun deleteAccountById(
         @Path("id") id: Int
     ): Response<Unit>
+
+    @GET("accounts/{id}/history")
+    suspend fun getAccountHistory(
+        @Path("id") id: Int
+    ): Response<AccountHistory>
 }

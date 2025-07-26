@@ -17,6 +17,7 @@ import dev.progrover.core.base.data.storage.Prefs
 import dev.progrover.core.base.model.Transaction
 import dev.progrover.core.base.model.request.CreateTransactionRequest
 import dev.progrover.core.base.model.request.UpdateTransactionRequest
+import dev.progrover.core.base.utils.LAST_UPDATE_TIME
 import dev.progrover.core.base.utils.dateToServerRequest
 import dev.progrover.core.base.utils.formatToIsoUtc
 import kotlinx.coroutines.CoroutineScope
@@ -189,7 +190,7 @@ class SyncWorker @AssistedInject constructor(
     }
 
     private fun updateDate() {
-        prefs.putString("LAST_UPDATE_TIME", Instant.now().toEpochMilli().formatToIsoUtc())
+        prefs.putString(LAST_UPDATE_TIME, Instant.now().toEpochMilli().formatToIsoUtc())
     }
 
     private fun leftBorder() =

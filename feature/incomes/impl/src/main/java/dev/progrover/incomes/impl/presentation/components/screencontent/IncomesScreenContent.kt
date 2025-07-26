@@ -60,7 +60,7 @@ internal fun IncomesScreenContent(
 
                 DefaultListItem(
                     modifier = Modifier,
-                    backgroundColor = AppTheme.colors.paleGreen,
+                    backgroundColor = AppTheme.colors.secondary,
                     title = stringResource(R.string.total),
                     additionalText = uiState.totalIncomes,
                     verticalTextPadding = AppTheme.paddings.padding8,

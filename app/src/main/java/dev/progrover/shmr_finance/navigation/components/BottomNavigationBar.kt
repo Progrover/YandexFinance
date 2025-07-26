@@ -25,6 +25,7 @@ fun BottomNavigationBar(
         isBottomBarVisible = navBackStackEntry.isBottomBarVisible(uiState.isBottomNavigationBarVisible),
         currentDestination = navBackStackEntry?.destination,
         navArguments = navBackStackEntry?.arguments,
+        vibrationMode = uiState.vibrationMode,
         onClick = { item ->
             when (item) {
                 BottomNavigationItem.AccountScreen ->

@@ -36,13 +36,11 @@ object AppTheme {
 fun AppThemeComposable(
     darkTheme: Boolean = isSystemInDarkTheme(),
     darkStatusBarIcons: Boolean = !isSystemInDarkTheme(),
+    mainColorVariant: String,
     content: @Composable () -> Unit,
 ) {
     val colors: AppColors = remember(darkTheme) {
-        when (darkTheme) {
-            true -> AppColors.DarkColors
-            false -> AppColors.LightColors
-        }
+        appColors(mainColorVariant, darkTheme)
     }
     val typography: AppTypography = appTypography(TextStyles())
     val statusbarColor: Color = Color.Transparent

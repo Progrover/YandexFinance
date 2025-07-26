@@ -49,9 +49,9 @@ internal fun ArticlesScreenContent(
         BasicColumn(
             modifier = modifier
                 .fillMaxSize()
-                .noRippleClickable {
+                .noRippleClickable ({
                     focusManager.clearFocus()
-                }
+                })
                 .conditionally(
                     condition = !uiState.isLoading,
                     trueExtension = {

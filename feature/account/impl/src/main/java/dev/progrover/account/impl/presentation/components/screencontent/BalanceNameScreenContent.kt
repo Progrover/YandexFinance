@@ -43,9 +43,9 @@ internal fun BalanceNameScreenContent(
         BasicColumn(
             modifier = modifier
                 .fillMaxSize()
-                .noRippleClickable {
+                .noRippleClickable ({
                     focusManager.clearFocus()
-                },
+                }),
             toolbar = {
                 DefaultToolbar(
                     modifier = Modifier,

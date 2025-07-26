@@ -5,8 +5,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.squareup.moshi.Moshi
+import dev.progrover.core.base.utils.HapticsVariant
+import dev.progrover.core.base.utils.VIBRATION_MODE
 import timber.log.Timber
 import java.lang.reflect.ParameterizedType
+
 /**
  * Класс-реализация Prefs. Необходим для работы с кэшем
  */
@@ -143,6 +146,31 @@ open class SharedPrefsImpl(
     override fun clearAllParams() {
         prefs.edit {
             clear()
+        }
+    }
+
+    override fun getVibrationVariant(): HapticsVariant =
+        prefs.getInt(VIBRATION_MODE, 0).let { number ->
+            when (number) {
+                0 -> HapticsVariant.Silent
+                1 -> HapticsVariant.Short
+                2 -> HapticsVariant.Medium
+                3 -> HapticsVariant.Long
+                else -> HapticsVariant.Silent
+            }
+        }
+
+    override fun setVibrationVariant(vibrationMode: HapticsVariant) {
+        prefs.edit {
+            putInt(
+                VIBRATION_MODE,
+                when (vibrationMode) {
+                    HapticsVariant.Silent -> 0
+                    HapticsVariant.Short -> 1
+                    HapticsVariant.Medium -> 2
+                    HapticsVariant.Long -> 3
+                }
+            )
         }
     }
 

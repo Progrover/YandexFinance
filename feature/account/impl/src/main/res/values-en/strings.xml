@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="currency">Currency</string>
+    <string name="total_amount">Balance</string>
+    <string name="account_title">My account</string>
+    <string name="no_account_error">Current user has no accounts</string>
+    <string name="currency_error">Currency update error! Check connection and reload page =)</string>
+    <string name="name_or_balance_error">Account data error! Check connection and reload page =)</string>
+    <string name="currency_complete">Currency has been changed!</string>
+    <string name="changes_complete">Changes confirmed!</string>
+    <string name="account_not_received_error">You can not edit without information about account!</string>
+    <string name="rubble">Russian ruble</string>
+    <string name="dollar">American dollar</string>
+    <string name="account_name">Title</string>
+    <string name="account_hint">Fill the gap!</string>
+    <string name="account_balance">Balance</string>
+    <string name="euro">Euro</string>
+    <string name="cancel">Cancel</string>
+    <string name="account_changes">Account editing</string>
+</resources>

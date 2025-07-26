@@ -7,7 +7,6 @@ data class Chapter(
 
 enum class ChapterRoute {
     MainColor,
-    Sounds,
     Haptics,
     PasswordCode,
     Sync,

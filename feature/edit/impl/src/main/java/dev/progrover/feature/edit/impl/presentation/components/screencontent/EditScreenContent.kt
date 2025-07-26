@@ -55,9 +55,9 @@ internal fun EditScreenContent(
         BasicColumn(
             modifier = modifier
                 .fillMaxSize()
-                .noRippleClickable {
+                .noRippleClickable ({
                     focusManager.clearFocus()
-                },
+                }),
             toolbar = {
                 DefaultToolbar(
                     modifier = Modifier,

@@ -1,5 +1,7 @@
 package dev.progrover.history.impl.presentation.components.screencontent
 
+import AnimatedBarChart
+import BarChartCaption
 import DateDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -7,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -18,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -34,6 +36,7 @@ import dev.progrover.core.uicommon.views.DefaultFloatingButton
 import dev.progrover.core.uicommon.views.DefaultListItem
 import dev.progrover.core.uicommon.views.DefaultToolbar
 import dev.progrover.core.uicommon.views.ProgressIndicator
+import dev.progrover.core.uicommon.views.diagrams.AnimatedDonutChart
 import dev.progrover.history.impl.domain.model.DatePickerState
 import dev.progrover.history.impl.presentation.contract.analysis.AnalysisUIEvent
 import dev.progrover.history.impl.presentation.contract.analysis.AnalysisUIState
@@ -84,11 +87,11 @@ internal fun AnalysisScreenContent(
                         Spacer(Modifier.weight(1f))
                         DefaultFloatingButton(
                             modifier = Modifier,
-                            text = uiState.start.monthAndYear(),
+                            text = uiState.start.monthAndYear(LocalContext.current),
                             cornerRadius = 100.dp,
                             innerVerticalPadding = AppTheme.paddings.padding6,
                             innerHorizontalPadding = AppTheme.paddings.padding10,
-                            backgroundColor = AppTheme.colors.brightGreen,
+                            backgroundColor = AppTheme.colors.main,
                             onClick = { onEvent(AnalysisUIEvent.OnStartClick) },
                         )
 
@@ -108,11 +111,11 @@ internal fun AnalysisScreenContent(
 
                         DefaultFloatingButton(
                             modifier = Modifier,
-                            text = uiState.end.monthAndYear(),
+                            text = uiState.end.monthAndYear(LocalContext.current),
                             cornerRadius = 100.dp,
                             innerVerticalPadding = AppTheme.paddings.padding6,
                             innerHorizontalPadding = AppTheme.paddings.padding10,
-                            backgroundColor = AppTheme.colors.brightGreen,
+                            backgroundColor = AppTheme.colors.main,
                             onClick = { onEvent(AnalysisUIEvent.OnEndClick) },
                         )
                     }
@@ -127,8 +130,43 @@ internal fun AnalysisScreenContent(
                 additionalText = uiState.total,
                 onClick = { },
             )
+            if (!uiState.barDataList.isNullOrEmpty()) {
+                Box {
+                    if (uiState.donutDiagramShown) {
+                        AnimatedDonutChart(
+                            modifier = Modifier
+                                .padding(
+                                    horizontal = AppTheme.paddings.padding16,
+                                    vertical = AppTheme.paddings.padding20
+                                ),
+                            data = uiState.barDataList,
+                            diagramSize = AppTheme.sizes.size165
+                        )
+                    } else {
+                        AnimatedBarChart(
+                            data = uiState.barDataList,
+                            modifier = Modifier
+                                .padding(
+                                    horizontal = AppTheme.paddings.padding16,
+                                    vertical = AppTheme.paddings.padding20
+                                ),
+                            captionsMode = BarChartCaption.All,
+                            diagramHeight = 165.dp
+                        )
+                    }
 
-            Spacer(Modifier.height(180.dp))
+                    DefaultFloatingButton(
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(AppTheme.paddings.padding16),
+                        text = stringResource(R.string.change),
+                        cornerRadius = AppTheme.sizes.size5,
+                        innerVerticalPadding = AppTheme.paddings.padding4,
+                        innerHorizontalPadding = AppTheme.paddings.padding6,
+                        onClick = { onEvent(AnalysisUIEvent.OnChangeDiagramClick) }
+                    )
+                }
+            }
 
             if (!uiState.isLoading) {
                 if (uiState.analysis.isNotEmpty()) {
@@ -143,7 +181,8 @@ internal fun AnalysisScreenContent(
                             title = analysis.name,
                             startIcon = analysis.emoji,
                             captionTitle = analysis.comment,
-                            additionalText = "${analysis.percentage} %",
+                            additionalText = if (analysis.percentage == 0) "<1 %"
+                            else "${analysis.percentage} %",
                             captionAdditional = analysis.amount.formatToAmount()
                                 .addCurrency(uiState.currency),
                             verticalTextPadding = when (analysis.comment.isNullOrBlank()) {

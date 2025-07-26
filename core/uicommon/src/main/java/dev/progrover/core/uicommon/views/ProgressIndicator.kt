@@ -15,7 +15,7 @@ fun ProgressIndicator() {
         CircularProgressIndicator(
             modifier = Modifier
                 .align(Alignment.Center),
-            color = AppTheme.colors.brightGreen,
+            color = AppTheme.colors.main,
             strokeCap = StrokeCap.Round,
             trackColor = AppTheme.colors.surface,
         )

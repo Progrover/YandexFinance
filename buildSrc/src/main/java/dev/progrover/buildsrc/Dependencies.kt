@@ -3,7 +3,10 @@ import org.gradle.kotlin.dsl.project
 
 object Dependencies {
     const val kotlinSerialization = "org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}"
+    const val truth = "com.google.truth:truth:${Versions.truth}"
 
+    const val androidTest = "androidx.compose.ui:ui-test-junit4:${Versions.kotlin}"
+    const val uiTest = "androidx.compose.ui:ui-test-manifest:${Versions.kotlin}"
     const val composeMaterial3 = "androidx.compose.material3:material3:${Versions.composeMaterial3}"
     const val composeMaterial = "androidx.compose.material:material:${Versions.compose}"
     const val composeUi = "androidx.compose.ui:ui:${Versions.compose}"
@@ -182,4 +185,8 @@ fun DependencyHandler.historyApi() {
 
 fun DependencyHandler.editApi() {
     implementation(project(Feature.Edit.api))
+}
+
+fun DependencyHandler.authApi() {
+    implementation(project(Feature.Auth.api))
 }

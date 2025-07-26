@@ -60,7 +60,7 @@ fun CustomAlertDialog(
     var visible by remember { mutableStateOf(false) }
     val backgroundColor = when (alert.type) {
         AlertType.Error -> AppTheme.colors.error
-        AlertType.Success -> AppTheme.colors.brightGreen
+        AlertType.Success -> AppTheme.colors.main
     }
 
     LaunchedEffect(Unit) {
@@ -107,10 +107,12 @@ fun CustomAlertDialog(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .size(AppTheme.sizes.size24),
-                imageVector = ImageVector.vectorResource(when(alert.type) {
-                    AlertType.Error -> R.drawable.error
-                    AlertType.Success -> R.drawable.tick
-                }),
+                imageVector = ImageVector.vectorResource(
+                    when (alert.type) {
+                        AlertType.Error -> R.drawable.error
+                        AlertType.Success -> R.drawable.tick
+                    }
+                ),
                 contentDescription = null,
                 colorFilter = ColorFilter.tint(AppTheme.colors.white),
             )
@@ -128,7 +130,7 @@ fun CustomAlertDialog(
             if (endIconRes != null && dismissTime != DismissTime.NoDismiss) {
                 Image(
                     modifier = Modifier
-                        .noRippleClickable { onClose() }
+                        .noRippleClickable({ onClose() })
                         .align(Alignment.CenterVertically)
                         .size(AppTheme.sizes.size24),
                     imageVector = ImageVector.vectorResource(endIconRes),

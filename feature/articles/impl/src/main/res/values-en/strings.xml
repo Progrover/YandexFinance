@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="articles_title">My articles</string>
+    <string name="find_article">Find the article</string>
+</resources>
