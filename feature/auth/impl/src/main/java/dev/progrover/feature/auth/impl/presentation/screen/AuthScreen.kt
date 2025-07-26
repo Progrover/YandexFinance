@@ -27,7 +27,8 @@ internal fun AuthScreen(
 
                 AuthUIEffect.NavigateToExpendsScreen ->
                     ExpendituresFeature.openExpendituresScreen(
-                        navController
+                        navController,
+                        true
                     )
             }
         }
