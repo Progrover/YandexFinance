@@ -13,6 +13,7 @@ sealed class AnalysisUIEvent : UIEvent {
     data object OnBackClick : AnalysisUIEvent()
     data object OnErrorDialogDone : AnalysisUIEvent()
     data object OnDatePickerClose : AnalysisUIEvent()
+    data object OnChangeDiagramClick : AnalysisUIEvent()
 
     class OnAnalysisItemClick(val id: Int) : AnalysisUIEvent()
     class OnNewDateSelected(val date: Long, val type: DatePickerState) : AnalysisUIEvent()

@@ -7,6 +7,7 @@ import dev.progrover.core.base.data.local.provider.LocalAccountProvider
 import dev.progrover.core.base.data.repository.BaseRepository
 import dev.progrover.core.base.di.CoroutineQualifiers
 import dev.progrover.core.base.model.AccountDetailed
+import dev.progrover.core.base.model.AccountHistoryItem
 import dev.progrover.core.base.model.ApiResponse
 import dev.progrover.core.base.model.ServerError
 import kotlinx.coroutines.CoroutineDispatcher
@@ -188,6 +189,25 @@ class AccountRepositoryImpl @Inject constructor(
                 }
             } catch (e: Exception) {
                 Timber.e("DeleteAccountById error", e)
+                ApiResponse(error = getErrorMessage(e))
+            }
+        }
+
+    override suspend fun getAccountHistory(accountId: Int): ApiResponse<List<AccountHistoryItem>> =
+        executeOnIO {
+            try {
+                if (tokenAvaliable) {
+                    val response = accountApi.getAccountHistory(accountId)
+
+                    when (response.isSuccessful) {
+                        true -> ApiResponse(value = response.body()?.history ?: emptyList())
+                        false -> ApiResponse(code = response.code())
+                    }
+                } else {
+                    ApiResponse()
+                }
+            } catch (e: Exception) {
+                Timber.e("GetAccountHistory error", e)
                 ApiResponse(error = getErrorMessage(e))
             }
         }

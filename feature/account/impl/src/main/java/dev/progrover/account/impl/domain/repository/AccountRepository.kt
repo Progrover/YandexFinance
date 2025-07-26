@@ -1,6 +1,7 @@
 package dev.progrover.account.impl.domain.repository
 
 import dev.progrover.core.base.model.AccountDetailed
+import dev.progrover.core.base.model.AccountHistoryItem
 import dev.progrover.core.base.model.ApiResponse
 
 interface AccountRepository {
@@ -28,4 +29,6 @@ interface AccountRepository {
     ): ApiResponse<AccountDetailed>
 
     suspend fun deleteAccountById(accountId: Int): ApiResponse<Boolean>
+
+    suspend fun getAccountHistory(accountId: Int): ApiResponse<List<AccountHistoryItem>>
 }

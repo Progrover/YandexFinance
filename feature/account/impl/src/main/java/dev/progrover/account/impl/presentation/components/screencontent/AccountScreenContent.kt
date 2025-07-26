@@ -1,5 +1,7 @@
 package dev.progrover.account.impl.presentation.components.screencontent
 
+import AnimatedBarChart
+import BarChartCaption
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -76,7 +78,20 @@ internal fun AccountScreenContent(
                 )
             },
         ) {
-            if (uiState.isLoading) ProgressIndicator()
+            if (!uiState.isLoading) {
+                if (uiState.diagramData != null) {
+                    AnimatedBarChart(
+                        modifier = Modifier
+                            .padding(
+                                start = AppTheme.paddings.padding16,
+                                top = AppTheme.paddings.padding32,
+                                end = AppTheme.paddings.padding16
+                            ),
+                        data = uiState.diagramData,
+                        captionsMode = BarChartCaption.FirstAndLast,
+                    )
+                }
+            } else  ProgressIndicator()
         }
 
         DefaultRoundButton(

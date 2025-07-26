@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="in_develop">Пока в разработке</string>
+    <string name="description">Описание</string>
+    <string name="close">Закрыть</string>
+    <string name="another">Другое</string>
 </resources>

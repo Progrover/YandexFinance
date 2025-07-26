@@ -1,6 +1,5 @@
 package dev.progrover.account.impl.presentation.viewmodel
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.lifecycle.viewModelScope
 import dev.progrover.account.api.domain.AccountPropertiesProvider
 import dev.progrover.account.impl.domain.model.AccountAlert
@@ -13,13 +12,18 @@ import dev.progrover.account.impl.presentation.navigation.CurrencyUpdater
 import dev.progrover.core.base.model.AccountDetailed
 import dev.progrover.core.base.model.Alert
 import dev.progrover.core.base.model.LocalStorageError
+import dev.progrover.core.base.model.diagrams.BarData
 import dev.progrover.core.base.presentation.viewmodel.BaseViewModel
 import dev.progrover.core.base.utils.JsonConverter
+import dev.progrover.core.base.utils.addCurrency
+import dev.progrover.core.base.utils.formatToAmount
+import dev.progrover.core.base.utils.toDatePresentation
+import dev.progrover.core.base.utils.toMillis
 import dev.progrover.shmr_finance.core.uicommon.R
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.processNextEventInCurrentThread
-import timber.log.Timber
+import java.time.Instant
+import java.time.ZoneId
 import javax.inject.Inject
 
 /**
@@ -39,7 +43,6 @@ class AccountViewModel @Inject constructor(
         startNameUpdater()
         startCurrencyUpdater()
         loadInfo()
-        Timber.d("AccountPropertiesProvider hash: ${accountProvider.hashCode()}")
     }
 
     override fun handleUIEvent(event: AccountUIEvent) =
@@ -79,10 +82,10 @@ class AccountViewModel @Inject constructor(
                 result.firstOrNull()?.let {
                     setState(
                         currentState.copy(
-                            isLoading = false,
                             account = it,
                         )
                     )
+                    getDataForDiagram(it.id)
                 } ?: setState(
                     currentState.copy(
                         isLoading = false,
@@ -244,4 +247,56 @@ class AccountViewModel @Inject constructor(
             }
         }
     }
+
+    private fun getDataForDiagram(accountId: Int) {
+        tryMultipleLoad(
+            function = { accountRepository.getAccountHistory(accountId) },
+            onSuccess = { result ->
+                val data = result.sortedBy { it.changeTimestamp.toMillis() }.mapNotNull { item ->
+                    if (item.newState.balance != item.previousState.balance) {
+                        BarData(
+                            value = item.newState.balance.toFloat()
+                                    - item.previousState.balance.toFloat(),
+                            description = item.changeTimestamp
+                        )
+                    } else null
+                }
+
+                setState(
+                    currentState.copy(
+                        isLoading = false,
+                        diagramData = mergeByDate(
+                            data,
+                            currentState.account?.currency ?: "?"
+                        )
+                    )
+                )
+            },
+            onFailure = {
+                setState(
+                    currentState.copy(isLoading = false)
+                )
+            }
+        )
+    }
+}
+
+fun mergeByDate(list: List<BarData>, currency: String): List<BarData> {
+    return list
+        .groupBy { bar ->
+            Instant.ofEpochMilli(bar.description.toMillis())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+        }
+        .map { (date, items) ->
+            val totalValue = items.sumOf { it.value.toDouble() }
+            val dateMillis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+            BarData(
+                value = totalValue.toFloat(),
+                description = "${
+                    totalValue.toInt().toString().formatToAmount().addCurrency(currency)
+                }\n${dateMillis.toDatePresentation()}",
+                caption = dateMillis.toDatePresentation()
+            )
+        }.takeLast(30)
 }
